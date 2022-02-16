@@ -7,23 +7,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_notes"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/icon_note"
             android:title="@string/menu_notes" />
         <item
             android:id="@+id/nav_input"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/icon_logo"
             android:title="@string/menu_input" />
         <item
             android:id="@+id/nav_dialogs"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/icon_chat"
             android:title="@string/menu_dialogs" />
         <item
             android:id="@+id/nav_contacts"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/icon_account"
             android:title="@string/menu_contacts" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/icon_settings"
             android:title="@string/menu_settings" />
     </group>
 
