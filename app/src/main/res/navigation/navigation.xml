@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_input">
+
+    <fragment
+        android:id="@+id/nav_notes"
+        android:name="com.ekdorn.silentium.fragments.NotesFragment"
+        android:label="@string/menu_notes"
+        tools:layout="@layout/fragment_notes" />
+
+    <fragment
+        android:id="@+id/nav_input"
+        android:name="com.ekdorn.silentium.fragments.InputFragment"
+        android:label="@string/menu_input"
+        tools:layout="@layout/fragment_notes" />
+
+    <fragment
+        android:id="@+id/nav_dialogs"
+        android:name="com.ekdorn.silentium.fragments.DialogsFragment"
+        android:label="@string/menu_dialogs"
+        tools:layout="@layout/fragment_dialogs" />
+
+    <fragment
+        android:id="@+id/nav_contacts"
+        android:name="com.ekdorn.silentium.fragments.ContactsFragment"
+        android:label="@string/menu_contacts"
+        tools:layout="@layout/fragment_contacts" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.ekdorn.silentium.fragments.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
