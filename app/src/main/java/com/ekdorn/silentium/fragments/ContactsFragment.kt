@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.ekdorn.silentium.databinding.FragmentContactsBinding
 import com.ekdorn.silentium.databinding.FragmentDialogsBinding
 import com.ekdorn.silentium.models.ContactsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -13,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 class ContactsFragment : Fragment() {
 
     private lateinit var contactsViewModel: ContactsViewModel
-    private var _binding: FragmentDialogsBinding? = null
+    private var _binding: FragmentContactsBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -21,10 +22,10 @@ class ContactsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         contactsViewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
 
-        _binding = FragmentDialogsBinding.inflate(inflater, container, false)
+        _binding = FragmentContactsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.fab.setOnClickListener { view ->
+        binding.importContacts.setOnClickListener { view ->
             Snackbar.make(view, "Import contact", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 

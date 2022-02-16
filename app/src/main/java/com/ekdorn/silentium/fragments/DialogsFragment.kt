@@ -25,7 +25,7 @@ class DialogsFragment : Fragment() {
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.fab.setOnClickListener { view ->
+        binding.createDialog.setOnClickListener { view ->
             Snackbar.make(view, "Start dialog", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 

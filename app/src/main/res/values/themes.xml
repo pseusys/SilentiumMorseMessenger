@@ -23,8 +23,12 @@
 
     <style name="Theme.SilentiumMorseMessenger.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="roundedImageViewRounded" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <style name="RoundedImageView" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>

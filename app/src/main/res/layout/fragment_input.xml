@@ -5,11 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+    android:layout_marginVertical="@dimen/activity_vertical_margin"
     tools:context=".fragments.InputFragment">
 
     <com.ekdorn.silentium.views.SilentInput
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/minimal_offset"
         app:rotate="true"
         android:src="@drawable/logo_outline"
         app:layout_constraintDimensionRatio="1:1"
