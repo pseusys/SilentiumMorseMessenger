@@ -1,15 +1,17 @@
 package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.ekdorn.silentium.core.*
 import com.ekdorn.silentium.databinding.FragmentDialogsBinding
 import com.ekdorn.silentium.models.DialogsViewModel
 import com.google.android.material.snackbar.Snackbar
+
 
 class DialogsFragment : Fragment() {
 
@@ -26,7 +28,8 @@ class DialogsFragment : Fragment() {
         val root: View = binding.root
 
         binding.createDialog.setOnClickListener { view ->
-            Snackbar.make(view, "Start dialog", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            val code = listOf(BiBit.DIT, BiBit.DIT, BiBit.DIT, BiBit.GAP, BiBit.DAH, BiBit.DAH, BiBit.DAH, BiBit.GAP, BiBit.DIT, BiBit.DIT, BiBit.DIT)
+            Snackbar.make(view, code.biBitsToMyte().toReadableString(), Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 
         //val textView: TextView = binding.textGallery

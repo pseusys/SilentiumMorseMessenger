@@ -11,12 +11,12 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.appcompat.widget.AppCompatImageView
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.core.BiBit
+import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.morse.MorseListener
-import kotlin.math.pow
+import com.ekdorn.silentium.pow
 import kotlin.math.sqrt
 
-
-private infix fun Float.pow(x: Float) = pow(x)
 
 class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : AppCompatImageView(context, attributes, style) {
     constructor(context: Context, attributes: AttributeSet?): this(context, attributes, 0)
@@ -38,11 +38,11 @@ class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : App
     }
 
     private var isUp = false
-    private fun animateUp() {
+    private fun animateUp () {
         if (!isUp) animate().scaleX(0.8F).scaleY(0.8F).setInterpolator(DecelerateInterpolator(2F)).setDuration(750).start()
         isUp = true
     }
-    private fun animateDown() {
+    private fun animateDown () {
         if (isUp) animate().scaleX(1F).scaleY(1F).setDuration(750).start()
         isUp = false
     }
@@ -50,7 +50,7 @@ class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : App
     private fun touchedRound (tX: Float, tY: Float) = sqrt(((width / 2F - tX) pow 2F) + ((height / 2F - tY) pow 2F)) < width / 2F
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent (event: MotionEvent?): Boolean {
         when (event?.actionMasked) {
             MotionEvent.ACTION_DOWN -> if (touchedRound(event.x, event.y)) {
                 animateUp()
@@ -66,5 +66,13 @@ class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : App
             }
         }
         return super.onTouchEvent(event)
+    }
+
+
+    class MorseListener {
+        fun onStart () {}
+        fun onBiBit (biBit: BiBit) {}
+        fun onLong (long: Long) {}
+        fun onMyte (myte: Myte) {}
     }
 }

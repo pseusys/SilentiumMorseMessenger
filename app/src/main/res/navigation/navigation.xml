@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/navigation"
     app:startDestination="@id/nav_input">
 
     <fragment
@@ -29,6 +29,12 @@
         android:name="com.ekdorn.silentium.fragments.ContactsFragment"
         android:label="@string/menu_contacts"
         tools:layout="@layout/fragment_contacts" />
+
+    <fragment
+        android:id="@+id/nav_description"
+        android:name="com.ekdorn.silentium.fragments.DescriptionFragment"
+        android:label="@string/menu_description"
+        tools:layout="@layout/fragment_description" />
 
     <fragment
         android:id="@+id/nav_settings"

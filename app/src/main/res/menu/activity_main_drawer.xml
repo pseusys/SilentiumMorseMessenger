@@ -22,6 +22,10 @@
             android:icon="@drawable/icon_account"
             android:title="@string/menu_contacts" />
         <item
+            android:id="@+id/nav_description"
+            android:icon="@drawable/icon_description"
+            android:title="@string/menu_description" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/icon_settings"
             android:title="@string/menu_settings" />
