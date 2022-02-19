@@ -7,16 +7,29 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
     android:layout_marginVertical="@dimen/activity_vertical_margin"
-    tools:context=".fragments.InputFragment">
+    tools:context=".fragments.InputFragment" >
+
+    <include
+        android:id="@+id/input_view"
+        layout="@layout/fragment_input_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/input_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.ekdorn.silentium.views.SilentInput
+        android:id="@+id/input_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingHorizontal="@dimen/minimal_offset"
         app:rotate="true"
         android:src="@drawable/logo_outline"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="5"
+        app:layout_constraintTop_toBottomOf="@id/input_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

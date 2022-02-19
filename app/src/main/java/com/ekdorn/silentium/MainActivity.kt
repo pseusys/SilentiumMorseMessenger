@@ -11,6 +11,10 @@ import com.ekdorn.silentium.databinding.ActivityMainRootBinding
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val PREFERENCES_FILE = "settings"
+    }
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainRootBinding
 

@@ -8,11 +8,10 @@ import java.util.*
  * Non-character values (as 'end of transmission' or 'change to wabun code') are skipped.
  */
 object Morse {
-    val DIT_LENGTH_KEY = Pair("DIT_LENGTH", 100)
-    val DAH_LENGTH_KEY = Pair("DAH_LENGTH", 200)
-    val GAP_LENGTH_KEY = Pair("GAP_LENGTH", 100)
-    val END_LENGTH_KEY = Pair("END_LENGTH", 200)
-    val EOM_LENGTH_KEY = Pair("EOM_LENGTH", 500)
+    val DAH_LENGTH_KEY = Pair("DAH_LENGTH", 500)
+    val GAP_LENGTH_KEY = Pair("GAP_LENGTH", 500)
+    val END_LENGTH_KEY = Pair("END_LENGTH", 1000)
+    val EOM_LENGTH_KEY = Pair("EOM_LENGTH", 2000)
 
     val ref: String
     val name: String

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Silentium</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -18,6 +19,6 @@
 
     <string name="description_title_view">Morse Code</string>
     <string name="description_code_description">Morse code is a method used in telecommunication to encode text characters as standardized sequences of two different signal durations, called dots and dashes, or dits and dahs. Morse code is named after Samuel Morse, one of the inventors of the telegraph.\n%1$s encoding is currently active (reference: %2$s).\nFollowing characters are available:</string>
-    <string name="description_time_description">The length of dits and dahs is defined in milliseconds as follows:\nDIT length: %1$d ms\nDIT length: %2$d\nDAH length: %3$d ms\nGAP between characters length: %4$d ms\nWHITESPACE length: %1$d ms\nEND OF MESSAGE length: %5$d ms</string>
+    <string name="description_time_description">The length of dahs and spaces is defined in milliseconds as follows:\nDAH length: %1$d ms\nGAP between characters length: %2$d ms\nWHITESPACE length: %3$d ms\nEND OF MESSAGE length: %4$d ms</string>
     <string name="description_subscription"></string>
 </resources>

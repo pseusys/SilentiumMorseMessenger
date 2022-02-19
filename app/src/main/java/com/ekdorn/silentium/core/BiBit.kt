@@ -28,12 +28,14 @@ fun Long.toBiBits(): List<BiBit> {
     return biBits
 }
 
+fun Long.toMorseString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.sign}" }
+
 fun List<BiBit>.biBitsToLong() = fold(0L) { acc, biBit -> (acc shl 2) + biBit.atom }
 
 fun Myte.toBiBits(): List<BiBit> {
     val biBits = mutableListOf<BiBit>()
     forEach { for (i in 0 .. 3) biBits.add(BiBit.fromAtom(((it.toInt() shr i * 2) and 0b11).toByte())) }
-    while (biBits.last() == BiBit.END) biBits.removeLast()
+    while (biBits.lastOrNull() == BiBit.END) biBits.removeLast()
     return biBits
 }
 
