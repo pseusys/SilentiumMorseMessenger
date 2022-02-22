@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ekdorn.silentium.databinding.FragmentNotesBinding
-import com.ekdorn.silentium.models.NotesViewModel
+import com.ekdorn.silentium.mvs.NotesViewModel
 
 
 class NotesFragment : Fragment() {

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.ekdorn.silentium.MainActivity
+import com.ekdorn.silentium.activities.SilentActivity
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.*
 import com.ekdorn.silentium.databinding.FragmentDescriptionBinding
@@ -21,7 +21,7 @@ class DescriptionFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDescriptionBinding.inflate(inflater, container, false)
 
-        val sharedPref = requireContext().getSharedPreferences(MainActivity.PREFERENCES_FILE, Context.MODE_PRIVATE)
+        val sharedPref = requireContext().getSharedPreferences(SilentActivity.PREFERENCES_FILE, Context.MODE_PRIVATE)
         val dah = sharedPref.getInt(Morse.DAH_LENGTH_KEY.first, Morse.DAH_LENGTH_KEY.second)
         val gap = sharedPref.getInt(Morse.GAP_LENGTH_KEY.first, Morse.GAP_LENGTH_KEY.second)
         val end = sharedPref.getInt(Morse.END_LENGTH_KEY.first, Morse.END_LENGTH_KEY.second)

@@ -10,8 +10,8 @@ import java.util.*
 object Morse {
     val DAH_LENGTH_KEY = Pair("DAH_LENGTH", 500)
     val GAP_LENGTH_KEY = Pair("GAP_LENGTH", 500)
-    val END_LENGTH_KEY = Pair("END_LENGTH", 1000)
-    val EOM_LENGTH_KEY = Pair("EOM_LENGTH", 2000)
+    val END_LENGTH_KEY = Pair("END_LENGTH", 1500)
+    val EOM_LENGTH_KEY = Pair("EOM_LENGTH", 2500)
 
     val ref: String
     val name: String

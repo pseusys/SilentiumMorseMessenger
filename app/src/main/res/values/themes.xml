@@ -20,6 +20,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.SilentiumMorseMessenger.Proxy" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_crop</item>
+        <item name="postSplashScreenTheme">@style/Theme.SilentiumMorseMessenger</item>
+    </style>
+
     <style name="Theme.SilentiumMorseMessenger.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.SilentiumMorseMessenger.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

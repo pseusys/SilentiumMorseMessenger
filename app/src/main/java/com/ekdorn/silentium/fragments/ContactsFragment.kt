@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ekdorn.silentium.databinding.FragmentContactsBinding
-import com.ekdorn.silentium.databinding.FragmentDialogsBinding
-import com.ekdorn.silentium.models.ContactsViewModel
+import com.ekdorn.silentium.mvs.ContactsViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class ContactsFragment : Fragment() {

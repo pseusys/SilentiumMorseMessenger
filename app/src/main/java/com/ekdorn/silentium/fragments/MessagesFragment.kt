@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.ekdorn.silentium.databinding.FragmentMessagesBinding
-import com.ekdorn.silentium.models.NotesViewModel
+import com.ekdorn.silentium.mvs.NotesViewModel
 
 
 class MessagesFragment : Fragment() {

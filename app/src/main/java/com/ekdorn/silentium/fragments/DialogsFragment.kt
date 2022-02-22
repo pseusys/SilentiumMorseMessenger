@@ -1,7 +1,6 @@
 package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ekdorn.silentium.core.*
 import com.ekdorn.silentium.databinding.FragmentDialogsBinding
-import com.ekdorn.silentium.models.DialogsViewModel
+import com.ekdorn.silentium.mvs.DialogsViewModel
 import com.google.android.material.snackbar.Snackbar
 
 

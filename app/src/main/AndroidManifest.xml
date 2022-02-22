@@ -9,17 +9,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo_launcher_complete_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SilentiumMorseMessenger">
+        android:theme="@style/Theme.SilentiumMorseMessenger" >
+
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar"
-            android:exported="true">
+            android:name=".activities.ProxyActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SilentiumMorseMessenger.Proxy" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <activity android:name=".activities.SilentActivity"
+            android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar" />
+
     </application>
 
 </manifest>
+

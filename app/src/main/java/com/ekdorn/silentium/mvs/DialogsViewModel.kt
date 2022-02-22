@@ -1,13 +1,13 @@
-package com.ekdorn.silentium.models
+package com.ekdorn.silentium.mvs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotesViewModel : ViewModel() {
+class DialogsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notes Fragment"
+        value = "This is dialogs Fragment"
     }
     val text: LiveData<String> = _text
 }

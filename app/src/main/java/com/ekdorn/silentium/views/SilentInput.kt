@@ -10,11 +10,10 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.appcompat.widget.AppCompatImageView
-import com.ekdorn.silentium.MainActivity
+import com.ekdorn.silentium.activities.SilentActivity
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.*
 import com.ekdorn.silentium.pow
-import com.ekdorn.silentium.split
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -55,7 +54,7 @@ class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : App
             interpolator = LinearInterpolator()
         }.start()
 
-        val sharedPref = context.getSharedPreferences(MainActivity.PREFERENCES_FILE, Context.MODE_PRIVATE)
+        val sharedPref = context.getSharedPreferences(SilentActivity.PREFERENCES_FILE, Context.MODE_PRIVATE)
         DAH_LENGTH = sharedPref.getInt(Morse.DAH_LENGTH_KEY.first, Morse.DAH_LENGTH_KEY.second)
         GAP_LENGTH = sharedPref.getInt(Morse.GAP_LENGTH_KEY.first, Morse.GAP_LENGTH_KEY.second)
         END_LENGTH = sharedPref.getInt(Morse.END_LENGTH_KEY.first, Morse.END_LENGTH_KEY.second)

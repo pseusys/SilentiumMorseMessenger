@@ -9,9 +9,8 @@
     android:layout_marginVertical="@dimen/activity_vertical_margin"
     tools:context=".fragments.InputFragment" >
 
-    <include
+    <com.ekdorn.silentium.views.MorsePreView
         android:id="@+id/input_view"
-        layout="@layout/fragment_input_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintVertical_weight="3"
