@@ -30,9 +30,9 @@ class DescriptionFragment : Fragment() {
         val morseCode = Morse.codeData().sortedBy { it.value }.map { "${it.value}: ${it.key.toMorseString()}" }
 
         binding.codeDescription.text = getString(R.string.description_code_description, Morse.name, Morse.ref)
-        binding.timeDescription.text = getString(R.string.description_time_description, dah, gap, end, eom)
         binding.codeViewCol1.text = morseCode.subList(0, morseCode.size / 2).joinToString("\n")
         binding.codeViewCol2.text = morseCode.subList(morseCode.size / 2, morseCode.size).joinToString("\n")
+        binding.timeView.text = getString(R.string.description_time_view, dah, gap, end, eom)
 
         return binding.root
     }

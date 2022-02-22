@@ -15,7 +15,7 @@
         tools:srcCompat="@tools:sample/avatars"
         android:src="@drawable/logo_crop"
         android:layout_marginStart="@dimen/minimal_offset"
-        app:shapeAppearanceOverlay="@style/RoundedImageView"
+        app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"

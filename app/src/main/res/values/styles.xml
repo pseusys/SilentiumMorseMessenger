@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RoundedImageViewStyle" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="BorderlessButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextViewStyle" parent="Widget.MaterialComponents.TextView">
+
+    </style>
+</resources>
