@@ -24,11 +24,11 @@ class MorsePreView(context: Context, attributes: AttributeSet?, style: Int) : Co
     init {
         View.inflate(context, R.layout.view_morse_preview, this)
         inputCard = findViewById(R.id.input_card)
-        processedInput = findViewById(R.id.processed_input)
+        processedInput = findViewById(R.id.contacts_header)
         morseInput = findViewById(R.id.morse_input)
     }
 
-    val listener = object : SilentInput.MorseListener() {
+    val listener = object : SilentInputView.MorseListener() {
         override fun onStart() {
             morseInput.text = ""
             processedInput.text = ""

@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.ekdorn.silentium.core.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.FragmentDialogsBinding
 import com.ekdorn.silentium.mvs.DialogsViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.ekdorn.silentium.views.DescriptiveRecyclerView
 
 
 class DialogsFragment : Fragment() {
-
     private lateinit var dialogsViewModel: DialogsViewModel
     private var _binding: FragmentDialogsBinding? = null
 
@@ -26,10 +27,7 @@ class DialogsFragment : Fragment() {
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.createDialog.setOnClickListener { view ->
-            val code = listOf(BiBit.DIT, BiBit.DIT, BiBit.DIT, BiBit.GAP, BiBit.DAH, BiBit.DAH, BiBit.DAH, BiBit.GAP, BiBit.DIT, BiBit.DIT, BiBit.DIT)
-            Snackbar.make(view, code.biBitsToMyte().toReadableString(), Snackbar.LENGTH_LONG).setAction("Action", null).show()
-        }
+        binding.dialogsView.initRecycler(DialogsAdapter(arrayOf("lol", "kekw")), LinearLayoutManager(requireContext()))
 
         //val textView: TextView = binding.textGallery
         //dialogsViewModel.text.observe(viewLifecycleOwner) {
@@ -42,4 +40,22 @@ class DialogsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+}
+
+
+class DialogsAdapter(private val dialogs: Array<String>) : DescriptiveRecyclerView.Adapter<DialogsAdapter.ViewHolder>() {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        //val textView = view.findViewById<TextView>(R.id.textView)
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_dialog, viewGroup, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        //viewHolder.textView.text = dataSet[position]
+    }
+
+    override fun getItemCount() = dialogs.size
 }

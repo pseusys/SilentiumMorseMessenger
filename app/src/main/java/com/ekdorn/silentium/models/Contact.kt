@@ -1,4 +1,4 @@
 package com.ekdorn.silentium.models
 
-class Contact {
-}
+
+data class Contact(val name: String?, val contact: String, val wasOnline: Int?)

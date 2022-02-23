@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SilentInput">
+    <declare-styleable name="SilentInputView">
         <attr name="rotate" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="DescriptiveRecyclerView">
+        <attr name="text" format="string" />
     </declare-styleable>
 </resources>

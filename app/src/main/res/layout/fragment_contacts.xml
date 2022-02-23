@@ -8,36 +8,26 @@
     android:layout_marginHorizontal="@dimen/activity_margin"
     tools:context=".fragments.ContactsFragment" >
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.ekdorn.silentium.views.DescriptiveRecyclerView
+        android:id="@+id/contacts_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:itemCount="10"
         tools:listitem="@layout/item_contact"
+        app:text="No contacts yet!"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/empty_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text=" Subtitle is called when title is placed. Subtitle is called when title is placed"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/import_contacts"
+        android:id="@+id/create_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/icon_group_add"
-        android:contentDescription="Create contact button"
+        android:layout_marginVertical="@dimen/fab_margin"
+        app:srcCompat="@drawable/icon_add_contact"
+        android:contentDescription="Create dialog button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

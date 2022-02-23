@@ -8,48 +8,16 @@
     android:layout_marginHorizontal="@dimen/activity_margin"
     tools:context=".fragments.DialogsFragment" >
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.ekdorn.silentium.views.DescriptiveRecyclerView
+        android:id="@+id/dialogs_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:text="No dialogs yet..."
         tools:itemCount="10"
         tools:listitem="@layout/item_dialog"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/empty_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text=" Subtitle is called when title is placed. Subtitle is called when title is placed"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/create_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginVertical="@dimen/fab_margin"
-        app:srcCompat="@drawable/icon_search"
-        android:contentDescription="Create dialog button"
-        app:layout_constraintBottom_toTopOf="@id/open_dialog"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/open_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginVertical="@dimen/fab_margin"
-        app:srcCompat="@drawable/icon_create"
-        android:contentDescription="Create dialog button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ import java.lang.System.currentTimeMillis
 import kotlin.math.sqrt
 
 
-class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : AppCompatImageView(context, attributes, style) {
+class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) : AppCompatImageView(context, attributes, style) {
     constructor(context: Context, attributes: AttributeSet?): this(context, attributes, 0)
     constructor(context: Context): this(context, null)
 
@@ -44,8 +44,8 @@ class SilentInput(context: Context, attributes: AttributeSet?, style: Int) : App
     private var eomTimer: Job? = null
 
     init {
-        context.theme.obtainStyledAttributes(attributes, R.styleable.SilentInput, 0, 0).apply {
-            try { rotate = getBoolean(R.styleable.SilentInput_rotate, rotate) } finally { recycle() }
+        context.theme.obtainStyledAttributes(attributes, R.styleable.SilentInputView, 0, 0).apply {
+            try { rotate = getBoolean(R.styleable.SilentInputView_rotate, rotate) } finally { recycle() }
         }
 
         if (rotate) ObjectAnimator.ofFloat(this, View.ROTATION, 0.0f, 360.0f).apply {
