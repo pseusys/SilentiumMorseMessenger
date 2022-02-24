@@ -48,9 +48,12 @@ class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style
         }
 
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-            if (parent.getChildAdapterPosition(view) == 0) outRect.set(0, spacing, 0, 0)
-            if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) outRect.set(0, 0, 0, spacing)
-            if (parent.getChildAdapterPosition(view) in sepIndexes) outRect.set(0, separator.toInt(), 0, 0)
+            var top = 0
+            var bottom = 0
+            if (parent.getChildAdapterPosition(view) == 0) top += spacing
+            if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) bottom += spacing
+            if (parent.getChildAdapterPosition(view) in sepIndexes) top = separator.toInt()
+            outRect.set(0, top, 0, bottom)
         }
     }
 

@@ -10,14 +10,14 @@ import com.ekdorn.silentium.mvs.NotesViewModel
 
 
 class MessagesFragment : Fragment() {
-    private lateinit var homeViewModel: NotesViewModel
+    private lateinit var messagesViewModel: NotesViewModel
     private var _binding: FragmentMessagesBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // homeViewModel = ViewModelProvider(this)[NotesViewModel::class.java]
+        // messagesViewModel = ViewModelProvider(this)[NotesViewModel::class.java]
 
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
         val root: View = binding.root

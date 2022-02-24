@@ -3,11 +3,16 @@ package com.ekdorn.silentium.mvs
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ekdorn.silentium.core.Myte
+import com.ekdorn.silentium.models.Note
+import java.lang.System.currentTimeMillis
+
 
 class NotesViewModel : ViewModel() {
+    private val _notes = MutableLiveData<List<Note>>(emptyList())
+    val notes: LiveData<List<Note>> = _notes
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notes Fragment"
+    fun saveNote(myte: Myte) {
+        _notes.postValue(_notes.value!!.plus(Note(myte, currentTimeMillis())))
     }
-    val text: LiveData<String> = _text
 }

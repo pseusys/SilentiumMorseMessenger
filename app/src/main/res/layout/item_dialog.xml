@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/minimal_offset"
-    android:layout_marginHorizontal="@dimen/minimal_offset">
+    android:layout_marginHorizontal="@dimen/activity_margin" >
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/dialog_image"

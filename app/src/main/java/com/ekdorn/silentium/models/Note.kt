@@ -1,4 +1,6 @@
 package com.ekdorn.silentium.models
 
-class Note {
-}
+import com.ekdorn.silentium.core.Myte
+
+
+data class Note(val text: Myte, val date: Long)

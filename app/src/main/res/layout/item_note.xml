@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/minimal_offset"
-    android:layout_marginHorizontal="@dimen/minimal_offset"
+    android:layout_marginHorizontal="@dimen/activity_margin"
     android:elevation="5dp"
     app:cardCornerRadius="10dp"
     app:cardUseCompatPadding="true" >
@@ -13,8 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginVertical="@dimen/minimal_offset"
-        android:layout_marginHorizontal="@dimen/minimal_offset">
+        android:layout_marginVertical="@dimen/card_margin"
+        android:layout_marginHorizontal="@dimen/card_margin">
 
         <TextClock
             android:id="@+id/date_time_view"
@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/text_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:text="Note text"
             app:layout_constraintVertical_weight="4"
             app:layout_constraintBottom_toTopOf="@id/copy_button"

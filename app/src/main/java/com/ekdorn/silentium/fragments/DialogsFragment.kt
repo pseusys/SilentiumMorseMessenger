@@ -28,7 +28,7 @@ class DialogsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        dialogsViewModel = ViewModelProvider(this)[DialogsViewModel::class.java]
+        dialogsViewModel = ViewModelProvider(requireActivity())[DialogsViewModel::class.java]
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
 
         dialogsViewModel.getDialogs()

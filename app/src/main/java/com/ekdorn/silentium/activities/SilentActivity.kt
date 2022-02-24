@@ -1,7 +1,6 @@
 package com.ekdorn.silentium.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration

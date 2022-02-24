@@ -30,17 +30,16 @@
                 android:id="@+id/contacts_header"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="@dimen/activity_margin"
+                android:layout_margin="@dimen/card_margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/delimiter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <View
+            <com.ekdorn.silentium.views.Separator
                 android:id="@+id/delimiter"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="#c0c0c0"
+                android:layout_height="@dimen/separator_height"
                 app:layout_constraintTop_toBottomOf="@id/contacts_header"
                 app:layout_constraintBottom_toTopOf="@id/morse_input"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +49,7 @@
                 android:id="@+id/morse_input"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="@dimen/activity_margin"
+                android:layout_margin="@dimen/card_margin"
                 app:layout_constraintTop_toBottomOf="@id/delimiter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

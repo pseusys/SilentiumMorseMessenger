@@ -6,4 +6,5 @@
     <color name="primary_dark">#3F006B</color>
     <color name="secondary">#FF6C0C</color>
     <color name="secondary_dark">#994006</color>
+    <color name="separator">#C0C0C0</color>
 </resources>
