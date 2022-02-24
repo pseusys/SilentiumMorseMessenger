@@ -101,7 +101,7 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
 
     private fun setEndTimer() = MainScope().launch {
         delay(END_LENGTH.toLong())
-        morseListener?.onLong(-1)
+        morseListener?.onLong(BiBit.END.atom.toLong())
     }
 
     private fun setEomTimer() = MainScope().launch {

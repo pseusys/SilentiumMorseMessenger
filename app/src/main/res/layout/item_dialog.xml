@@ -16,7 +16,7 @@
         android:src="@drawable/logo_crop"
         android:layout_marginStart="@dimen/minimal_offset"
         app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="10"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,10 +32,10 @@
         android:textStyle="bold"
         android:layout_marginHorizontal="@dimen/minimal_offset"
         android:layout_marginBottom="@dimen/minimal_offset"
-        app:layout_constraintHorizontal_weight="7"
+        app:layout_constraintHorizontal_weight="36"
         app:layout_constraintVertical_weight="1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/contact_online"
+        app:layout_constraintBottom_toTopOf="@id/last_message_text"
         app:layout_constraintStart_toEndOf="@id/dialog_image"
         app:layout_constraintEnd_toStartOf="@id/unread_count"/>
 
@@ -43,7 +43,9 @@
         android:id="@+id/unread_count"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHorizontal_weight="1"
+        android:textAlignment="center"
+        android:enabled="false"
+        app:layout_constraintHorizontal_weight="7"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,13 +53,13 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/contact_online"
+        android:id="@+id/last_message_text"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="TextView"
         android:maxLines="2"
         android:layout_marginHorizontal="@dimen/minimal_offset"
-        app:layout_constraintHorizontal_weight="7"
+        app:layout_constraintHorizontal_weight="9"
         app:layout_constraintVertical_weight="2"
         app:layout_constraintTop_toBottomOf="@id/contact_name"
         app:layout_constraintBottom_toBottomOf="parent"

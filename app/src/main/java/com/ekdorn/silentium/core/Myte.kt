@@ -9,19 +9,29 @@ import com.ekdorn.silentium.split
  */
 typealias Myte = ByteArray
 
-fun Myte.toLongs() = toBiBits().split(BiBit.END).mapIndexed { index, word ->
-    if (word.isNotEmpty()) {
-        val chars = word.split(BiBit.GAP).map { it.biBitsToLong() }.toMutableList()
-        if (index > 0) chars.add(0, -1L)
+fun Myte.toLongs(): List<Long> {
+    val biBits = toBiBits().split(BiBit.END)
+    return if ((biBits.size == 1) && biBits.single().isEmpty()) listOf(0)
+    else biBits.mapIndexed { index, word ->
+        val chars = if (word.isNotEmpty()) word.split(BiBit.GAP).map { it.biBitsToLong() }.toMutableList()
+        else mutableListOf()
+        if (index > 0) chars.add(0, BiBit.END.atom.toLong())
         chars
-    } else emptyList()
-}.flatten()
+    }.flatten()
+}
 
-fun List<Long>.longsToMyte() = map { it.toBiBits() }.flatten().biBitsToMyte()
+// TODO: refactor this and BiBit class methods for optimization
+fun List<Long>.longsToMyte(): Myte {
+    val biBits = map { it.toBiBits() }
+    return biBits.mapIndexed { index, list ->
+        if ((index == biBits.size - 1) || (list[0] == BiBit.END) || (biBits[index + 1][0] == BiBit.END)) list
+        else list.plus(BiBit.GAP)
+    }.flatten().biBitsToMyte()
+}
 
 fun Myte.toReadableString() = toLongs().fold("") { acc, l -> "${acc}${Morse.getString(l)}" }
 
-fun String.toMyteReadable(): Myte { TODO() }
+fun String.toMyteReadable() = map { Morse.getLong(it.toString()) }.longsToMyte()
 
 fun Myte.toBinaryString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.atom.toString(2)}" }
 
