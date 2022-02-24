@@ -1,4 +1,4 @@
-package com.ekdorn.silentium
+package com.ekdorn.silentium.utils
 
 import kotlin.math.pow
 

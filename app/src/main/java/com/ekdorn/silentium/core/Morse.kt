@@ -12,11 +12,6 @@ import java.util.*
  * ERROR = 0b1010101010101010
  */
 object Morse {
-    val DAH_LENGTH_KEY = Pair("DAH_LENGTH", 500)
-    val GAP_LENGTH_KEY = Pair("GAP_LENGTH", 500)
-    val END_LENGTH_KEY = Pair("END_LENGTH", 1500)
-    val EOM_LENGTH_KEY = Pair("EOM_LENGTH", 2000)
-
     private val SPACE = BiBit.END.atom.toLong()
     private const val ERROR = 0b1010101010101010L
 

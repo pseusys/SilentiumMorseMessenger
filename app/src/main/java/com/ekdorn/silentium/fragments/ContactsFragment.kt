@@ -14,6 +14,8 @@ import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.FragmentContactsBinding
 import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.mvs.ContactsViewModel
+import com.ekdorn.silentium.utils.Action
+import com.ekdorn.silentium.utils.DoubleItemCallback
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -26,17 +28,26 @@ class ContactsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        contactsViewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
+        contactsViewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
         _binding = FragmentContactsBinding.inflate(inflater, container, false)
 
+        // TODO: remove
         contactsViewModel.syncContacts()
         binding.createContact.setOnClickListener { contactsViewModel.addContact() }
 
         val adapter = ContactsAdapter(emptyList(), emptyList())
         binding.contactsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
-        contactsViewModel.internal.observe(viewLifecycleOwner) { adapter.sync(it, ContactsAdapter.ContactsSet.INTERNAL) }
-        contactsViewModel.external.observe(viewLifecycleOwner) { adapter.sync(it, ContactsAdapter.ContactsSet.EXTERNAL) }
+        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { contactsViewModel.removeContact(it.adapterPosition) }
+        binding.contactsView.setItemCallback(DoubleItemCallback(requireContext(), deleteAction))
+
+        contactsViewModel.internal.observe(viewLifecycleOwner) {
+            deleteAction.views = it.indices
+            adapter.sync(it, ContactsAdapter.ContactsSet.INTERNAL)
+        }
+        contactsViewModel.external.observe(viewLifecycleOwner) {
+            adapter.sync(it, ContactsAdapter.ContactsSet.EXTERNAL)
+        }
         return binding.root
     }
 
@@ -95,10 +106,17 @@ class ContactsAdapter(private var internal: List<Contact>, private var external:
     override fun getItemCount() = internal.size + external.size
 
     override fun separators(): List<Pair<Int, String>> {
-        val list = if (internal.isEmpty() && external.isEmpty()) emptyList()
+        return if (internal.isEmpty() && external.isEmpty()) emptyList()
         else if (internal.isEmpty()) listOf(Pair(0, "EXTERNAL"))
         else if (external.isEmpty()) listOf(Pair(0, "INTERNAL"))
         else listOf(Pair(0, "INTERNAL"), Pair(internal.size, "EXTERNAL"))
-        return list
+    }
+
+    override fun onClick(viewHolder: ViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
+        TODO("Not yet implemented")
     }
 }

@@ -10,10 +10,15 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.appcompat.widget.AppCompatImageView
-import com.ekdorn.silentium.activities.SilentActivity
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.*
-import com.ekdorn.silentium.pow
+import com.ekdorn.silentium.managers.PreferenceManager
+import com.ekdorn.silentium.managers.PreferenceManager.DAH_LENGTH_KEY
+import com.ekdorn.silentium.managers.PreferenceManager.END_LENGTH_KEY
+import com.ekdorn.silentium.managers.PreferenceManager.EOM_LENGTH_KEY
+import com.ekdorn.silentium.managers.PreferenceManager.GAP_LENGTH_KEY
+import com.ekdorn.silentium.managers.PreferenceManager.get
+import com.ekdorn.silentium.utils.pow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -29,11 +34,7 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
     private var morseListener: MorseListener? = null
     private var rotate = false
 
-    private val DAH_LENGTH: Int
-    private val GAP_LENGTH: Int
-    private val END_LENGTH: Int
-    private val EOM_LENGTH: Int
-
+    private val prefs = PreferenceManager[context]
     private val input = mutableListOf<BiBit>()
     private val currentLong = mutableListOf<BiBit>()
 
@@ -53,12 +54,6 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
             repeatCount = Animation.INFINITE
             interpolator = LinearInterpolator()
         }.start()
-
-        val sharedPref = context.getSharedPreferences(SilentActivity.PREFERENCES_FILE, Context.MODE_PRIVATE)
-        DAH_LENGTH = sharedPref.getInt(Morse.DAH_LENGTH_KEY.first, Morse.DAH_LENGTH_KEY.second)
-        GAP_LENGTH = sharedPref.getInt(Morse.GAP_LENGTH_KEY.first, Morse.GAP_LENGTH_KEY.second)
-        END_LENGTH = sharedPref.getInt(Morse.END_LENGTH_KEY.first, Morse.END_LENGTH_KEY.second)
-        EOM_LENGTH = sharedPref.getInt(Morse.EOM_LENGTH_KEY.first, Morse.EOM_LENGTH_KEY.second)
     }
 
     private var isUp = false
@@ -95,17 +90,17 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
 
 
     private fun setGapTimer() = MainScope().launch {
-        delay(GAP_LENGTH.toLong())
+        delay(prefs.get<Long>(GAP_LENGTH_KEY))
         morseListener?.onLong(currentLong.biBitsToLong())
     }
 
     private fun setEndTimer() = MainScope().launch {
-        delay(END_LENGTH.toLong())
+        delay(prefs.get<Long>(END_LENGTH_KEY))
         morseListener?.onLong(BiBit.END.atom.toLong())
     }
 
     private fun setEomTimer() = MainScope().launch {
-        delay(EOM_LENGTH.toLong())
+        delay(prefs.get<Long>(EOM_LENGTH_KEY))
         input.addAll(currentLong)
         currentLong.clear()
         morseListener?.onMyte(input.biBitsToMyte())
@@ -120,11 +115,11 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
             morseListener?.onStart()
         } else {
             val delta = currentTimeMillis() - previousTouch
-            if (delta >= END_LENGTH) {
+            if (delta >= prefs.get<Long>(END_LENGTH_KEY)) {
                 input.addAll(currentLong)
                 input.add(BiBit.END)
                 currentLong.clear()
-            } else if (delta >= GAP_LENGTH) {
+            } else if (delta >= prefs.get<Long>(GAP_LENGTH_KEY)) {
                 input.addAll(currentLong)
                 input.add(BiBit.GAP)
                 currentLong.clear()
@@ -138,7 +133,7 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
 
     private fun actionUp() {
         val delta = currentTimeMillis() - previousTouch
-        if (delta >= DAH_LENGTH) currentLong.add(BiBit.DAH)
+        if (delta >= prefs.get<Long>(DAH_LENGTH_KEY)) currentLong.add(BiBit.DAH)
         else currentLong.add(BiBit.DIT)
         morseListener?.onBiBit(currentLong.lastOrNull())
 

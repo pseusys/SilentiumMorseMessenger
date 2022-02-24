@@ -78,4 +78,12 @@ class NotesAdapter(private var notes: List<Note>) : DescriptiveRecyclerView.Adap
     }
 
     override fun getItemCount() = notes.size
+
+    override fun onClick(viewHolder: ViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
 }

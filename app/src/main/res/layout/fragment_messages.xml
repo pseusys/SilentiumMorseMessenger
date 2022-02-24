@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".fragments.MessagesFragment" >
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.ekdorn.silentium.views.DescriptiveRecyclerView
         android:id="@+id/messages_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Send something to start chatting"
         tools:listitem="@layout/item_message"
         tools:itemCount="5"
+        app:text="Send something to start chatting"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/message_input"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,6 @@
 package com.ekdorn.silentium.core
 
-import com.ekdorn.silentium.split
+import com.ekdorn.silentium.utils.split
 
 
 /**

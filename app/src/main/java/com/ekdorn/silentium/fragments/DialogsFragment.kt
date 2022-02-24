@@ -15,6 +15,8 @@ import com.ekdorn.silentium.core.*
 import com.ekdorn.silentium.databinding.FragmentDialogsBinding
 import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.mvs.DialogsViewModel
+import com.ekdorn.silentium.utils.Action
+import com.ekdorn.silentium.utils.DoubleItemCallback
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.imageview.ShapeableImageView
@@ -28,15 +30,22 @@ class DialogsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        dialogsViewModel = ViewModelProvider(requireActivity())[DialogsViewModel::class.java]
+        dialogsViewModel = ViewModelProvider(this)[DialogsViewModel::class.java]
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
 
+        // TODO: remove
         dialogsViewModel.getDialogs()
 
         val adapter = DialogsAdapter(emptyList())
         binding.dialogsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
-        dialogsViewModel.dialogs.observe(viewLifecycleOwner) { adapter.sync(it) }
+        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { dialogsViewModel.removeDialog(it.adapterPosition) }
+        binding.dialogsView.setItemCallback(DoubleItemCallback(requireContext(), deleteAction))
+
+        dialogsViewModel.dialogs.observe(viewLifecycleOwner) {
+            deleteAction.views = it.indices
+            adapter.sync(it)
+        }
         return binding.root
     }
 
@@ -60,12 +69,13 @@ class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerVie
             override fun getOldListSize() = dialogs.size
             override fun getNewListSize() = new.size
             override fun areItemsTheSame(oip: Int, nip: Int): Boolean {
-                return dialogs[oip].messages.last() == new[nip].messages.last()
+                return dialogs[oip].lastMessage == new[nip].lastMessage
             }
             override fun areContentsTheSame(oip: Int, nip: Int): Boolean {
-                val o = dialogs[oip].messages.last()
-                val n = new[nip].messages.last()
-                return (o.text.contentEquals(n.text)) && (o.date == n.date) && (o.author == n.author) && (o.read == n.read)
+                val o = dialogs[oip].lastMessage
+                val n = new[nip].lastMessage
+                val messagesSame = (o.text.contentEquals(n.text)) && (o.date == n.date) && (o.author == n.author) && (o.read == n.read)
+                return messagesSame && (dialogs[oip].contact == new[nip].contact) && (dialogs[oip].unreadCount == new[nip].unreadCount)
             }
         })
         dialogs = new
@@ -79,8 +89,8 @@ class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerVie
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
-        viewHolder.lastMessage.text = dialogs[position].messages.last().text.toReadableString()
-        val unread = dialogs[position].messages.count { !it.read }
+        viewHolder.lastMessage.text = dialogs[position].lastMessage.text.toReadableString()
+        val unread = dialogs[position].unreadCount
         if (unread > 0) {
             viewHolder.unreadCount.visibility = View.VISIBLE
             viewHolder.unreadCount.text = unread.toString()
@@ -88,4 +98,12 @@ class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerVie
     }
 
     override fun getItemCount() = dialogs.size
+
+    override fun onClick(viewHolder: ViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
 }
