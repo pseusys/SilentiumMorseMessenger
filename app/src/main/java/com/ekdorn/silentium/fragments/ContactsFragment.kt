@@ -117,7 +117,7 @@ class ContactsAdapter(private var internal: List<Contact>, private var external:
     private fun onMenuItemClick(item: MenuItem, position: Int): Boolean {
         return when (item.itemId) {
             R.id.action_delete -> {
-                deleteAction.callback.invoke(position)
+                deleteAction.act(position)
                 true
             }
             else -> false

@@ -103,7 +103,7 @@ class DialogsAdapter(private var dialogs: List<Dialog>, private val deleteAction
     private fun onMenuItemClick(item: MenuItem, position: Int): Boolean {
         return when (item.itemId) {
             R.id.action_delete -> {
-                deleteAction.callback.invoke(position)
+                deleteAction.act(position)
                 true
             }
             else -> false

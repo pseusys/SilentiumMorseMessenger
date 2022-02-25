@@ -147,7 +147,7 @@ class MessagesAdapter(context: Context, private var messages: List<Message>, pri
                 true
             }
             R.id.action_delete -> {
-                deleteAction.callback.invoke(position)
+                deleteAction.act(position)
                 true
             }
             else -> false

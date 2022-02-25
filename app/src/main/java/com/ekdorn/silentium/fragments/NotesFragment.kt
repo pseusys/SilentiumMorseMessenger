@@ -109,11 +109,11 @@ class NotesAdapter(private var notes: List<Note>, private val deleteAction: Acti
                 true
             }
             R.id.action_send -> {
-                sendAction.callback.invoke(position)
+                sendAction.act(position)
                 true
             }
             R.id.action_delete -> {
-                deleteAction.callback.invoke(position)
+                deleteAction.act(position)
                 true
             }
             else -> false
