@@ -2,17 +2,16 @@ package com.ekdorn.silentium.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextClock
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
@@ -40,14 +39,20 @@ class MessagesFragment : Fragment() {
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
 
         binding.sendButton.setOnClickListener {
-            messagesViewModel.addMessage(binding.messageInput.text.toString().toMyteReadable())
-            binding.messageInput.text.clear()
+            val text = binding.messageInput.text.toString()
+            if (text.isNotBlank()) {
+                messagesViewModel.addMessage(text.toMyteReadable())
+                binding.messageInput.text.clear()
+            }
         }
 
         val adapter = MessagesAdapter(requireContext(), emptyList())
-        binding.messagesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
+        val recycler = binding.messagesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
-        messagesViewModel.messages.observe(viewLifecycleOwner) { adapter.sync(it) }
+        messagesViewModel.messages.observe(viewLifecycleOwner) {
+            adapter.sync(it)
+            recycler.smoothScrollToPosition(it.size - 1)
+        }
 
         return binding.root
     }
@@ -66,13 +71,9 @@ class MessagesAdapter(context: Context, private var messages: List<Message>) : D
     private val incomingText = ContextCompat.getColor(context, R.color.white)
     private val outcomingText = ContextCompat.getColor(context, R.color.black)
 
-    private val messageFrontOffset = context.resources.getDimension(R.dimen.message_front_offset).toInt()
-    private val messageBackOffset = context.resources.getDimension(R.dimen.message_back_offset).toInt()
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val root: ConstraintLayout = view.findViewById(R.id.root)
         private val shape: CardView = view.findViewById(R.id.message_shape)
-        private val holder: ConstraintLayout = view.findViewById(R.id.message_holder)
         val textView: TextView = view.findViewById(R.id.text_view)
         val dateTime: TextClock = view.findViewById(R.id.date_time_view)
 
@@ -83,15 +84,16 @@ class MessagesAdapter(context: Context, private var messages: List<Message>) : D
             if (incoming) {
                 color = incomingText
                 shape.background = incomingMessage!!.constantState!!.newDrawable().mutate()
+                constraintSet.clear(R.id.message_shape, ConstraintSet.RIGHT)
                 constraintSet.connect(R.id.message_shape, ConstraintSet.LEFT, R.id.root, ConstraintSet.LEFT, 0)
-                (holder.layoutParams as FrameLayout.LayoutParams).updateMargins(left = messageBackOffset, right = messageFrontOffset)
             } else {
                 color = outcomingText
                 shape.background = outcomingMessage!!.constantState!!.newDrawable().mutate()
+                constraintSet.clear(R.id.message_shape, ConstraintSet.LEFT)
                 constraintSet.connect(R.id.message_shape, ConstraintSet.RIGHT, R.id.root, ConstraintSet.RIGHT, 0)
-                (holder.layoutParams as FrameLayout.LayoutParams).updateMargins(left = messageFrontOffset, right = messageBackOffset)
             }
             constraintSet.applyTo(root)
+            itemView.invalidate()
             textView.setTextColor(color)
             dateTime.setTextColor(color)
         }
@@ -124,6 +126,7 @@ class MessagesAdapter(context: Context, private var messages: List<Message>) : D
         viewHolder.configureMessage(messages[position].author != UserManager.me)
         viewHolder.dateTime.text = messages[position].date.toString()
         viewHolder.textView.text = messages[position].text.toReadableString()
+        viewHolder.textView.forceLayout()
     }
 
     override fun getItemCount() = messages.size

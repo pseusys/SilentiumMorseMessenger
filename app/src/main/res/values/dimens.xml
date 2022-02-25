@@ -3,9 +3,6 @@
     <dimen name="recycler_view_separator_size">22sp</dimen>
     <dimen name="separator_height">2dp</dimen>
 
-    <dimen name="message_front_offset">4dp</dimen>
-    <dimen name="message_back_offset">20dp</dimen>
-
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
 

@@ -53,6 +53,7 @@ class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style
 
         val itemsChanged = { separators: List<Pair<Int, String>> ->
             decorator.separators = separators
+            invalidateItemDecorations()
             emptyText.alpha = if (recycler.adapter?.itemCount == 0) 1F else 0F
         }
 
