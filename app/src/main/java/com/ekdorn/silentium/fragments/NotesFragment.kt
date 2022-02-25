@@ -2,8 +2,10 @@ package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextClock
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -14,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.toReadableString
 import com.ekdorn.silentium.databinding.FragmentNotesBinding
+import com.ekdorn.silentium.managers.ClipboardManager
 import com.ekdorn.silentium.models.Note
 import com.ekdorn.silentium.mvs.NotesViewModel
+import com.ekdorn.silentium.utils.Action
+import com.ekdorn.silentium.utils.DoubleItemCallback
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 
 
@@ -30,10 +35,23 @@ class NotesFragment : Fragment() {
         notesViewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
 
-        val adapter = NotesAdapter(emptyList())
-        binding.notesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
+        var adapter: NotesAdapter? = null
 
-        notesViewModel.notes.observe(viewLifecycleOwner) { adapter.sync(it) }
+        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { notesViewModel.removeNote(it) }
+        val sendAction = Action(R.drawable.icon_send, R.color.blue, R.color.white, IntRange.EMPTY) {
+            notesViewModel.sendNote(it)
+            adapter?.notifyItemChanged(it)
+        }
+
+        adapter = NotesAdapter(emptyList(), deleteAction, sendAction)
+        binding.notesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
+        binding.notesView.setItemCallback(DoubleItemCallback(requireContext(), deleteAction, sendAction))
+
+        notesViewModel.notes.observe(viewLifecycleOwner) {
+            deleteAction.views = it.indices
+            sendAction.views = it.indices
+            adapter.sync(it)
+        }
         return binding.root
     }
 
@@ -44,7 +62,7 @@ class NotesFragment : Fragment() {
 }
 
 
-class NotesAdapter(private var notes: List<Note>) : DescriptiveRecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+class NotesAdapter(private var notes: List<Note>, private val deleteAction: Action, private val sendAction: Action) : DescriptiveRecyclerView.Adapter<NotesAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val dateTime: TextClock = view.findViewById(R.id.date_time_view)
         val text: TextView = view.findViewById(R.id.text_view)
@@ -80,7 +98,35 @@ class NotesAdapter(private var notes: List<Note>) : DescriptiveRecyclerView.Adap
 
     override fun getItemCount() = notes.size
 
+    private fun onMenuItemClick(item: MenuItem, viewHolder: ViewHolder, position: Int): Boolean {
+        return when (item.itemId) {
+            R.id.action_copy -> {
+                ClipboardManager[viewHolder.itemView.context].set(viewHolder.text.text.toString())
+                true
+            }
+            R.id.action_edit -> {
+                // TODO: action edit
+                true
+            }
+            R.id.action_send -> {
+                sendAction.callback.invoke(position)
+                true
+            }
+            R.id.action_delete -> {
+                deleteAction.callback.invoke(position)
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onClick(viewHolder: ViewHolder, position: Int) {}
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
+        PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {
+            inflate(R.menu.fragment_notes_menu)
+            setOnMenuItemClickListener { onMenuItemClick(it, viewHolder, position) }
+            show()
+        }
+    }
 }

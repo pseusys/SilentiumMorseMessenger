@@ -2,10 +2,11 @@ package com.ekdorn.silentium.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextClock
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -21,9 +22,11 @@ import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.core.toReadableString
 import com.ekdorn.silentium.databinding.FragmentMessagesBinding
+import com.ekdorn.silentium.managers.ClipboardManager
 import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.models.Message
 import com.ekdorn.silentium.mvs.MessagesViewModel
+import com.ekdorn.silentium.utils.Action
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 
 
@@ -46,10 +49,12 @@ class MessagesFragment : Fragment() {
             }
         }
 
-        val adapter = MessagesAdapter(requireContext(), emptyList())
+        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { messagesViewModel.removeMessage(it) }
+        val adapter = MessagesAdapter(requireContext(), emptyList(), deleteAction)
         val recycler = binding.messagesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
         messagesViewModel.messages.observe(viewLifecycleOwner) {
+            deleteAction.views = it.indices
             adapter.sync(it)
             recycler.smoothScrollToPosition(it.size - 1)
         }
@@ -64,7 +69,7 @@ class MessagesFragment : Fragment() {
 }
 
 
-class MessagesAdapter(context: Context, private var messages: List<Message>) : DescriptiveRecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
+class MessagesAdapter(context: Context, private var messages: List<Message>, private val deleteAction: Action) : DescriptiveRecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
     private val incomingMessage = ContextCompat.getDrawable(context, R.drawable.shape_message_in)
     private val outcomingMessage = ContextCompat.getDrawable(context, R.drawable.shape_message_out)
 
@@ -73,7 +78,7 @@ class MessagesAdapter(context: Context, private var messages: List<Message>) : D
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val root: ConstraintLayout = view.findViewById(R.id.root)
-        private val shape: CardView = view.findViewById(R.id.message_shape)
+        val shape: CardView = view.findViewById(R.id.message_shape)
         val textView: TextView = view.findViewById(R.id.text_view)
         val dateTime: TextClock = view.findViewById(R.id.date_time_view)
 
@@ -131,8 +136,31 @@ class MessagesAdapter(context: Context, private var messages: List<Message>) : D
 
     override fun getItemCount() = messages.size
 
+    private fun onMenuItemClick(item: MenuItem, viewHolder: MessagesAdapter.ViewHolder, position: Int): Boolean {
+        return when (item.itemId) {
+            R.id.action_copy -> {
+                ClipboardManager[viewHolder.itemView.context].set(viewHolder.textView.text.toString())
+                true
+            }
+            R.id.action_edit -> {
+                // TODO: action edit
+                true
+            }
+            R.id.action_delete -> {
+                deleteAction.callback.invoke(position)
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onClick(viewHolder: ViewHolder, position: Int) {}
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
+    override fun onLongClick(viewHolder: MessagesAdapter.ViewHolder, position: Int) {
+        PopupMenu(viewHolder.itemView.context, viewHolder.shape).apply {
+            inflate(R.menu.fragment_messages_menu)
+            setOnMenuItemClickListener { onMenuItemClick(it, viewHolder, position) }
+            show()
+        }
+    }
 }
-

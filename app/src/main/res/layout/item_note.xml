@@ -19,7 +19,7 @@
         <TextClock
             android:id="@+id/date_time_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:format12Hour="dd.MM.yyyy hh:mm"
             android:format24Hour="dd.MM.yyyy hh:mm"
             android:text="12.00"
@@ -36,49 +36,10 @@
             android:layout_height="wrap_content"
             android:text="Note text"
             app:layout_constraintVertical_weight="4"
-            app:layout_constraintBottom_toTopOf="@id/copy_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_time_view" />
-
-        <Button
-            android:id="@+id/send_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Send"
-            style="@style/BorderlessButtonStyle"
-            android:drawableEnd="@drawable/icon_send"
-            app:layout_constraintVertical_weight="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/copy_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view" />
-
-        <Button
-            android:id="@+id/copy_button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="Copy"
-            style="@style/BorderlessButtonStyle"
-            android:drawableEnd="@drawable/icon_copy"
-            app:layout_constraintVertical_weight="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/delete_button"
-            app:layout_constraintStart_toEndOf="@id/send_button"
-            app:layout_constraintTop_toBottomOf="@id/text_view" />
-
-        <Button
-            android:id="@+id/delete_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Delete"
-            style="@style/BorderlessButtonStyle"
-            android:drawableEnd="@drawable/icon_delete"
-            app:layout_constraintVertical_weight="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/copy_button"
-            app:layout_constraintTop_toBottomOf="@id/text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

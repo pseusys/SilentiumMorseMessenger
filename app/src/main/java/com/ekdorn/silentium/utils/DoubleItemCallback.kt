@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class Action(private val icon: Int, private val color: Int, private val iconTint: Int?, var views: IntRange, val callback: (RecyclerView.ViewHolder) -> Unit) {
+class Action(private val icon: Int, private val color: Int, private val iconTint: Int?, var views: IntRange, val callback: (Int) -> Unit) {
     lateinit var iconDrawable: Drawable
     var colorColor = 0
     var tintColor: Int? = null
@@ -45,8 +45,8 @@ class DoubleItemCallback(context: Context, private val leftAction: Action? = nul
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.LEFT -> leftAction?.callback?.invoke(viewHolder)
-            ItemTouchHelper.RIGHT -> leftAction?.callback?.invoke(viewHolder)
+            ItemTouchHelper.LEFT -> leftAction?.callback?.invoke(viewHolder.adapterPosition)
+            ItemTouchHelper.RIGHT -> rightAction?.callback?.invoke(viewHolder.adapterPosition)
             else -> Log.e("DoubleItemChecker", "viewHolder ${viewHolder.adapterPosition} was swiped to direction $direction")
         }
     }
@@ -74,9 +74,9 @@ class DoubleItemCallback(context: Context, private val leftAction: Action? = nul
             iconRight = itemView.right - iconMargin
             background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
         } else {
-            iconRight = itemView.left - iconMargin - action.iconDrawable.intrinsicWidth
-            iconLeft = itemView.left - iconMargin
-            background.setBounds(itemView.right, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
+            iconRight = itemView.left + iconMargin + action.iconDrawable.intrinsicWidth
+            iconLeft = itemView.left + iconMargin
+            background.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
         }
 
         background.color = action.colorColor

@@ -30,4 +30,8 @@ class MessagesViewModel : ViewModel() {
     fun addMessage(text: Myte) {
         _messages.postValue(_messages.value!!.plus(Message(text, currentTimeMillis(), false, UserManager.me)))
     }
+
+    fun removeMessage(index: Int) {
+        _messages.postValue(_messages.value!!.filterIndexed { idx, _ -> idx != index })
+    }
 }

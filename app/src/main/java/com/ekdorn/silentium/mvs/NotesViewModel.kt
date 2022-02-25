@@ -15,4 +15,10 @@ class NotesViewModel : ViewModel() {
     fun saveNote(myte: Myte) {
         _notes.postValue(_notes.value!!.plus(Note(myte, currentTimeMillis())))
     }
+
+    fun removeNote(index: Int) {
+        _notes.postValue(_notes.value!!.filterIndexed { idx, _ -> idx != index })
+    }
+
+    fun sendNote(index: Int) {}
 }

@@ -2,8 +2,10 @@ package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -34,10 +36,10 @@ class DialogsFragment : Fragment() {
         dialogsViewModel = ViewModelProvider(requireActivity())[DialogsViewModel::class.java]
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
 
-        val adapter = DialogsAdapter(emptyList())
-        binding.dialogsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
+        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { dialogsViewModel.removeDialog(it) }
 
-        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { dialogsViewModel.removeDialog(it.adapterPosition) }
+        val adapter = DialogsAdapter(emptyList(), deleteAction)
+        binding.dialogsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
         binding.dialogsView.setItemCallback(DoubleItemCallback(requireContext(), deleteAction))
 
         dialogsViewModel.dialogs.observe(viewLifecycleOwner) {
@@ -54,7 +56,7 @@ class DialogsFragment : Fragment() {
 }
 
 
-class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerView.Adapter<DialogsAdapter.ViewHolder>() {
+class DialogsAdapter(private var dialogs: List<Dialog>, private val deleteAction: Action) : DescriptiveRecyclerView.Adapter<DialogsAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val contactImage: ShapeableImageView = view.findViewById(R.id.dialog_image)
         val contactName: TextView = view.findViewById(R.id.contact_name)
@@ -98,7 +100,23 @@ class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerVie
 
     override fun getItemCount() = dialogs.size
 
+    private fun onMenuItemClick(item: MenuItem, position: Int): Boolean {
+        return when (item.itemId) {
+            R.id.action_delete -> {
+                deleteAction.callback.invoke(position)
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onClick(viewHolder: ViewHolder, position: Int) = viewHolder.itemView.findNavController().navigate(R.id.nav_messages)
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
+    override fun onLongClick(viewHolder: DialogsAdapter.ViewHolder, position: Int) {
+        PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {
+            inflate(R.menu.fragment_dialogs_menu)
+            setOnMenuItemClickListener { onMenuItemClick(it, position) }
+            show()
+        }
+    }
 }

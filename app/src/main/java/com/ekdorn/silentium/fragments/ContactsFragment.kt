@@ -2,11 +2,14 @@ package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,10 +36,10 @@ class ContactsFragment : Fragment() {
 
         binding.createContact.setOnClickListener { contactsViewModel.addContact() }
 
-        val adapter = ContactsAdapter(emptyList(), emptyList())
-        binding.contactsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
+        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { contactsViewModel.removeContact(it) }
 
-        val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { contactsViewModel.removeContact(it.adapterPosition) }
+        val adapter = ContactsAdapter(emptyList(), emptyList(), deleteAction)
+        binding.contactsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
         binding.contactsView.setItemCallback(DoubleItemCallback(requireContext(), deleteAction))
 
         contactsViewModel.internal.observe(viewLifecycleOwner) {
@@ -56,7 +59,7 @@ class ContactsFragment : Fragment() {
 }
 
 
-class ContactsAdapter(private var internal: List<Contact>, private var external: List<Contact>) : DescriptiveRecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private var internal: List<Contact>, private var external: List<Contact>, private val deleteAction: Action) : DescriptiveRecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
     enum class ContactsSet { INTERNAL, EXTERNAL }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -111,7 +114,23 @@ class ContactsAdapter(private var internal: List<Contact>, private var external:
         else listOf(Pair(0, "INTERNAL"), Pair(internal.size, "EXTERNAL"))
     }
 
-    override fun onClick(viewHolder: ViewHolder, position: Int) {}
+    private fun onMenuItemClick(item: MenuItem, position: Int): Boolean {
+        return when (item.itemId) {
+            R.id.action_delete -> {
+                deleteAction.callback.invoke(position)
+                true
+            }
+            else -> false
+        }
+    }
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
+    override fun onClick(viewHolder: ViewHolder, position: Int) = viewHolder.itemView.findNavController().navigate(R.id.nav_messages)
+
+    override fun onLongClick(viewHolder: ContactsAdapter.ViewHolder, position: Int) {
+        if (position < internal.size) PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {
+            inflate(R.menu.fragment_contacts_menu)
+            setOnMenuItemClickListener { onMenuItemClick(it, position) }
+            show()
+        }
+    }
 }
