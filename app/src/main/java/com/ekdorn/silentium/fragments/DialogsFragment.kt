@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,11 +31,8 @@ class DialogsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        dialogsViewModel = ViewModelProvider(this)[DialogsViewModel::class.java]
+        dialogsViewModel = ViewModelProvider(requireActivity())[DialogsViewModel::class.java]
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
-
-        // TODO: remove
-        dialogsViewModel.getDialogs()
 
         val adapter = DialogsAdapter(emptyList())
         binding.dialogsView.initRecycler(adapter, LinearLayoutManager(requireContext()))
@@ -57,7 +55,7 @@ class DialogsFragment : Fragment() {
 
 
 class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerView.Adapter<DialogsAdapter.ViewHolder>() {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val contactImage: ShapeableImageView = view.findViewById(R.id.dialog_image)
         val contactName: TextView = view.findViewById(R.id.contact_name)
         val lastMessage: TextView = view.findViewById(R.id.last_message_text)
@@ -88,6 +86,7 @@ class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerVie
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        super.onBindViewHolder(viewHolder, position)
         viewHolder.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
         viewHolder.lastMessage.text = dialogs[position].lastMessage.text.toReadableString()
         val unread = dialogs[position].unreadCount
@@ -99,11 +98,7 @@ class DialogsAdapter(private var dialogs: List<Dialog>) : DescriptiveRecyclerVie
 
     override fun getItemCount() = dialogs.size
 
-    override fun onClick(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onClick(viewHolder: ViewHolder, position: Int) = viewHolder.itemView.findNavController().navigate(R.id.nav_messages)
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
 }

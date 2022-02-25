@@ -8,9 +8,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ActivitySilentRootBinding
 import com.ekdorn.silentium.managers.UserManager
+import com.ekdorn.silentium.mvs.ContactsViewModel
+import com.ekdorn.silentium.mvs.DialogsViewModel
+import com.ekdorn.silentium.mvs.MessagesViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -45,6 +49,11 @@ class SilentActivity : AppCompatActivity() {
         ), binding.drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+
+        // TODO: remove
+        ViewModelProvider(this)[DialogsViewModel::class.java].getDialogs()
+        ViewModelProvider(this)[ContactsViewModel::class.java].syncContacts()
+        ViewModelProvider(this)[MessagesViewModel::class.java].getMessages()
     }
 
     override fun onSupportNavigateUp(): Boolean {

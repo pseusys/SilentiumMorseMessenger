@@ -45,7 +45,7 @@ class NotesFragment : Fragment() {
 
 
 class NotesAdapter(private var notes: List<Note>) : DescriptiveRecyclerView.Adapter<NotesAdapter.ViewHolder>() {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val dateTime: TextClock = view.findViewById(R.id.date_time_view)
         val text: TextView = view.findViewById(R.id.text_view)
     }
@@ -73,17 +73,14 @@ class NotesAdapter(private var notes: List<Note>) : DescriptiveRecyclerView.Adap
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        super.onBindViewHolder(viewHolder, position)
         viewHolder.dateTime.text = notes[position].date.toString()
         viewHolder.text.text = notes[position].text.toReadableString()
     }
 
     override fun getItemCount() = notes.size
 
-    override fun onClick(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onClick(viewHolder: ViewHolder, position: Int) {}
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
 }

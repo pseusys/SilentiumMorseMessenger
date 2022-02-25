@@ -28,11 +28,9 @@ class ContactsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        contactsViewModel = ViewModelProvider(this)[ContactsViewModel::class.java]
+        contactsViewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
         _binding = FragmentContactsBinding.inflate(inflater, container, false)
 
-        // TODO: remove
-        contactsViewModel.syncContacts()
         binding.createContact.setOnClickListener { contactsViewModel.addContact() }
 
         val adapter = ContactsAdapter(emptyList(), emptyList())
@@ -61,7 +59,7 @@ class ContactsFragment : Fragment() {
 class ContactsAdapter(private var internal: List<Contact>, private var external: List<Contact>) : DescriptiveRecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
     enum class ContactsSet { INTERNAL, EXTERNAL }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val contactImage: ShapeableImageView = view.findViewById(R.id.contact_image)
         val contactName: TextView = view.findViewById(R.id.contact_name)
         val contactOnline: TextView = view.findViewById(R.id.contact_online)
@@ -98,6 +96,7 @@ class ContactsAdapter(private var internal: List<Contact>, private var external:
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        super.onBindViewHolder(viewHolder, position)
         val contact = if (position < internal.size) internal[position] else external[position - internal.size]
         viewHolder.contactName.text = contact.name ?: contact.contact
         viewHolder.contactOnline.text = contact.wasOnline.toString()
@@ -112,11 +111,7 @@ class ContactsAdapter(private var internal: List<Contact>, private var external:
         else listOf(Pair(0, "INTERNAL"), Pair(internal.size, "EXTERNAL"))
     }
 
-    override fun onClick(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onClick(viewHolder: ViewHolder, position: Int) {}
 
-    override fun onLongClick(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onLongClick(viewHolder: ViewHolder, position: Int) {}
 }
