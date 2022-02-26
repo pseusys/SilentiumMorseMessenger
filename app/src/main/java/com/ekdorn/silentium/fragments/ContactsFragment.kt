@@ -1,6 +1,7 @@
 package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -117,7 +118,7 @@ class ContactsAdapter(private var internal: List<Contact>, private var external:
     private fun onMenuItemClick(item: MenuItem, position: Int): Boolean {
         return when (item.itemId) {
             R.id.action_delete -> {
-                deleteAction.act(position)
+                deleteAction.callback(position)
                 true
             }
             else -> false

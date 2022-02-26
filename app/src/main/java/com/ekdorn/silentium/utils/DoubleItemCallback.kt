@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class Action(private val icon: Int, private val color: Int, private val iconTint: Int?, var views: IntRange, private val callback: (Int) -> Unit) {
+class Action(private val icon: Int, private val color: Int, private val iconTint: Int?, var views: IntRange, val callback: (Int) -> Unit) {
     lateinit var iconDrawable: Drawable
     var colorColor = 0
     var tintColor: Int? = null
-
-    fun act(position: Int) = if (position in views) callback(position) else Unit
 
     fun load(context: Context) {
         iconDrawable = ContextCompat.getDrawable(context, icon)!!
@@ -47,8 +45,8 @@ class DoubleItemCallback(context: Context, private val leftAction: Action? = nul
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.LEFT -> leftAction?.act(viewHolder.adapterPosition)
-            ItemTouchHelper.RIGHT -> rightAction?.act(viewHolder.adapterPosition)
+            ItemTouchHelper.LEFT -> leftAction?.callback?.invoke(viewHolder.adapterPosition)
+            ItemTouchHelper.RIGHT -> rightAction?.callback?.invoke(viewHolder.adapterPosition)
             else -> Log.e("DoubleItemChecker", "viewHolder ${viewHolder.adapterPosition} was swiped to direction $direction")
         }
     }
