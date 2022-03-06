@@ -15,8 +15,6 @@ import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.mvs.ContactsViewModel
 import com.ekdorn.silentium.mvs.DialogsViewModel
 import com.ekdorn.silentium.mvs.MessagesViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 
 class SilentActivity : AppCompatActivity() {

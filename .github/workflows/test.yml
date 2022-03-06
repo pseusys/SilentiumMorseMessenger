@@ -1,0 +1,25 @@
+name: TEST
+
+on:
+  - push
+
+jobs:
+  instrumented:
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.4
+          arguments: wrapper
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: playstore
+          disable-animations: false
+          script: ./gradlew connectedCheck
