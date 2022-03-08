@@ -16,7 +16,7 @@ jobs:
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
 
       - name: Create Test Properties
-        run: echo "$TEST_PROPERTIES" | base64 --decode
+        run: echo "$TEST_PROPERTIES" > ./test.properties
         env:
           TEST_PROPERTIES: ${{ secrets.TEST_PROPERTIES }}
 
