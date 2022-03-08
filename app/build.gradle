@@ -33,8 +33,11 @@ android {
         }
         instrumentedTest {
             initWith debug
-            buildConfigField "String", "AUTH_NUMBER", "\"${System.getenv("AUTH_NUMBER").toString()}\""
-            buildConfigField "String", "AUTH_CODE", "\"${System.getenv("AUTH_CODE").toString()}\""
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file("test.properties").newDataInputStream())
+            buildConfigField "String", "AUTH_NUMBER", "\"${properties.getProperty("auth.number", "")}\""
+            buildConfigField "String", "AUTH_CODE", "\"${properties.getProperty("auth.code", "")}\""
+            matchingFallbacks = [ 'debug' ]
         }
     }
     compileOptions {
