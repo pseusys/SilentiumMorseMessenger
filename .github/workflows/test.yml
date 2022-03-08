@@ -10,14 +10,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create Google Services Config
-        run: echo "$GOOGLE_SERVICES" > ./app/google-services.json
+      - name: Create Configs And Properties
+        run: |
+          echo "$GOOGLE_SERVICES" > ./app/google-services.json
+          echo "$TEST_PROPERTIES" > ./test.properties
         env:
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
-
-      - name: Create Test Properties
-        run: echo "$TEST_PROPERTIES" > ./test.properties
-        env:
           TEST_PROPERTIES: ${{ secrets.TEST_PROPERTIES }}
 
       - name: Set up JDK 11 🔧

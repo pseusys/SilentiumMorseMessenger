@@ -16,10 +16,10 @@ Required steps:
 ### Instrumental Testing
 Additional file that has to be present for instrumental testing `./test.properties`  
 It should have following structure:
-`properties
+```properties
 auth.number=+XYYYZZZQQTT
 auth.code=NNNNNN
-`  
+```  
 where:  
 `+XYYYZZZQQTT` is a phone number for testing (defined in firebase project)  
 `NNNNNN` is a verification code for testing (defined in firebase project)
