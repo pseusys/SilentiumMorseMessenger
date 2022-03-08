@@ -11,10 +11,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create Google Services Config
-        run: echo ${{ secrets.GOOGLE_SERVICES }} | base64 --decode > ./app/google-services.json
+        run: echo "$GOOGLE_SERVICES" > ./app/google-services.json
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
 
       - name: Create Test Properties
-        run: echo ${{ secrets.TEST_PROPERTIES }} | base64 --decode
+        run: echo "$TEST_PROPERTIES" | base64 --decode
+        env:
+          TEST_PROPERTIES: ${{ secrets.TEST_PROPERTIES }}
 
       - name: Set up JDK 11 🔧
         uses: actions/setup-java@v2
