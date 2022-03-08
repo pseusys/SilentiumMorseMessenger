@@ -1,7 +1,7 @@
-name: TEST
+name: INSTRUMENTED-TEST
 
 on:
-  - push
+  - release
 
 jobs:
   instrumented:

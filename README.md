@@ -11,7 +11,9 @@ Required steps:
    Gradle 'wrapper' task is configured to install correct version if wrapper jar is present
 
 + Google Services configuration JSON  
-  File is required for app to build, must be located at `./app/google-services.json`
+  File is required for app to build, must be located at `./app/google-services.json`  
+  
+NB! If launched on emulator, application requires image with bundled Google Play Services.
 
 ### Instrumental Testing
 Additional file that has to be present for instrumental testing `./test.properties`  
@@ -22,4 +24,6 @@ auth.code=NNNNNN
 ```  
 where:  
 `+XYYYZZZQQTT` is a phone number for testing (defined in firebase project)  
-`NNNNNN` is a verification code for testing (defined in firebase project)
+`NNNNNN` is a verification code for testing (defined in firebase project)  
+
+NB! If launched on emulator, testing requires device language to be set to English (to find `FirebaseUI` elements).
