@@ -8,6 +8,7 @@ plugins {
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
+    testBuildType "instrumentedTest"
 
     defaultConfig {
         applicationId "com.ekdorn.silentium"
@@ -21,12 +22,19 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}"
         }
         debug {
+            debuggable true
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
+        }
+        instrumentedTest {
+            initWith debug
+            buildConfigField "String", "AUTH_NUMBER", "\"${System.getenv("AUTH_NUMBER").toString()}\""
+            buildConfigField "String", "AUTH_CODE", "\"${System.getenv("AUTH_CODE").toString()}\""
         }
     }
     compileOptions {
@@ -55,7 +63,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

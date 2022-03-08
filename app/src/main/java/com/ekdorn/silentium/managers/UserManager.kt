@@ -1,14 +1,12 @@
 package com.ekdorn.silentium.managers
 
-import androidx.annotation.VisibleForTesting
 import com.ekdorn.silentium.models.Contact
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
 object UserManager {
-    var me: Contact
-        @VisibleForTesting set
+    val me: Contact
 
     init {
         val user = Firebase.auth.currentUser!!

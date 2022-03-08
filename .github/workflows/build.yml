@@ -11,6 +11,9 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
+      - name: Create Google Services config
+        run: echo "$GOOGLE_SERVICES" | base64 --decode > ./app/google-services.json
+
       - name: Set up JDK 11 🔧
         uses: actions/setup-java@v2
         with:
