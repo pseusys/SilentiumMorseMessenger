@@ -10,10 +10,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.ekdorn.silentium.activities.SilentActivity
+import com.ekdorn.silentium.activities.ProxyActivity
 import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.fragments.NotesAdapter
-import com.ekdorn.silentium.managers.UserManager
 import org.hamcrest.Matchers.not
 import org.junit.*
 import org.junit.runner.RunWith
@@ -26,13 +25,13 @@ class UsageScenariosTest {
     val callbackRule: CallbacksRule = CallbacksRule()
 
     @get:Rule //TODO: add (order = 1)
-    val activityRule: ActivityScenarioRule<SilentActivity> = ActivityScenarioRule(SilentActivity::class.java)
+    val activityRule: ActivityScenarioRule<ProxyActivity> = ActivityScenarioRule(ProxyActivity::class.java)
 
     @Test
     fun userTest() {
         onView(withId(R.id.drawer_layout)).perform(open())
-        onView(withId(R.id.user_name)).check(matches(withText(UserManager.me.name)))
-        onView(withId(R.id.user_contact)).check(matches(withText(UserManager.me.contact)))
+        onView(withId(R.id.user_name)).check(matches(withText("")))
+        onView(withId(R.id.user_contact)).check(matches(withText(BuildConfig.AUTH_NUMBER)))
     }
 
     @Test

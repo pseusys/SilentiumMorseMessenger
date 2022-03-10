@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ekdorn.silentium.core.toMyteReadable
-import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.models.Message
@@ -14,8 +13,7 @@ class DialogsViewModel : ViewModel() {
     private val _dialogs = MutableLiveData<List<Dialog>>(listOf())
     val dialogs: LiveData<List<Dialog>> = _dialogs
 
-    fun getDialogs() {
-        val me = UserManager.me
+    fun getDialogs(me: Contact) {
         val contact1 = Contact("Duuuude", "+12348762356", 12345)
         val contact2 = Contact("Dude", "smtp@web.dot", 12)
         val contact3 = Contact("Duuuuuuuuuuuude", "name@gmail.com", 34568)

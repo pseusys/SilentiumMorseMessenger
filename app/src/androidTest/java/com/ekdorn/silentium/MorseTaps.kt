@@ -3,7 +3,7 @@ package com.ekdorn.silentium
 import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.*
@@ -19,20 +19,21 @@ import org.hamcrest.Matcher
 
 
 fun tapView(id: Int, myte: Myte) {
-    val interaction = Espresso.onView(ViewMatchers.withId(id))
     val prefs = PreferenceManager[InstrumentationRegistry.getInstrumentation().targetContext]
     val dit = prefs.get<Long>(PreferenceManager.DAH_LENGTH_KEY) / 2
     val gap = prefs.get<Long>(PreferenceManager.GAP_LENGTH_KEY) * 1.5
     val dah = prefs.get<Long>(PreferenceManager.DAH_LENGTH_KEY) * 1.5
+    val end = prefs.get<Long>(PreferenceManager.END_LENGTH_KEY) * 1.5
     val eom = prefs.get<Long>(PreferenceManager.EOM_LENGTH_KEY) * 1.5
     myte.toBiBits().forEach {
         when (it) {
-            BiBit.DIT -> interaction.perform(touch(dit))
-            BiBit.DAH -> interaction.perform(touch(dah.toLong()))
-            BiBit.GAP -> interaction.perform(wait(gap.toLong()))
-            BiBit.END -> interaction.perform(wait(eom.toLong()))
+            BiBit.DIT -> onView(ViewMatchers.withId(id)).perform(touch(dit))
+            BiBit.DAH -> onView(ViewMatchers.withId(id)).perform(touch(dah.toLong()))
+            BiBit.GAP -> onView(ViewMatchers.withId(id)).perform(wait(gap.toLong()))
+            BiBit.END -> onView(ViewMatchers.withId(id)).perform(wait(end.toLong()))
         }
     }
+    onView(ViewMatchers.withId(id)).perform(wait(eom.toLong()))
 }
 
 private fun touch(length: Long): ViewAction = ViewActions.actionWithAssertions(GeneralClickAction(

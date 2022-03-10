@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.core.toMyteReadable
-import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.models.Message
 import java.lang.System.currentTimeMillis
@@ -15,8 +14,7 @@ class MessagesViewModel : ViewModel() {
     private val _messages = MutableLiveData<List<Message>>(listOf())
     val messages: LiveData<List<Message>> = _messages
 
-    fun getMessages() {
-        val me = UserManager.me
+    fun getMessages(me: Contact) {
         val contact1 = Contact("Duuuude", "+12348762356", 12345)
         val contact3 = Contact("Duuuuuuuuuuuude", "name@gmail.com", 34568)
 
@@ -27,8 +25,8 @@ class MessagesViewModel : ViewModel() {
         _messages.postValue(listOf(message1, message2, message3))
     }
 
-    fun addMessage(text: Myte) {
-        _messages.postValue(_messages.value!!.plus(Message(text, currentTimeMillis(), false, UserManager.me)))
+    fun addMessage(text: Myte, me: Contact) {
+        _messages.postValue(_messages.value!!.plus(Message(text, currentTimeMillis(), false, me)))
     }
 
     fun removeMessage(index: Int) {

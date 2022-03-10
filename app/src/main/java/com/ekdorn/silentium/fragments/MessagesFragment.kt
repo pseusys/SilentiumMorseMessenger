@@ -23,15 +23,17 @@ import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.core.toReadableString
 import com.ekdorn.silentium.databinding.FragmentMessagesBinding
 import com.ekdorn.silentium.managers.ClipboardManager
-import com.ekdorn.silentium.managers.UserManager
+import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.models.Message
 import com.ekdorn.silentium.mvs.MessagesViewModel
+import com.ekdorn.silentium.mvs.UserViewModel
 import com.ekdorn.silentium.utils.Action
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 
 
 class MessagesFragment : Fragment() {
     private lateinit var messagesViewModel: MessagesViewModel
+    private lateinit var userViewModel: UserViewModel
     private var _binding: FragmentMessagesBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -39,24 +41,28 @@ class MessagesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         messagesViewModel = ViewModelProvider(requireActivity())[MessagesViewModel::class.java]
+        userViewModel = ViewModelProvider(requireActivity())[UserViewModel::class.java]
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
 
         binding.sendButton.setOnClickListener {
             val text = binding.messageInput.text.toString()
             if (text.isNotBlank()) {
-                messagesViewModel.addMessage(text.toMyteReadable())
+                messagesViewModel.addMessage(text.toMyteReadable(), userViewModel.me.value!!)
                 binding.messageInput.text.clear()
             }
         }
 
         val deleteAction = Action(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { messagesViewModel.removeMessage(it) }
-        val adapter = MessagesAdapter(requireContext(), emptyList(), deleteAction)
+        val adapter = MessagesAdapter(requireContext(), emptyList(), userViewModel.me.value!!, deleteAction)
         val recycler = binding.messagesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
         messagesViewModel.messages.observe(viewLifecycleOwner) {
             deleteAction.views = it.indices
             adapter.sync(it)
             recycler.smoothScrollToPosition(it.size - 1)
+        }
+        userViewModel.me.observe(viewLifecycleOwner) {
+            adapter.me = it
         }
 
         return binding.root
@@ -69,7 +75,7 @@ class MessagesFragment : Fragment() {
 }
 
 
-class MessagesAdapter(context: Context, private var messages: List<Message>, private val deleteAction: Action) : DescriptiveRecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
+class MessagesAdapter(context: Context, private var messages: List<Message>, var me: Contact, private val deleteAction: Action) : DescriptiveRecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
     private val incomingMessage = ContextCompat.getDrawable(context, R.drawable.shape_message_in)
     private val outcomingMessage = ContextCompat.getDrawable(context, R.drawable.shape_message_out)
 
@@ -128,7 +134,7 @@ class MessagesAdapter(context: Context, private var messages: List<Message>, pri
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
-        viewHolder.configureMessage(messages[position].author != UserManager.me)
+        viewHolder.configureMessage(messages[position].author != me)
         viewHolder.dateTime.text = messages[position].date.toString()
         viewHolder.textView.text = messages[position].text.toReadableString()
         viewHolder.textView.forceLayout()
