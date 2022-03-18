@@ -1,35 +1,39 @@
 package com.ekdorn.silentium.mvs
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.*
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.core.toMyteReadable
+import com.ekdorn.silentium.managers.DatabaseManager
 import com.ekdorn.silentium.models.Contact
+import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.models.Message
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.lang.System.currentTimeMillis
+import java.util.*
 
 
-class MessagesViewModel : ViewModel() {
-    private val _messages = MutableLiveData<List<Message>>(listOf())
-    val messages: LiveData<List<Message>> = _messages
+class MessagesViewModel(application: Application) : AndroidViewModel(application) {
+    private val daoScope = viewModelScope.plus(Dispatchers.IO)
 
-    fun getMessages(me: Contact) {
-        val contact1 = Contact("Duuuude", "+12348762356", 12345)
-        val contact3 = Contact("Duuuuuuuuuuuude", "name@gmail.com", 34568)
+    private val dao = DatabaseManager[application].messageDAO()
+    private lateinit var cont: Contact
+    lateinit var messages: LiveData<List<Message>>
+        private set
 
-        val message1 = Message("I was thinking".lowercase().toMyteReadable(), 12395, false, contact1)
-        val message2 = Message("Uhhhh...".lowercase().toMyteReadable(), 12395, false, me)
-        val message3 = Message("Enough android for today, maybe?..".lowercase().toMyteReadable(), 12395, true, contact3)
-
-        _messages.postValue(listOf(message1, message2, message3))
+    fun initContact(contact: Contact) = apply {
+        cont = contact
+        messages = dao.getFromContact(contact.id)
     }
 
-    fun addMessage(text: Myte, me: Contact) {
-        _messages.postValue(_messages.value!!.plus(Message(text, currentTimeMillis(), false, me)))
+    fun addMessage(text: Myte, me: Contact) = daoScope.launch {
+        dao.add(Message(UUID.randomUUID().hashCode(), text, Date(currentTimeMillis()), true, me.id, cont.id))
     }
 
-    fun removeMessage(index: Int) {
-        _messages.postValue(_messages.value!!.filterIndexed { idx, _ -> idx != index })
+    fun removeMessage(index: Int) = daoScope.launch {
+        dao.delete(messages.value!![index])
     }
 }

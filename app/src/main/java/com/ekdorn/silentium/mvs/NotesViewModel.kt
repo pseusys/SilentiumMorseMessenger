@@ -1,5 +1,7 @@
 package com.ekdorn.silentium.mvs
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +10,7 @@ import com.ekdorn.silentium.models.Note
 import java.lang.System.currentTimeMillis
 
 
-class NotesViewModel : ViewModel() {
+class NotesViewModel(application: Application) : AndroidViewModel(application) {
     private val _notes = MutableLiveData<List<Note>>(emptyList())
     val notes: LiveData<List<Note>> = _notes
 

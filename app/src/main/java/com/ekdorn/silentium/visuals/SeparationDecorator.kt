@@ -1,4 +1,4 @@
-package com.ekdorn.silentium.utils
+package com.ekdorn.silentium.visuals
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R

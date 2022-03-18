@@ -1,32 +1,31 @@
 package com.ekdorn.silentium.mvs
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.ekdorn.silentium.managers.DatabaseManager
 import com.ekdorn.silentium.models.Contact
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.lang.System.currentTimeMillis
+import java.time.Instant
+import java.util.*
 
 
-class ContactsViewModel : ViewModel() {
-    private val _internal = MutableLiveData<List<Contact>>(listOf())
+class ContactsViewModel(application: Application) : AndroidViewModel(application) {
+    private val daoScope = viewModelScope.plus(Dispatchers.IO)
+
+    private val dao = DatabaseManager[application].contactDAO()
     private val _external = MutableLiveData<List<Contact>>(listOf())
 
-    val internal: LiveData<List<Contact>> = _internal
+    val internal: LiveData<List<Contact>> = dao.getAll()
     val external: LiveData<List<Contact>> = _external
 
-    fun addContact() {
-        _internal.postValue(internal.value!!.plus(Contact(null, "+79213875621", currentTimeMillis())))
+    fun addContact() = daoScope.launch {
+        dao.add(Contact(UUID.randomUUID().toString(), "Contact", UUID.randomUUID().toString(), null, null, null))
     }
 
-    fun removeContact(index: Int) {
-        _internal.postValue(_internal.value!!.filterIndexed { idx, _ -> idx != index })
-    }
-
-    fun syncContacts() {
-        _external.postValue(listOf(
-            Contact("Name", "email@website.ord", 124),
-            Contact("Name1", "mail@website.ord", 125),
-            Contact("Another name", "email@site.org", 1289)
-        ))
+    fun removeContact(index: Int) = daoScope.launch {
+        dao.delete(internal.value!![index])
     }
 }

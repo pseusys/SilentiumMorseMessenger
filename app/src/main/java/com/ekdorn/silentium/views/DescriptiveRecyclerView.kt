@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
-import com.ekdorn.silentium.utils.DoubleItemCallback
-import com.ekdorn.silentium.utils.SeparationDecorator
+import com.ekdorn.silentium.visuals.DoubleItemCallback
+import com.ekdorn.silentium.visuals.SeparationDecorator
 
 
 class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style: Int) : ConstraintLayout(context, attributes, style) {

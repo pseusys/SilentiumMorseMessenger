@@ -1,4 +1,4 @@
-package com.ekdorn.silentium.utils
+package com.ekdorn.silentium.visuals
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,26 +6,12 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class Action(private val icon: Int, private val color: Int, private val iconTint: Int?, var views: IntRange, val callback: (Int) -> Unit) {
-    lateinit var iconDrawable: Drawable
-    var colorColor = 0
-    var tintColor: Int? = null
-
-    fun load(context: Context) {
-        iconDrawable = ContextCompat.getDrawable(context, icon)!!
-        colorColor = ContextCompat.getColor(context, color)
-        tintColor = iconTint?.let { ContextCompat.getColor(context, it) }
-    }
-}
-
-class DoubleItemCallback(context: Context, private val leftAction: Action? = null, private val rightAction: Action? = null) : ItemTouchHelper.SimpleCallback(0, (if (leftAction != null) ItemTouchHelper.LEFT else 0) or (if (rightAction != null) ItemTouchHelper.RIGHT else 0)) {
+class DoubleItemCallback(context: Context, private val leftAction: VisualAction? = null, private val rightAction: VisualAction? = null) : ItemTouchHelper.SimpleCallback(0, (if (leftAction != null) ItemTouchHelper.LEFT else 0) or (if (rightAction != null) ItemTouchHelper.RIGHT else 0)) {
     private val background = ColorDrawable()
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.DST) }
 

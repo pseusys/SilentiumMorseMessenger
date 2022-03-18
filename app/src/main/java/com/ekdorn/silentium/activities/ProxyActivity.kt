@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ekdorn.silentium.BuildConfig.APPLICATION_ID
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.managers.CryptoManager
+import com.ekdorn.silentium.managers.UserManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -33,17 +35,15 @@ class ProxyActivity : AppCompatActivity() {
     private fun authenticate() {
         val actionCodeSettings = ActionCodeSettings.newBuilder()
             .setAndroidPackageName(APPLICATION_ID, true, null)
-            .setHandleCodeInApp(true) // This must be set to true
-            .setUrl("https://silentiumdynamic.page.link") // This URL needs to be whitelisted
+            .setHandleCodeInApp(true)
+            .setUrl("https://silentiumdynamic.page.link")
             .build()
-        // Choose authentication providers
         val providers = arrayListOf(
             EmailBuilder().setRequireName(false).enableEmailLinkSignIn().setActionCodeSettings(actionCodeSettings).build(),
             PhoneBuilder().build(),
             GoogleBuilder().build()
         )
 
-        // Create and launch sign-in intent
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
@@ -65,11 +65,15 @@ class ProxyActivity : AppCompatActivity() {
         true
     } else false
 
+    private fun initializeApp() {
+        val cert = CryptoManager.generateKeyPair(this)
+        UserManager.post(this)
+        // TODO: publish public key to remote db.
+    }
+
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) = when {
         result.resultCode == RESULT_OK -> {
-            // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
-            // TODO: show welcome dialog
+            if (!UserManager.userReady()) initializeApp()
             navigateHome()
         }
         result.idpResponse != null -> Toast.makeText(this, "Log in error!!", Toast.LENGTH_SHORT).show()
