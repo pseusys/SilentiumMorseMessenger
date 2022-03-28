@@ -19,11 +19,9 @@ NB! If launched on emulator, application requires image with bundled Google Play
 Additional file that has to be present for instrumental testing `./test.properties`  
 It should have following structure:
 ```properties
-auth.number=+XYYYZZZQQTT
-auth.code=NNNNNN
+auth.number=+XYYYYYYYYYY
+auth.code=ZZZZZZ
 ```  
 where:  
-`+XYYYZZZQQTT` is a phone number for testing (defined in firebase project)  
-`NNNNNN` is a verification code for testing (defined in firebase project)  
-
-NB! If launched on emulator, testing requires device language to be set to English (to find `FirebaseUI` elements).
+`+XYYYYYYYYYY` is a phone number for testing (defined in firebase project)  
+`ZZZZZZ` is a verification code for testing (defined in firebase project)

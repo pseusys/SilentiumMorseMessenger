@@ -12,5 +12,7 @@ data class Message(
     @ColumnInfo(name = "date") val date: Date,
     @ColumnInfo(name = "read") var read: Boolean,
     @ColumnInfo(name = "author_id") val authorID: String,
-    @ColumnInfo(name = "contact_id") val contactID: String
-)
+    @ColumnInfo(name = "contact_id") val contactID: String,
+) {
+    constructor(text: Myte, date: Date, read: Boolean, authorID: String, contactID: String): this(0, text, date, read, authorID, contactID)
+}

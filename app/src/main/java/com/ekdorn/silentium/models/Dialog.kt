@@ -7,5 +7,5 @@ import androidx.room.*
 data class Dialog(
     @Embedded val contact: Contact,
     @Embedded val lastMessage: Message,
-    @ColumnInfo(name = "unread") val unreadCount: Int
+    @ColumnInfo(name = "unread") val unreadCount: Int,
 )

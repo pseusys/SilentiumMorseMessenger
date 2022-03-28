@@ -28,18 +28,18 @@ object UserManager {
     }
 
     private fun constructContact(): Contact {
+        if (!CryptoManager.keysSaved()) throw Exception("CryptoManager hasn't been initialized!")
         val user = Firebase.auth.currentUser!!
         val key = CryptoManager.getPublicKey()
         val contact = if (!user.phoneNumber.isNullOrBlank()) user.phoneNumber!!
         else if (!user.email.isNullOrBlank()) user.email!!
         else "[unknown source]"
         val online = user.metadata?.lastSignInTimestamp ?: -1
-        return Contact(user.uid, user.displayName, contact, Date(online), key, user.photoUrl)
+        val name = if (user.displayName.isNullOrBlank()) "Me" else user.displayName
+        return Contact(user.uid, name, contact, Date(online), key, user.photoUrl)
     }
 
     fun reload(context: Context) = Firebase.auth.currentUser!!.reload().addOnCompleteListener {
         post(context)
     }
-
-    fun userReady() = CryptoManager.privateKeySaved()
 }

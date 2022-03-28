@@ -8,10 +8,10 @@ import com.ekdorn.silentium.models.Message
 @Dao
 @RewriteQueriesToDropUnusedColumns
 interface MessageDao {
-    @Query("SELECT * FROM messages JOIN contacts ON contact_id = id WHERE id LIKE :id")
+    @Query("SELECT * FROM messages JOIN contacts ON contact_id = id WHERE id LIKE :id ORDER BY date")
     fun getFromContact(id: String): LiveData<List<Message>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun add(message: Message)
 
     @Update

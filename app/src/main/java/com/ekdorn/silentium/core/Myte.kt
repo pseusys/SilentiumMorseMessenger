@@ -40,3 +40,5 @@ fun String.toMyteBinary(): Myte { TODO() }
 fun Myte.toMorseString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.sign}" }
 
 fun String.toMyteMorse(): Myte { TODO() }
+
+fun Myte.toHexString() = toBiBits().fold("0x") { acc, bb -> "${acc}${bb.atom.toString(16)}" }

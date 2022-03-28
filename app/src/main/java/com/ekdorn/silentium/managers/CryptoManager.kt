@@ -71,5 +71,11 @@ object CryptoManager {
         return keyFactory.generatePublic(X509EncodedKeySpec(keyBytes))
     }
 
-    fun privateKeySaved() = KeyStore.getInstance(PROVIDER).apply { load(null) }.isKeyEntry(ALIAS)
+
+    fun keysSaved() = KeyStore.getInstance(PROVIDER).apply { load(null) }.isKeyEntry(ALIAS)
+
+    fun saveKeys(context: Context) {
+        val cert = generateKeyPair(context)
+        // TODO: publish public key to remote db.
+    }
 }

@@ -3,6 +3,7 @@ package com.ekdorn.silentium.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -16,7 +17,6 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.firebase.ui.auth.util.ExtraConstants
 import com.google.firebase.auth.ActionCodeSettings
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -65,15 +65,9 @@ class ProxyActivity : AppCompatActivity() {
         true
     } else false
 
-    private fun initializeApp() {
-        val cert = CryptoManager.generateKeyPair(this)
-        UserManager.post(this)
-        // TODO: publish public key to remote db.
-    }
-
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) = when {
         result.resultCode == RESULT_OK -> {
-            if (!UserManager.userReady()) initializeApp()
+            if (!CryptoManager.keysSaved()) CryptoManager.saveKeys(this)
             navigateHome()
         }
         result.idpResponse != null -> Toast.makeText(this, "Log in error!!", Toast.LENGTH_SHORT).show()

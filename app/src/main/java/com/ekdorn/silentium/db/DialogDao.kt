@@ -13,6 +13,6 @@ interface DialogDao {
     @Query("SELECT * FROM dialogs")
     fun getAll(): LiveData<List<Dialog>>
 
-    //@Query("SELECT * FROM messages JOIN contacts ON contact_id = id")
-    //fun delete(contact: String)
+    @Query("DELETE FROM messages WHERE contact_id = :id")
+    fun delete(id: String)
 }

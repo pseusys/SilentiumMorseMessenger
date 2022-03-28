@@ -14,18 +14,11 @@ object PreferenceManager {
     const val END_LENGTH_KEY = "end_length"
     const val EOM_LENGTH_KEY = "eom_length"
 
-    // User preferences
-    const val PUBLIC_KEY = "public_key"
-    const val PRIVATE_KEY = "private_key"
-
     @PublishedApi internal val initial = mapOf(
-        Pair(DAH_LENGTH_KEY, 500),
-        Pair(GAP_LENGTH_KEY, 500),
-        Pair(END_LENGTH_KEY, 1500),
-        Pair(EOM_LENGTH_KEY, 2000),
-
-        Pair(PUBLIC_KEY, ""),
-        Pair(PRIVATE_KEY, "")
+        Pair(DAH_LENGTH_KEY, 500L),
+        Pair(GAP_LENGTH_KEY, 500L),
+        Pair(END_LENGTH_KEY, 1500L),
+        Pair(EOM_LENGTH_KEY, 2000L)
     )
 
     operator fun get(context: Context): SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE)

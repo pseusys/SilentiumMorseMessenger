@@ -30,7 +30,7 @@ class MessagesViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun addMessage(text: Myte, me: Contact) = daoScope.launch {
-        dao.add(Message(UUID.randomUUID().hashCode(), text, Date(currentTimeMillis()), true, me.id, cont.id))
+        dao.add(Message(text, Date(currentTimeMillis()), true, me.id, cont.id))
     }
 
     fun removeMessage(index: Int) = daoScope.launch {

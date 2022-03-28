@@ -28,10 +28,15 @@ class DescriptionFragment : Fragment() {
         val prefs = PreferenceManager[requireContext()]
         val morseCode = Morse.codeData().sortedBy { it.value }.map { "${it.value}: ${it.key.toMorseString()}" }
 
+        val dahLen = prefs.get<Long>(DAH_LENGTH_KEY)
+        val gapLen = prefs.get<Long>(GAP_LENGTH_KEY)
+        val endLen = prefs.get<Long>(END_LENGTH_KEY)
+        val eomLen = prefs.get<Long>(EOM_LENGTH_KEY)
+
         binding.codeDescription.text = getString(R.string.description_code_description, Morse.name, Morse.ref)
         binding.codeViewCol1.text = morseCode.subList(0, morseCode.size / 2).joinToString("\n")
         binding.codeViewCol2.text = morseCode.subList(morseCode.size / 2, morseCode.size).joinToString("\n")
-        binding.timeView.text = getString(R.string.description_time_view, prefs.get<Int>(DAH_LENGTH_KEY), prefs.get<Int>(GAP_LENGTH_KEY), prefs.get<Int>(END_LENGTH_KEY), prefs.get<Int>(EOM_LENGTH_KEY))
+        binding.timeView.text = getString(R.string.description_time_view, dahLen, gapLen, endLen, eomLen)
 
         return binding.root
     }
