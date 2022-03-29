@@ -10,6 +10,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.fragments.ContactsFragmentDirections
+import com.ekdorn.silentium.fragments.DialogsFragmentDirections
 import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.ekdorn.silentium.visuals.VisualAction
@@ -61,16 +63,18 @@ class ContactsAdapter(private var me: Contact, private val deleteAction: VisualA
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
-        val contact = when {
-            position == 0 -> me
-            position < internal.size + 1 -> internal[position - 1]
-            else -> external[position - 1 - internal.size]
-        }
+        val contact = getItem(position)
         viewHolder.contactName.text = contact.name ?: contact.contact
         viewHolder.contactOnline.text = contact.wasOnline.toString()
     }
 
     override fun getItemCount() = 1 + internal.size + external.size
+
+    private fun getItem(position: Int) = when {
+        position == 0 -> me
+        position < internal.size + 1 -> internal[position - 1]
+        else -> external[position - 1 - internal.size]
+    }
 
     override fun separators(): List<Pair<Int, String>> {
         return if (internal.isEmpty() && external.isEmpty()) emptyList()
@@ -89,7 +93,10 @@ class ContactsAdapter(private var me: Contact, private val deleteAction: VisualA
         }
     }
 
-    override fun onClick(viewHolder: ViewHolder, position: Int) = viewHolder.itemView.findNavController().navigate(R.id.nav_messages)
+    override fun onClick(viewHolder: ViewHolder, position: Int) {
+        val action = ContactsFragmentDirections.actionNavContactsToNavMessages(getItem(position).id)
+        viewHolder.itemView.findNavController().navigate(action)
+    }
 
     override fun onLongClick(viewHolder: ViewHolder, position: Int) {
         if ((position > 0) && (position < internal.size + 1)) PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {

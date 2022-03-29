@@ -15,6 +15,8 @@ Required steps:
   
 NB! If launched on emulator, application requires image with bundled Google Play Services.
 
+NB! Application instance should be added to Firebase Console for Google SignIn using.
+
 ### Instrumental Testing
 Additional file that has to be present for instrumental testing `./test.properties`  
 It should have following structure:

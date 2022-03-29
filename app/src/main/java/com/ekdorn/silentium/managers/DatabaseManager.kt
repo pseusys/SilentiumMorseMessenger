@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ekdorn.silentium.R
-import com.ekdorn.silentium.core.toHexString
 import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.db.Database
 
@@ -15,12 +14,20 @@ object DatabaseManager {
     private var db: Database? = null
 
     private fun prepopulate(context: Context, db: SupportSQLiteDatabase) {
+        var paramPointer = 0
+        val params = arrayOf(
+            "GLAD YOU MADE IT TO SILENTIUM!".toMyteReadable(),
+            "FOR NOW THIS IS STILL AN ALPHA VERSION...".toMyteReadable()
+        )
+
         val insertReader = context.resources.openRawResource(R.raw.create).bufferedReader()
         while (insertReader.ready()) {
-            var str = insertReader.readLine()
-            str = str.replace("%1", "Glad you made it to Silentium!".toMyteReadable().toHexString())
-            str = str.replace("%2", "For now this is still an alpha version.".toMyteReadable().toHexString())
-            db.execSQL(str)
+            val str = insertReader.readLine()
+            val paramsNum = str.count { it == '?' }
+            if (paramsNum > 0) {
+                db.execSQL(str, params.slice(IntRange(paramPointer, paramPointer + paramsNum - 1)).toTypedArray())
+                paramPointer += paramsNum
+            } else db.execSQL(str)
         }
         insertReader.close()
     }

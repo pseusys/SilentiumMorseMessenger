@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
@@ -16,14 +17,12 @@ import com.ekdorn.silentium.visuals.DoubleItemCallback
 
 
 class DialogsFragment : Fragment() {
-    private lateinit var dialogsViewModel: DialogsViewModel
-    private var _binding: FragmentDialogsBinding? = null
+    private val dialogsViewModel by viewModels<DialogsViewModel>({ requireActivity() })
 
-    // This property is only valid between onCreateView and onDestroyView.
+    private var _binding: FragmentDialogsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        dialogsViewModel = ViewModelProvider(requireActivity())[DialogsViewModel::class.java]
         _binding = FragmentDialogsBinding.inflate(inflater, container, false)
 
         val deleteAction = VisualAction(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { dialogsViewModel.removeDialog(it) }

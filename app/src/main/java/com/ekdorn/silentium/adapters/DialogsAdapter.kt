@@ -1,5 +1,6 @@
 package com.ekdorn.silentium.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.toReadableString
+import com.ekdorn.silentium.fragments.DialogsFragmentDirections
 import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.ekdorn.silentium.visuals.VisualAction
@@ -55,6 +57,7 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
         super.onBindViewHolder(viewHolder, position)
         viewHolder.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
         viewHolder.lastMessage.text = dialogs[position].lastMessage.text.toReadableString()
+        Log.e("TAG", "onBindViewHolder: ${dialogs[position].unreadCount}")
         val unread = dialogs[position].unreadCount
         if (unread > 0) {
             viewHolder.unreadCount.visibility = View.VISIBLE
@@ -74,8 +77,10 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
         }
     }
 
-    override fun onClick(viewHolder: ViewHolder, position: Int) = viewHolder.itemView.findNavController().navigate(
-        R.id.nav_messages)
+    override fun onClick(viewHolder: ViewHolder, position: Int) {
+        val action = DialogsFragmentDirections.actionNavDialogsToNavMessages(dialogs[position].contact.id)
+        viewHolder.itemView.findNavController().navigate(action)
+    }
 
     override fun onLongClick(viewHolder: ViewHolder, position: Int) {
         PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {

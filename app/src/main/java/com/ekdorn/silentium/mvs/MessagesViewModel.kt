@@ -16,24 +16,26 @@ import java.lang.System.currentTimeMillis
 import java.util.*
 
 
-class MessagesViewModel(application: Application) : AndroidViewModel(application) {
+class MessagesViewModel(application: Application, private val contact: String) : AndroidViewModel(application) {
     private val daoScope = viewModelScope.plus(Dispatchers.IO)
 
     private val dao = DatabaseManager[application].messageDAO()
-    private lateinit var cont: Contact
-    lateinit var messages: LiveData<List<Message>>
-        private set
-
-    fun initContact(contact: Contact) = apply {
-        cont = contact
-        messages = dao.getFromContact(contact.id)
-    }
+    var messages: LiveData<List<Message>> = dao.getFromContact(contact)
 
     fun addMessage(text: Myte, me: Contact) = daoScope.launch {
-        dao.add(Message(text, Date(currentTimeMillis()), true, me.id, cont.id))
+        dao.add(Message(text, Date(currentTimeMillis()), true, me.id, contact))
     }
 
     fun removeMessage(index: Int) = daoScope.launch {
         dao.delete(messages.value!![index])
+    }
+}
+
+class MessageViewModelFactory(private val application: Application, private val contact: String): ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass == MessagesViewModel::class.java) {
+            return MessagesViewModel(application, contact) as T
+        } else throw Exception("The MessageViewModelFactory can instantiate MessagesViewModels only (not $modelClass)!")
     }
 }

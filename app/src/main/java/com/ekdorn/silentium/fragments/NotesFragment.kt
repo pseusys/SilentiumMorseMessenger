@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
@@ -16,14 +17,12 @@ import com.ekdorn.silentium.adapters.NotesAdapter
 
 
 class NotesFragment : Fragment() {
-    private lateinit var notesViewModel: NotesViewModel
-    private var _binding: FragmentNotesBinding? = null
+    private val notesViewModel by viewModels<NotesViewModel>({ requireActivity() })
 
-    // This property is only valid between onCreateView and onDestroyView.
+    private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        notesViewModel = ViewModelProvider(requireActivity())[NotesViewModel::class.java]
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
 
         var adapter: NotesAdapter? = null

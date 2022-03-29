@@ -33,7 +33,7 @@ fun Myte.toReadableString() = toLongs().fold("") { acc, l -> "${acc}${Morse.getS
 
 fun String.toMyteReadable() = map { Morse.getLong(it.toString()) }.longsToMyte()
 
-fun Myte.toBinaryString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.atom.toString(2)}" }
+fun Myte.toBinaryString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.atom.toString(2).padStart(2, '0')}" }
 
 fun String.toMyteBinary(): Myte { TODO() }
 
@@ -41,4 +41,4 @@ fun Myte.toMorseString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.sign}" }
 
 fun String.toMyteMorse(): Myte { TODO() }
 
-fun Myte.toHexString() = toBiBits().fold("0x") { acc, bb -> "${acc}${bb.atom.toString(16)}" }
+fun Myte.toHexString() = toBiBits().chunked(2).fold("") { acc, bb -> "${acc}${bb.biBitsToLong().toString(16)}" }

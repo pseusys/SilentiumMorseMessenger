@@ -56,6 +56,10 @@
         android:id="@+id/nav_messages"
         android:name="com.ekdorn.silentium.fragments.MessagesFragment"
         android:label="@string/menu_messages"
-        tools:layout="@layout/fragment_messages" />
+        tools:layout="@layout/fragment_messages" >
+        <argument
+            android:name="contact"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

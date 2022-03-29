@@ -1,2 +1,2 @@
 INSERT INTO contacts (`id`, `name`, `contact`, `was_online`, `public_key`, `profile_pic`) VALUES ('admin', 'Silentium Administration', 'https://github.com/pseusys/SilentiumMorseMessenger', null, null, 'https://github.com/pseusys/SilentiumMorseMessenger/blob/main/app/src/main/logo_launcher-playstore.png');
-INSERT INTO messages (`text`, `date`, `read`, `author_id`, `contact_id`) VALUES ('%1', '1223456', false, 'admin', 'admin'), ('%2', '1223457', false, 'admin', 'admin');
+INSERT INTO messages (`text`, `date`, `read`, `author_id`, `contact_id`) VALUES (?, '1223456', false, 'admin', 'admin'), (?, '1223457', false, 'admin', 'admin');
