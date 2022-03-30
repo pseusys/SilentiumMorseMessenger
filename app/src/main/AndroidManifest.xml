@@ -20,6 +20,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -28,7 +29,22 @@
         <activity android:name=".activities.SilentActivity"
             android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar" />
 
+        <activity android:name=".activities.IMSSettingsActivity"
+            android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar" />
+
+        <service android:name=".services.SilentIMS"
+            android:label="@string/silent_ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+
+            <meta-data android:name="android.view.im"
+                android:resource="@xml/silent_input_method" />
+        </service>
+
     </application>
 
 </manifest>
-

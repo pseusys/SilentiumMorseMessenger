@@ -21,7 +21,7 @@ object CryptoManager {
     private const val ALIAS = "SILENT_KEY"
     private const val CRYPTO_BITS = 2048
 
-    fun generateKeyPair(ctx: Context): PublicKey {
+    private fun generateKeyPair(ctx: Context): PublicKey {
         val spec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) generateKeyNew() else generateKeyOld(ctx)
         val keyGenerator = KeyPairGenerator.getInstance(CRYPTO_METHOD, PROVIDER).apply { initialize(spec) }
         return keyGenerator.generateKeyPair().public

@@ -16,7 +16,15 @@
         android:id="@+id/nav_input"
         android:name="com.ekdorn.silentium.fragments.InputFragment"
         android:label="@string/menu_input"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes">
+
+        <action
+            android:id="@+id/action_nav_input_to_nav_settings"
+            app:destination="@id/nav_settings"
+            app:popUpTo="@+id/firstFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_dialogs"
@@ -35,9 +43,11 @@
         android:name="com.ekdorn.silentium.fragments.ContactsFragment"
         android:label="@string/menu_contacts"
         tools:layout="@layout/fragment_contacts" >
+
         <action
             android:id="@+id/action_nav_contacts_to_nav_messages"
             app:destination="@id/nav_messages" />
+
     </fragment>
 
     <fragment
@@ -57,9 +67,11 @@
         android:name="com.ekdorn.silentium.fragments.MessagesFragment"
         android:label="@string/menu_messages"
         tools:layout="@layout/fragment_messages" >
+
         <argument
             android:name="contact"
             app:argType="string" />
+
     </fragment>
 
 </navigation>

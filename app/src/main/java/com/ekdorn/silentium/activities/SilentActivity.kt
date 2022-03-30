@@ -10,10 +10,17 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ActivitySilentRootBinding
+import com.ekdorn.silentium.fragments.InputFragmentDirections
 import com.ekdorn.silentium.managers.UserManager
 
 
 class SilentActivity : AppCompatActivity() {
+    companion object {
+        const val NAVIGATE_TO_SETTINGS = "settings_call"
+    }
+
+    private var preferencesView = false
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySilentRootBinding
 
@@ -26,6 +33,7 @@ class SilentActivity : AppCompatActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+        preferencesView = intent.getBooleanExtra(NAVIGATE_TO_SETTINGS, false)
 
         val header = binding.navView.getHeaderView(0)
         UserManager[this].observe(this) {
@@ -42,17 +50,15 @@ class SilentActivity : AppCompatActivity() {
             R.id.nav_description,
             R.id.nav_settings
         ), binding.drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
 
-        // TODO: remove
-        //ViewModelProvider(this)[DialogsViewModel::class.java].getDialogs(userViewModel.me.value!!)
-        //ViewModelProvider(this)[ContactsViewModel::class.java].syncContacts()
-        //ViewModelProvider(this)[MessagesViewModel::class.java].getMessages(userViewModel.me.value!!)
+        if (preferencesView) navController.navigate(InputFragmentDirections.actionNavInputToNavSettings())
+        else setupActionBarWithNavController(navController, appBarConfiguration)
+
+        binding.navView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return (preferencesView && navController.navigateUp(appBarConfiguration)) || super.onSupportNavigateUp()
     }
 }

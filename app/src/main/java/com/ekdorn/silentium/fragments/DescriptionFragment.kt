@@ -43,4 +43,6 @@ class DescriptionFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun Long.toMorseString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.sign}" }
 }

@@ -25,8 +25,8 @@ class InputFragment : Fragment() {
 
         _binding!!.inputButton.addMorseListener(object : SilentInputView.MorseListener() {
             override fun onStart() = _binding?.inputView?.listener?.onStart() ?: Unit
-            override fun onBiBit(biBit: BiBit?) = _binding?.inputView?.listener?.onBiBit(biBit) ?: Unit
-            override fun onLong(long: Long?) = _binding?.inputView?.listener?.onLong(long) ?: Unit
+            override fun onBiBit(biBit: BiBit) = _binding?.inputView?.listener?.onBiBit(biBit) ?: Unit
+            override fun onLong(long: Long) = _binding?.inputView?.listener?.onLong(long) ?: Unit
             override fun onMyte(myte: Myte) {
                 _binding?.inputView?.listener?.onMyte(myte)
                 notesViewModel.saveNote(myte)

@@ -15,6 +15,7 @@ enum class BiBit (val atom: Byte, val sign: Char) {
 
     companion object {
         fun fromAtom(atom: Byte) = values().associateBy(BiBit::atom)[atom]!!
+        fun fromSign(sign: Char) = values().associateBy(BiBit::sign)[sign]!!
     }
 }
 
@@ -27,8 +28,6 @@ fun Long.toBiBits(): List<BiBit> {
     } while ((intermediate and 0b11) > 0)
     return biBits
 }
-
-fun Long.toMorseString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.sign}" }
 
 fun List<BiBit>.biBitsToLong() = fold(0L) { acc, biBit -> (acc shl 2) + biBit.atom }
 

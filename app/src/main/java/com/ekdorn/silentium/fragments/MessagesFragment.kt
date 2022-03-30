@@ -30,9 +30,8 @@ class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
 
-        if (args.contact in PrivilegeManager.ACCOUNTS) {
-            arrayOf(binding.keyboardSwitchButton, binding.messageInput, binding.sendButton).forEach { it.visibility = View.GONE }
-        } else binding.sendButton.setOnClickListener {
+        if (args.contact in PrivilegeManager.ACCOUNTS) binding.inputView.visibility = View.GONE
+        else binding.sendButton.setOnClickListener {
             val text = binding.messageInput.text.toString()
             if (text.isNotBlank()) {
                 messagesViewModel.addMessage(text.toMyteReadable(), UserManager[requireContext()].value!!)

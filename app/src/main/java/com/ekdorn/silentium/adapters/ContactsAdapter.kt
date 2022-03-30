@@ -99,7 +99,7 @@ class ContactsAdapter(private var me: Contact, private val deleteAction: VisualA
     }
 
     override fun onLongClick(viewHolder: ViewHolder, position: Int) {
-        if ((position > 0) && (position < internal.size + 1)) PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {
+        if (position in deleteAction.views) PopupMenu(viewHolder.itemView.context, viewHolder.itemView).apply {
             inflate(R.menu.fragment_contacts_menu)
             setOnMenuItemClickListener { onMenuItemClick(it, position) }
             show()

@@ -135,7 +135,7 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
         val delta = currentTimeMillis() - previousTouch
         if (delta >= prefs.get<Long>(DAH_LENGTH_KEY)) currentLong.add(BiBit.DAH)
         else currentLong.add(BiBit.DIT)
-        morseListener?.onBiBit(currentLong.lastOrNull())
+        morseListener?.onBiBit(currentLong.last())
 
         gapTimer?.cancel()
         gapTimer = setGapTimer()
@@ -152,8 +152,8 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
 
     open class MorseListener {
         open fun onStart () {}
-        open fun onBiBit (biBit: BiBit?) {}
-        open fun onLong (long: Long?) {}
+        open fun onBiBit (biBit: BiBit) {}
+        open fun onLong (long: Long) {}
         open fun onMyte (myte: Myte) {}
     }
 }

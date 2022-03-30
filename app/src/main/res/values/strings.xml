@@ -23,4 +23,8 @@
     <string name="description_time_description">The length of dahs and spaces is defined in milliseconds as follows:</string>
     <string name="description_time_view">DAH length: %1$d ms\nGAP between characters length: %2$d ms\nWHITESPACE length: %3$d ms\nEND OF MESSAGE length: %4$d ms</string>
     <string name="description_subscription"></string>
+
+
+
+    <string name="silent_ime_name">Silent Keyboard</string>
 </resources>

@@ -33,12 +33,14 @@ fun Myte.toReadableString() = toLongs().fold("") { acc, l -> "${acc}${Morse.getS
 
 fun String.toMyteReadable() = map { Morse.getLong(it.toString()) }.longsToMyte()
 
-fun Myte.toBinaryString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.atom.toString(2).padStart(2, '0')}" }
+fun Myte.toBinaryString() = toBiBits().fold("0b") { acc, bb -> "${acc}${bb.atom.toString(2).padStart(2, '0')}" }
 
-fun String.toMyteBinary(): Myte { TODO() }
+fun String.toMyteBinary() = substring(2).chunked(2).map { BiBit.fromAtom(it.toByte(2)) }.biBitsToMyte()
+
+fun Myte.toHexString() = toBiBits().chunked(2).fold("0x") { acc, bb -> "${acc}${bb.withIndex().sumOf { it.value.atom.toInt() shl (it.index * 2) }.toString(16)}" }
+
+fun String.toMyteHex() = substring(2).flatMap { ch -> ch.digitToInt(16).let { listOf(it and 0b11, (it shr 2) and 0b11) }.map { BiBit.fromAtom(it.toByte()) } }.biBitsToMyte()
 
 fun Myte.toMorseString() = toBiBits().fold("") { acc, bb -> "${acc}${bb.sign}" }
 
-fun String.toMyteMorse(): Myte { TODO() }
-
-fun Myte.toHexString() = toBiBits().chunked(2).fold("") { acc, bb -> "${acc}${bb.biBitsToLong().toString(16)}" }
+fun String.toMyteMorse() = map { BiBit.fromSign(it) }.biBitsToMyte()

@@ -37,14 +37,12 @@ class MorsePreView(context: Context, attributes: AttributeSet?, style: Int) : Co
         }
 
         @SuppressLint("SetTextI18n")
-        override fun onBiBit(biBit: BiBit?) {
-            if (biBit == null) return
+        override fun onBiBit(biBit: BiBit) {
             morseInput.text = "${morseInput.text}$biBit "
         }
 
         @SuppressLint("SetTextI18n")
-        override fun onLong(long: Long?) {
-            if (long == null) return
+        override fun onLong(long: Long) {
             morseInput.text = ""
             processedInput.text = "${processedInput.text}${Morse.getString(long)}"
         }

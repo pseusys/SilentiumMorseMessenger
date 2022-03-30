@@ -10,7 +10,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ekdorn.silentium.BuildConfig.APPLICATION_ID
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.managers.CryptoManager
-import com.ekdorn.silentium.managers.UserManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -22,14 +21,16 @@ import com.google.firebase.ktx.Firebase
 
 
 class ProxyActivity : AppCompatActivity() {
+    private lateinit var action: String
     private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res -> onSignInResult(res) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().setKeepOnScreenCondition { true }
         super.onCreate(savedInstanceState)
+        action = intent.action.toString()
         if (Firebase.auth.currentUser == null) {
             if (!checkDeepLink()) authenticate()
-        } else navigateHome()
+        } else navigate()
     }
 
     private fun authenticate() {
@@ -68,14 +69,16 @@ class ProxyActivity : AppCompatActivity() {
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) = when {
         result.resultCode == RESULT_OK -> {
             if (!CryptoManager.keysSaved()) CryptoManager.saveKeys(this)
-            navigateHome()
+            navigate()
         }
         result.idpResponse != null -> Toast.makeText(this, "Log in error!!", Toast.LENGTH_SHORT).show()
         else -> finish()
     }
 
-    private fun navigateHome(intentFlags: Int = 0) {
-        startActivity(Intent(this, SilentActivity::class.java).addFlags(intentFlags))
+    private fun navigate(intentFlags: Int = 0) {
+        val intent = Intent(this, SilentActivity::class.java).addFlags(intentFlags)
+        if (action == Intent.ACTION_APPLICATION_PREFERENCES) intent.putExtra(SilentActivity.NAVIGATE_TO_SETTINGS, true)
+        startActivity(intent)
         overridePendingTransition(0, 0)
         finish()
     }
