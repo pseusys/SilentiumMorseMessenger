@@ -1,9 +1,11 @@
 package com.ekdorn.silentium.services
 
+import android.content.Intent
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Toast
+import android.view.inputmethod.EditorInfo
+import com.ekdorn.silentium.activities.IMSSettingsActivity
 import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Morse
 import com.ekdorn.silentium.core.Myte
@@ -12,37 +14,36 @@ import com.ekdorn.silentium.views.SilentInputView
 
 
 class SilentIMS: InputMethodService() {
-    private var _binding: ViewKeyboardBinding? = null
-    private val binding get() = _binding!!
-
     override fun onCreateInputView(): View {
-        _binding = ViewKeyboardBinding.inflate(layoutInflater)
-        val ic = currentInputConnection
+        val binding = ViewKeyboardBinding.inflate(layoutInflater)
 
         binding.inputButton.addMorseListener(object : SilentInputView.MorseListener() {
             val bibits = mutableListOf<BiBit>()
 
             override fun onBiBit(biBit: BiBit) {
                 bibits.add(biBit)
-                Toast.makeText(applicationContext, "bibit", Toast.LENGTH_SHORT).show()
-                ic.setComposingText(bibits.map { it.sign }.joinToString(""), 1)
+                currentInputConnection.setComposingText(bibits.map { it.sign }.joinToString(""), 1)
             }
 
             override fun onLong(long: Long) {
                 bibits.clear()
-                Toast.makeText(applicationContext, "long", Toast.LENGTH_SHORT).show()
-                ic.commitText(Morse.getString(long), 1)
+                currentInputConnection.commitText(Morse.getString(long), 1)
+
             }
 
             override fun onMyte(myte: Myte) {
-                ic.deleteSurroundingText(1, 0)
-                Toast.makeText(applicationContext, "myte", Toast.LENGTH_SHORT).show()
-                ic.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
+                currentInputConnection.deleteSurroundingText(1, 0)
+                currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
             }
         })
 
-        binding.backButton.setOnClickListener { ic.deleteSurroundingText(1, 0) }
+        binding.backButton.setOnClickListener { currentInputConnection.deleteSurroundingText(1, 0) }
+        binding.settingsButton.setOnClickListener { startActivity(Intent(this, IMSSettingsActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
 
         return binding.root
+    }
+
+    override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
+        // TODO: check input types (https://developer.android.com/guide/topics/text/creating-input-method#handle-different-input-types)
     }
 }

@@ -19,8 +19,6 @@ class SilentActivity : AppCompatActivity() {
         const val NAVIGATE_TO_SETTINGS = "settings_call"
     }
 
-    private var preferencesView = false
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySilentRootBinding
 
@@ -33,7 +31,6 @@ class SilentActivity : AppCompatActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        preferencesView = intent.getBooleanExtra(NAVIGATE_TO_SETTINGS, false)
 
         val header = binding.navView.getHeaderView(0)
         UserManager[this].observe(this) {
@@ -51,7 +48,7 @@ class SilentActivity : AppCompatActivity() {
             R.id.nav_settings
         ), binding.drawerLayout)
 
-        if (preferencesView) navController.navigate(InputFragmentDirections.actionNavInputToNavSettings())
+        if (intent.getBooleanExtra(NAVIGATE_TO_SETTINGS, false)) navController.navigate(InputFragmentDirections.actionNavInputToNavSettings())
         else setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.navView.setupWithNavController(navController)
@@ -59,6 +56,6 @@ class SilentActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return (preferencesView && navController.navigateUp(appBarConfiguration)) || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

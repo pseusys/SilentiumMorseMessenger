@@ -35,6 +35,7 @@
         <service android:name=".services.SilentIMS"
             android:label="@string/silent_ime_name"
             android:permission="android.permission.BIND_INPUT_METHOD"
+            android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar"
             android:exported="true">
 
             <intent-filter>

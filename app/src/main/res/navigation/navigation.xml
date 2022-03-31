@@ -21,7 +21,7 @@
         <action
             android:id="@+id/action_nav_input_to_nav_settings"
             app:destination="@id/nav_settings"
-            app:popUpTo="@+id/firstFragment"
+            app:popUpTo="@id/nav_input"
             app:popUpToInclusive="true" />
 
     </fragment>

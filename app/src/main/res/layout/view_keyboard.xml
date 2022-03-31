@@ -3,62 +3,80 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primary">
+    android:layout_height="wrap_content"
+    android:maxHeight="@dimen/keyboard_height" >
+
+    <Space
+        android:id="@+id/gravity_space"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/input_button"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
 
     <com.ekdorn.silentium.views.SilentInputView
         android:id="@+id/input_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingHorizontal="@dimen/minimal_offset"
+        android:paddingHorizontal="@dimen/activity_margin"
         app:rotate="false"
         android:src="@drawable/logo_full"
+        android:background="@drawable/shape_keyboard"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/keyboard_space" />
+        app:layout_constraintStart_toEndOf="@id/gravity_space"
+        app:layout_constraintEnd_toStartOf="@id/keyboard_space"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
 
     <ImageButton
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_keyboard"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:src="@drawable/icon_backspace"
         android:backgroundTint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/language_button"
-        app:layout_constraintStart_toEndOf="@id/input_button"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
-        android:id="@+id/language_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_keyboard"
-        android:backgroundTint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/back_button"
-        app:layout_constraintBottom_toTopOf="@id/settings_button"
-        app:layout_constraintStart_toEndOf="@id/input_button"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
-        android:id="@+id/settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_keyboard"
-        android:backgroundTint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/language_button"
         app:layout_constraintBottom_toTopOf="@id/keyboard_space"
-        app:layout_constraintStart_toEndOf="@id/input_button"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/keyboard_space"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
 
     <Space
         android:id="@+id/keyboard_space"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/settings_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintBottom_toTopOf="@id/language_button"
         app:layout_constraintStart_toEndOf="@id/input_button"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
+
+    <ImageButton
+        android:id="@+id/language_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/card_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:src="@drawable/icon_language"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/keyboard_space"
+        app:layout_constraintBottom_toTopOf="@id/settings_button"
+        app:layout_constraintEnd_toEndOf="@id/keyboard_space"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
+
+    <ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:src="@drawable/icon_settings"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/language_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/keyboard_space" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

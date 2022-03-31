@@ -5,6 +5,7 @@ import kotlin.math.pow
 
 infix fun Float.pow(x: Float) = pow(x)
 
+
 fun <T> List<T>.split(item: T): List<List<T>> {
     val list = mutableListOf<List<T>>()
     var sublist = mutableListOf<T>()
