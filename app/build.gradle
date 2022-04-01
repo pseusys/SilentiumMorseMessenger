@@ -10,7 +10,8 @@ plugins {
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
-    testBuildType "instrumentedTest"
+    // testBuildType "instrumentedTest"
+    namespace "com.ekdorn.silentium"
 
     defaultConfig {
         applicationId "com.ekdorn.silentium"
@@ -38,6 +39,7 @@ android {
         }
         debug {
             debuggable true
+            applicationIdSuffix ".dev"
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
         }
         instrumentedTest {
