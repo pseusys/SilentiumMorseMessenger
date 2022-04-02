@@ -29,7 +29,7 @@ android {
     }
 
     applicationVariants.all { variant ->
-        if (variant.name == 'debug') {
+        if (variant.name == 'dry') {
             project.tasks.getByName('process' + variant.name.capitalize() + 'GoogleServices').enabled = false
         }
     }
@@ -52,7 +52,7 @@ android {
             manifestPlaceholders = [LabelsSuffix: "_dev"]
         }
 
-        instrumented { initWith debug }
+        dry { initWith debug }
     }
 
     compileOptions {
@@ -73,7 +73,7 @@ android {
     }
 }
 
-task extractInstrumentedTestParameters(dependsOn: 'connectedInstrumentedAndroidTest') {
+task extractInstrumentedTestParameters(dependsOn: 'connectedDebugAndroidTest') {
     if ((new File("test.properties")).exists()) {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("test.properties").newDataInputStream())

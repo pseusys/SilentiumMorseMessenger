@@ -17,6 +17,8 @@ NB! If launched on emulator, application requires image with bundled Google Play
 
 NB! Application instance should be added to Firebase Console for Google SignIn using.
 
+Command that should be used for building: `gradle buildRelease` (or `buildDebug` for debug)
+
 ### Instrumental Testing
 Additional file that has to be present for instrumental testing `./test.properties`  
 It should have following structure:
@@ -27,3 +29,8 @@ auth.code=ZZZZZZ
 where:  
 `+XYYYYYYYYYY` is a phone number for testing (defined in firebase project)  
 `ZZZZZZ` is a verification code for testing (defined in firebase project)
+
+Command that should be used for instrumental testing: `gradle connectedDebugAndroidTest`
+
+### Unit Testing
+Command that should be used for unit testing: `gradle testDryUnitTest`

@@ -36,4 +36,4 @@ jobs:
           api-level: 30
           target: playstore
           disable-animations: false
-          script: ./gradlew connectedInstrumentedAndroidTest
+          script: ./gradlew connectedDebugAndroidTest
