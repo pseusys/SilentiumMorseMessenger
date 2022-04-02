@@ -28,6 +28,12 @@ android {
         }
     }
 
+    applicationVariants.all { variant ->
+        if (variant.name == 'debug') {
+            project.tasks.getByName('process' + variant.name.capitalize() + 'GoogleServices').enabled = false
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -64,16 +70,6 @@ android {
 
     testOptions {
         animationsDisabled true
-    }
-}
-
-android.applicationVariants.all { variant ->
-    if (variant.name.contains("Debug")) {
-        project.tasks.each { t ->
-            if (t.name.contains("GoogleServices")) {
-                variant.getVariantData().taskContainer.sourceGenTask.getTaskDependencies().getDependencies().remove(t)
-            }
-        }
     }
 }
 
