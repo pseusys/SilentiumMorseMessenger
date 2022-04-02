@@ -66,6 +66,11 @@ android {
         def flavor = variant.flavors*.name
         def type = variant.buildType.name
         if (flavor.contains("production") != type.contains("release")) setIgnore(true)
+        else {
+            project.logger.lifecycle(flavor)
+            project.logger.lifecycle(type)
+            project.logger.lifecycle('\n')
+        }
     }
 
     compileOptions {
