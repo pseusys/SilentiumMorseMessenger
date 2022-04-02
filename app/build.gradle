@@ -10,7 +10,6 @@ plugins {
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
-    // testBuildType "instrumentedTest"
     namespace "com.ekdorn.silentium"
 
     defaultConfig {
@@ -42,14 +41,31 @@ android {
             applicationIdSuffix ".dev"
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
         }
-        instrumentedTest {
-            initWith debug
+    }
+
+    flavorDimensions "default"
+    productFlavors {
+        production {
+            dimension "default"
+        }
+
+        development {
+            dimension "default"
+        }
+
+        instrumented {
+            dimension "default"
             Properties properties = new Properties()
             properties.load(project.rootProject.file("test.properties").newDataInputStream())
             buildConfigField "String", "AUTH_NUMBER", "\"${properties.getProperty("auth.number", "")}\""
             buildConfigField "String", "AUTH_CODE", "\"${properties.getProperty("auth.code", "")}\""
-            matchingFallbacks = [ 'debug' ]
         }
+    }
+
+    variantFilter { variant ->
+        def flavor = variant.flavors*.name
+        def type = variant.buildType.name
+        if (flavor.contains("production") != type.contains("release")) setIgnore(true)
     }
 
     compileOptions {
