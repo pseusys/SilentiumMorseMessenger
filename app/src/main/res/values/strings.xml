@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Silentium</string>
+    <string name="app_name_prod" translatable="false">Silentium</string>
+    <string name="app_name_dev" translatable="false">Silentium Dev</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -26,5 +28,6 @@
 
 
 
-    <string name="silent_ime_name">Silent Keyboard</string>
+    <string name="silent_ime_name_prod" translatable="false">Silent Keyboard</string>
+    <string name="silent_ime_name_dev" translatable="false">Silent Keyboard Dev</string>
 </resources>

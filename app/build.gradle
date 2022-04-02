@@ -10,7 +10,6 @@ plugins {
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
-    namespace "com.ekdorn.silentium"
 
     defaultConfig {
         applicationId "com.ekdorn.silentium"
@@ -35,41 +34,18 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}"
+            manifestPlaceholders = [LabelsSuffix: "_prod"]
         }
+
         debug {
             debuggable true
-            applicationIdSuffix ".dev"
-            resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
-        }
-    }
-
-    flavorDimensions "default"
-    productFlavors {
-        production {
-            dimension "default"
-        }
-
-        development {
-            dimension "default"
-        }
-
-        instrumented {
-            dimension "default"
+            applicationIdSuffix '.dev'
             Properties properties = new Properties()
             properties.load(project.rootProject.file("test.properties").newDataInputStream())
             buildConfigField "String", "AUTH_NUMBER", "\"${properties.getProperty("auth.number", "")}\""
             buildConfigField "String", "AUTH_CODE", "\"${properties.getProperty("auth.code", "")}\""
-        }
-    }
-
-    variantFilter { variant ->
-        def flavor = variant.flavors*.name
-        def type = variant.buildType.name
-        if (flavor.contains("production") != type.contains("release")) setIgnore(true)
-        else {
-            project.logger.lifecycle(flavor)
-            project.logger.lifecycle(type)
-            project.logger.lifecycle('\n')
+            resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
+            manifestPlaceholders = [LabelsSuffix: "_dev"]
         }
     }
 
@@ -79,7 +55,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     buildFeatures {

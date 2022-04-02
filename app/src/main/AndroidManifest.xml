@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ekdorn.silentium" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo_launcher_complete"
-        android:label="@string/app_name"
+        android:label="@string/app_name${LabelsSuffix}"
         android:roundIcon="@mipmap/logo_launcher_complete_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SilentiumMorseMessenger" >
@@ -31,7 +33,7 @@
             android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar" />
 
         <service android:name=".services.SilentIMS"
-            android:label="@string/silent_ime_name"
+            android:label="@string/silent_ime_name${LabelsSuffix}"
             android:permission="android.permission.BIND_INPUT_METHOD"
             android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar"
             android:exported="true">
