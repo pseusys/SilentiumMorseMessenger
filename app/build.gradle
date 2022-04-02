@@ -40,10 +40,8 @@ android {
         debug {
             debuggable true
             applicationIdSuffix '.dev'
-            Properties properties = new Properties()
-            properties.load(project.rootProject.file("test.properties").newDataInputStream())
-            buildConfigField "String", "AUTH_NUMBER", "\"${properties.getProperty("auth.number", "")}\""
-            buildConfigField "String", "AUTH_CODE", "\"${properties.getProperty("auth.code", "")}\""
+            buildConfigField "String", "AUTH_NUMBER", "\"${project.ext.has("AUTH_NUMBER") ? project.ext.get("AUTH_NUMBER") : ""}\""
+            buildConfigField "String", "AUTH_CODE", "\"${project.ext.has("AUTH_CODE") ? project.ext.get("AUTH_CODE") : ""}\""
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
             manifestPlaceholders = [LabelsSuffix: "_dev"]
         }
@@ -65,6 +63,19 @@ android {
     testOptions {
         animationsDisabled true
     }
+}
+
+task extractInstrumentedTestParameters(dependsOn: 'connectedDebugAndroidTest') {
+    if ((new File("test.properties")).exists()) {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("test.properties").newDataInputStream())
+        project.ext.set("AUTH_NUMBER", properties.getProperty("auth.number", ""))
+        project.ext.set("AUTH_CODE", properties.getProperty("auth.code", ""))
+    }
+}
+
+task disableGoogleServicesForUnitTesting(dependsOn: 'testDebugUnitTest') {
+    project.tasks.forEach({ if (it.name.contains('GoogleServices')) it.enabled = false })
 }
 
 dependencies {
