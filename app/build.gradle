@@ -45,6 +45,8 @@ android {
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
             manifestPlaceholders = [LabelsSuffix: "_dev"]
         }
+
+        instrumented { initWith debug }
     }
 
     compileOptions {
@@ -65,17 +67,23 @@ android {
     }
 }
 
-task extractInstrumentedTestParameters(dependsOn: 'connectedDebugAndroidTest') {
+android.applicationVariants.all { variant ->
+    if (variant.name.contains("Debug")) {
+        project.tasks.each { t ->
+            if (t.name.contains("GoogleServices")) {
+                variant.getVariantData().taskContainer.sourceGenTask.getTaskDependencies().getDependencies().remove(t)
+            }
+        }
+    }
+}
+
+task extractInstrumentedTestParameters(dependsOn: 'connectedInstrumentedAndroidTest') {
     if ((new File("test.properties")).exists()) {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("test.properties").newDataInputStream())
         project.ext.set("AUTH_NUMBER", properties.getProperty("auth.number", ""))
         project.ext.set("AUTH_CODE", properties.getProperty("auth.code", ""))
     }
-}
-
-task disableGoogleServicesForUnitTesting(dependsOn: 'testDebugUnitTest') {
-    project.tasks.forEach({ if (it.name.contains('GoogleServices')) it.enabled = false })
 }
 
 dependencies {
