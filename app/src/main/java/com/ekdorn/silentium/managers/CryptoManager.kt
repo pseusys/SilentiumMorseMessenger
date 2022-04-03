@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 package com.ekdorn.silentium.managers
 
 import android.content.Context

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.toReadableString
+import com.ekdorn.silentium.databinding.ItemDialogBinding
 import com.ekdorn.silentium.fragments.DialogsFragmentDirections
 import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
@@ -23,12 +24,7 @@ import com.google.android.material.imageview.ShapeableImageView
 class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecyclerView.Adapter<DialogsAdapter.ViewHolder>() {
     private var dialogs: List<Dialog> = emptyList()
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val contactImage: ShapeableImageView = view.findViewById(R.id.dialog_image)
-        val contactName: TextView = view.findViewById(R.id.contact_name)
-        val lastMessage: TextView = view.findViewById(R.id.last_message_text)
-        val unreadCount: Chip = view.findViewById(R.id.unread_count)
-    }
+    inner class ViewHolder(val binding: ItemDialogBinding) : RecyclerView.ViewHolder(binding.root)
 
     fun sync(new: List<Dialog>) {
         val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
@@ -48,21 +44,17 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_dialog, viewGroup, false)
-        return ViewHolder(view)
-    }
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) = ViewHolder(ItemDialogBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
-        viewHolder.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
-        viewHolder.lastMessage.text = dialogs[position].lastMessage.text.toReadableString()
-        Log.e("TAG", "onBindViewHolder: ${dialogs[position].unreadCount}")
+        viewHolder.binding.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
+        viewHolder.binding.lastMessage.text = dialogs[position].lastMessage.text.toReadableString()
         val unread = dialogs[position].unreadCount
         if (unread > 0) {
-            viewHolder.unreadCount.visibility = View.VISIBLE
-            viewHolder.unreadCount.text = unread.toString()
-        } else viewHolder.unreadCount.visibility = View.INVISIBLE
+            viewHolder.binding.unreadCount.visibility = View.VISIBLE
+            viewHolder.binding.unreadCount.text = unread.toString()
+        } else viewHolder.binding.unreadCount.visibility = View.INVISIBLE
     }
 
     override fun getItemCount() = dialogs.size

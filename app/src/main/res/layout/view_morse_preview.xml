@@ -27,7 +27,7 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/contacts_header"
+                android:id="@+id/processed_input"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/card_margin"
@@ -36,11 +36,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <com.ekdorn.silentium.views.Separator
+            <com.ekdorn.silentium.views.SeparatorView
                 android:id="@+id/delimiter"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/separator_height"
-                app:layout_constraintTop_toBottomOf="@id/contacts_header"
+                app:layout_constraintTop_toBottomOf="@id/processed_input"
                 app:layout_constraintBottom_toTopOf="@id/morse_input"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />

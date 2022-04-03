@@ -2,13 +2,13 @@ package com.ekdorn.silentium.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.widget.TextView
+import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.databinding.ViewDescriptiveRecyclerviewBinding
 import com.ekdorn.silentium.visuals.DoubleItemCallback
 import com.ekdorn.silentium.visuals.SeparationDecorator
 
@@ -30,20 +30,15 @@ class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style
         abstract fun onLongClick(viewHolder: ViewHolder, position: Int)
     }
 
-    private val recycler: RecyclerView
-    private val emptyText: TextView
+    private val binding = ViewDescriptiveRecyclerviewBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
-        View.inflate(context, R.layout.view_descriptive_recyclerview, this)
-        recycler = findViewById(R.id.recycler)
-        emptyText = findViewById(R.id.empty_text)
-
         context.theme.obtainStyledAttributes(attributes, R.styleable.DescriptiveRecyclerView, 0, 0).apply {
-            try { emptyText.text = getString(R.styleable.DescriptiveRecyclerView_text) } finally { recycle() }
+            try { binding.emptyText.text = getString(R.styleable.DescriptiveRecyclerView_text) } finally { recycle() }
         }
     }
 
-    fun initRecycler(adapter: Adapter<*>, manager: RecyclerView.LayoutManager) = recycler.apply {
+    fun initRecycler(adapter: Adapter<*>, manager: RecyclerView.LayoutManager) = binding.recycler.apply {
         this.layoutManager = manager
         this.adapter = adapter
         this.itemAnimator = DefaultItemAnimator()
@@ -54,7 +49,7 @@ class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style
         val itemsChanged = { separators: List<Pair<Int, String>> ->
             decorator.separators = separators
             invalidateItemDecorations()
-            emptyText.alpha = if (recycler.adapter?.itemCount == 0) 1F else 0F
+            binding.emptyText.alpha = if (binding.recycler.adapter?.itemCount == 0) 1F else 0F
         }
 
         itemsChanged(adapter.separators())
@@ -91,5 +86,5 @@ class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style
         })
     }
 
-    fun setItemCallback(callback: DoubleItemCallback) = ItemTouchHelper(callback).attachToRecyclerView(recycler)
+    fun setItemCallback(callback: DoubleItemCallback) = ItemTouchHelper(callback).attachToRecyclerView(binding.recycler)
 }

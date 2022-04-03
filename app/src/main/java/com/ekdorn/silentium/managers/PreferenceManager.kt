@@ -23,7 +23,7 @@ object PreferenceManager {
 
     operator fun get(context: Context): SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE)
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "CAST_NEVER_SUCCEEDS")
     inline fun <reified T> SharedPreferences.get(key: String) = when (T::class) {
         Integer::class -> getInt(key, initial[key] as Int) as T
         String::class -> getString(key, initial[key] as String) as T
@@ -34,7 +34,7 @@ object PreferenceManager {
         else -> throw Exception("Type ${T::class} can not be read Shared Preferences!")
     }
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "CAST_NEVER_SUCCEEDS")
     inline fun <reified T> SharedPreferences.getLive(key: String) = when (T::class) {
         Integer::class -> SharedPreferenceIntLiveData(this, key, initial[key] as Int)
         String::class -> SharedPreferenceStringLiveData(this, key, initial[key] as String)

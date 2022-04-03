@@ -19,48 +19,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.ekdorn.silentium.views.CombinedInputView
         android:id="@+id/input_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/messages_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" >
-
-        <ImageButton
-            android:id="@+id/keyboard_switch_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:src="@drawable/icon_keyboard"
-            android:backgroundTint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/message_input" />
-
-        <EditText
-            android:id="@+id/message_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="hint"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/keyboard_switch_button"
-            app:layout_constraintEnd_toStartOf="@id/send_button"
-            android:autofillHints="" />
-
-        <ImageButton
-            android:id="@+id/send_button"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:src="@drawable/icon_send"
-            android:backgroundTint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/message_input"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

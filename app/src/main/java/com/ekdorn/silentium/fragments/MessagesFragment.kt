@@ -1,6 +1,7 @@
 package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,11 @@ import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
-import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.databinding.FragmentMessagesBinding
 import com.ekdorn.silentium.mvs.MessagesViewModel
 import com.ekdorn.silentium.visuals.VisualAction
 import com.ekdorn.silentium.adapters.MessagesAdapter
+import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.managers.PrivilegeManager
 import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.mvs.MessageViewModelFactory
@@ -31,11 +32,11 @@ class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
 
         if (args.contact in PrivilegeManager.ACCOUNTS) binding.inputView.visibility = View.GONE
-        else binding.sendButton.setOnClickListener {
-            val text = binding.messageInput.text.toString()
+        else binding.inputView.setOnClickListener {
+            val text = binding.inputView.text.toString()
             if (text.isNotBlank()) {
                 messagesViewModel.addMessage(text.toMyteReadable(), UserManager[requireContext()].value!!)
-                binding.messageInput.text.clear()
+                binding.inputView.text.clear()
             }
         }
 

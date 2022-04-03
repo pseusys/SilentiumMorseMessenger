@@ -2,20 +2,17 @@ package com.ekdorn.silentium.adapters
 
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.databinding.ItemContactBinding
 import com.ekdorn.silentium.fragments.ContactsFragmentDirections
-import com.ekdorn.silentium.fragments.DialogsFragmentDirections
 import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.ekdorn.silentium.visuals.VisualAction
-import com.google.android.material.imageview.ShapeableImageView
 
 
 class ContactsAdapter(private var me: Contact, private val deleteAction: VisualAction) : DescriptiveRecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
@@ -23,11 +20,7 @@ class ContactsAdapter(private var me: Contact, private val deleteAction: VisualA
     private var external: List<Contact> = emptyList()
     enum class ContactsSet { ME, INTERNAL, EXTERNAL }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val contactImage: ShapeableImageView = view.findViewById(R.id.contact_image)
-        val contactName: TextView = view.findViewById(R.id.contact_name)
-        val contactOnline: TextView = view.findViewById(R.id.contact_online)
-    }
+    inner class ViewHolder(val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root)
 
     fun sync(new: List<Contact>, set: ContactsSet) {
         val old = listOf(me) + internal + external
@@ -56,16 +49,13 @@ class ContactsAdapter(private var me: Contact, private val deleteAction: VisualA
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_contact, viewGroup, false)
-        return ViewHolder(view)
-    }
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) = ViewHolder(ItemContactBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         val contact = getItem(position)
-        viewHolder.contactName.text = contact.name ?: contact.contact
-        viewHolder.contactOnline.text = contact.wasOnline.toString()
+        viewHolder.binding.contactName.text = contact.name ?: contact.contact
+        viewHolder.binding.contactOnline.text = contact.wasOnline.toString()
     }
 
     override fun getItemCount() = 1 + internal.size + external.size
