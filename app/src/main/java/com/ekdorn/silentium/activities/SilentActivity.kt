@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ActivitySilentRootBinding
 import com.ekdorn.silentium.fragments.InputFragmentDirections
+import com.ekdorn.silentium.fragments.MessagesFragment
 import com.ekdorn.silentium.managers.UserManager
 
 
@@ -57,5 +58,11 @@ class SilentActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+        val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0) as? MessagesFragment
+        if ((currentFragment == null) || (!currentFragment.onBackPressed())) super.onBackPressed()
     }
 }

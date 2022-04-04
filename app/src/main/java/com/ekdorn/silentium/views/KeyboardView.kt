@@ -25,6 +25,8 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
         binding.inputButton.addMorseListener(object : SilentInputView.MorseListener() {
             val bibits = mutableListOf<BiBit>()
 
+            override fun onStart() = freeze(true)
+
             override fun onBiBit(biBit: BiBit) {
                 bibits.add(biBit)
                 input?.invoke()?.setComposingText(bibits.map { it.sign }.joinToString(""), 1)
@@ -38,10 +40,19 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
             override fun onMyte(myte: Myte) {
                 input?.invoke()?.deleteSurroundingText(1, 0)
                 input?.invoke()?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
+                freeze(false)
             }
         })
 
         binding.backButton.setOnClickListener { input?.invoke()?.deleteSurroundingText(1, 0) }
         binding.settingsButton.setOnClickListener { context.startActivity(Intent(context, IMSSettingsActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+    }
+
+    fun freeze(switch: Boolean) {
+        if (switch) input?.invoke()?.beginBatchEdit()
+        else input?.invoke()?.endBatchEdit()
+        binding.backButton.isEnabled = !switch
+        binding.languageButton.isEnabled = !switch
+        binding.settingsButton.isEnabled = !switch
     }
 }

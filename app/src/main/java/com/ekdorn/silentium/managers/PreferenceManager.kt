@@ -6,7 +6,9 @@ import com.ekdorn.silentium.utils.*
 
 
 object PreferenceManager {
-    private const val PREFERENCES_FILE = "settings"
+    enum class PrefFile(val sign: String) {
+        GENERAL("settings"), KEYBOARD("keyboard")
+    }
 
     // Morse code preferences
     const val DAH_LENGTH_KEY = "dah_length"
@@ -21,7 +23,7 @@ object PreferenceManager {
         Pair(EOM_LENGTH_KEY, 2000L)
     )
 
-    operator fun get(context: Context): SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE)
+    operator fun get(context: Context, name: PrefFile = PrefFile.GENERAL): SharedPreferences = context.getSharedPreferences(name.sign, Context.MODE_PRIVATE)
 
     @Suppress("UNCHECKED_CAST", "CAST_NEVER_SUCCEEDS")
     inline fun <reified T> SharedPreferences.get(key: String) = when (T::class) {

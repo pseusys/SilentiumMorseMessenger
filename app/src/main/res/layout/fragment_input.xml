@@ -24,6 +24,7 @@
         android:layout_height="0dp"
         android:paddingHorizontal="@dimen/minimal_offset"
         app:rotate="true"
+        app:prefs="settings"
         android:src="@drawable/logo_outline"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintVertical_weight="5"

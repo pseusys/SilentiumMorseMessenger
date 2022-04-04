@@ -1,7 +1,6 @@
 package com.ekdorn.silentium.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,14 @@ import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
-import com.ekdorn.silentium.databinding.FragmentMessagesBinding
-import com.ekdorn.silentium.mvs.MessagesViewModel
-import com.ekdorn.silentium.visuals.VisualAction
 import com.ekdorn.silentium.adapters.MessagesAdapter
 import com.ekdorn.silentium.core.toMyteReadable
+import com.ekdorn.silentium.databinding.FragmentMessagesBinding
 import com.ekdorn.silentium.managers.PrivilegeManager
 import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.mvs.MessageViewModelFactory
+import com.ekdorn.silentium.mvs.MessagesViewModel
+import com.ekdorn.silentium.visuals.VisualAction
 
 
 class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
@@ -44,6 +43,10 @@ class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
         val adapter = MessagesAdapter(requireContext(), UserManager[requireContext()].value!!, deleteAction)
         val recycler = binding.messagesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
+        recycler.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+            if (bottom < oldBottom) recycler.smoothScrollToPosition(adapter.itemCount - 1)
+        }
+
         messagesViewModel.messages.observe(viewLifecycleOwner) {
             deleteAction.views = it.indices
             adapter.sync(it)
@@ -60,6 +63,8 @@ class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
         super.onDestroyView()
         _binding = null
     }
+
+    fun onBackPressed() = binding.inputView.onBackPressed()
 
     override fun getDefaultViewModelProviderFactory() = MessageViewModelFactory(requireActivity().application, args.contact)
 }

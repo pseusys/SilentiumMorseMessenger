@@ -3,6 +3,7 @@ package com.ekdorn.silentium.views
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -32,9 +33,10 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
     constructor(context: Context): this(context, null)
 
     private var morseListener: MorseListener? = null
-    private var rotate = false
 
-    private val prefs = PreferenceManager[context]
+    private val rotate: Boolean
+    private val prefs: SharedPreferences
+
     private val input = mutableListOf<BiBit>()
     private val currentLong = mutableListOf<BiBit>()
 
@@ -46,7 +48,10 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
 
     init {
         context.theme.obtainStyledAttributes(attributes, R.styleable.SilentInputView, 0, 0).apply {
-            try { rotate = getBoolean(R.styleable.SilentInputView_rotate, rotate) } finally { recycle() }
+            try {
+                rotate = getBoolean(R.styleable.SilentInputView_rotate, false)
+                prefs = PreferenceManager[context, PreferenceManager.PrefFile.values()[getInt(R.styleable.SilentInputView_prefs, 0)]]
+            } finally { recycle() }
         }
 
         if (rotate) ObjectAnimator.ofFloat(this, View.ROTATION, 0.0f, 360.0f).apply {
@@ -79,7 +84,8 @@ class SilentInputView(context: Context, attributes: AttributeSet?, style: Int) :
                 animateDown()
                 actionUp()
             }
-            MotionEvent.ACTION_MOVE -> if (!touchedRound(event.x, event.y)) {
+            MotionEvent.ACTION_MOVE -> if (!touchedRound(event.x, event.y) && inputInProgress) {
+                inputInProgress = false
                 animateDown()
                 actionUp()
             }
