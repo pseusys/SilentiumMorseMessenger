@@ -7,11 +7,14 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.inputmethod.InputConnection
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.ekdorn.silentium.activities.IMSSettingsActivity
+import com.ekdorn.silentium.R
+import com.ekdorn.silentium.activities.ProxyActivity
 import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Morse
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.databinding.ViewKeyboardBinding
+import com.ekdorn.silentium.fragments.SettingsFragment
+import com.ekdorn.silentium.managers.PreferenceManager
 
 
 class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : ConstraintLayout(context, attributes, style) {
@@ -19,6 +22,8 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
     constructor(context: Context): this(context, null)
 
     private val binding = ViewKeyboardBinding.inflate(LayoutInflater.from(context), this, true)
+    private val append = PreferenceManager[context].get(R.string.pref_morse_append_key, false)
+
     var input: (() -> InputConnection)? = null
 
     init {
@@ -39,13 +44,13 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
 
             override fun onMyte(myte: Myte) {
                 input?.invoke()?.deleteSurroundingText(1, 0)
-                input?.invoke()?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
+                if (append) input?.invoke()?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
                 freeze(false)
             }
         })
 
         binding.backButton.setOnClickListener { input?.invoke()?.deleteSurroundingText(1, 0) }
-        binding.settingsButton.setOnClickListener { context.startActivity(Intent(context, IMSSettingsActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+        binding.settingsButton.setOnClickListener { context.startActivity(Intent(context, ProxyActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(SettingsFragment.keyboard, true)) }
     }
 
     fun freeze(switch: Boolean) {
@@ -53,6 +58,5 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
         else input?.invoke()?.endBatchEdit()
         binding.backButton.isEnabled = !switch
         binding.languageButton.isEnabled = !switch
-        binding.settingsButton.isEnabled = !switch
     }
 }

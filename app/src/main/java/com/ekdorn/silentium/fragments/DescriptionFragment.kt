@@ -9,11 +9,6 @@ import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.*
 import com.ekdorn.silentium.databinding.FragmentDescriptionBinding
 import com.ekdorn.silentium.managers.PreferenceManager
-import com.ekdorn.silentium.managers.PreferenceManager.DAH_LENGTH_KEY
-import com.ekdorn.silentium.managers.PreferenceManager.END_LENGTH_KEY
-import com.ekdorn.silentium.managers.PreferenceManager.EOM_LENGTH_KEY
-import com.ekdorn.silentium.managers.PreferenceManager.GAP_LENGTH_KEY
-import com.ekdorn.silentium.managers.PreferenceManager.get
 
 
 class DescriptionFragment : Fragment() {
@@ -26,10 +21,10 @@ class DescriptionFragment : Fragment() {
         val prefs = PreferenceManager[requireContext()]
         val morseCode = Morse.codeData().sortedBy { it.value }.map { "${it.value}: ${it.key.toMorseString()}" }
 
-        val dahLen = prefs.get<Long>(DAH_LENGTH_KEY)
-        val gapLen = prefs.get<Long>(GAP_LENGTH_KEY)
-        val endLen = prefs.get<Long>(END_LENGTH_KEY)
-        val eomLen = prefs.get<Long>(EOM_LENGTH_KEY)
+        val dahLen = prefs.get(R.string.pref_morse_dah_key, -1)
+        val gapLen = prefs.get(R.string.pref_morse_gap_key, -1)
+        val endLen = prefs.get(R.string.pref_morse_end_key, -1)
+        val eomLen = prefs.get(R.string.pref_morse_eom_key, -1)
 
         binding.codeDescription.text = getString(R.string.description_code_description, Morse.name, Morse.ref)
         binding.codeViewCol1.text = morseCode.subList(0, morseCode.size / 2).joinToString("\n")

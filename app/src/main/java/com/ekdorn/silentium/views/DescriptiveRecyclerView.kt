@@ -21,8 +21,8 @@ class DescriptiveRecyclerView(context: Context, attributes: AttributeSet?, style
         open fun separators(): List<Pair<Int, String>> = emptyList()
 
         override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-            viewHolder.itemView.setOnClickListener { onClick(viewHolder, viewHolder.adapterPosition) }
-            viewHolder.itemView.setOnLongClickListener { onLongClick(viewHolder, viewHolder.adapterPosition); true }
+            viewHolder.itemView.setOnClickListener { onClick(viewHolder, viewHolder.bindingAdapterPosition) }
+            viewHolder.itemView.setOnLongClickListener { onLongClick(viewHolder, viewHolder.bindingAdapterPosition); true }
         }
 
         abstract fun onClick(viewHolder: ViewHolder, position: Int)

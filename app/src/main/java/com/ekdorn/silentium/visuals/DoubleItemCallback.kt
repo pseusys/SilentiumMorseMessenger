@@ -22,8 +22,8 @@ class DoubleItemCallback(context: Context, private val leftAction: VisualAction?
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         var flags = 0
-        if (viewHolder.adapterPosition in leftAction?.views ?: IntRange.EMPTY) flags = flags or ItemTouchHelper.LEFT
-        if (viewHolder.adapterPosition in rightAction?.views ?: IntRange.EMPTY) flags = flags or ItemTouchHelper.RIGHT
+        if (viewHolder.bindingAdapterPosition in leftAction?.views ?: IntRange.EMPTY) flags = flags or ItemTouchHelper.LEFT
+        if (viewHolder.bindingAdapterPosition in rightAction?.views ?: IntRange.EMPTY) flags = flags or ItemTouchHelper.RIGHT
         return makeMovementFlags(0, flags)
     }
 
@@ -31,9 +31,9 @@ class DoubleItemCallback(context: Context, private val leftAction: VisualAction?
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         when (direction) {
-            ItemTouchHelper.LEFT -> leftAction?.callback?.invoke(viewHolder.adapterPosition)
-            ItemTouchHelper.RIGHT -> rightAction?.callback?.invoke(viewHolder.adapterPosition)
-            else -> Log.e("DoubleItemChecker", "viewHolder ${viewHolder.adapterPosition} was swiped to direction $direction")
+            ItemTouchHelper.LEFT -> leftAction?.callback?.invoke(viewHolder.bindingAdapterPosition)
+            ItemTouchHelper.RIGHT -> rightAction?.callback?.invoke(viewHolder.bindingAdapterPosition)
+            else -> Log.e("DoubleItemChecker", "viewHolder ${viewHolder.bindingAdapterPosition} was swiped to direction $direction")
         }
     }
 
@@ -42,7 +42,7 @@ class DoubleItemCallback(context: Context, private val leftAction: VisualAction?
         val itemHeight = itemView.bottom - itemView.top
         val isCanceled = (dX == 0F) && !isCurrentlyActive
 
-        val action = if (isCanceled || (viewHolder.adapterPosition == -1)) {
+        val action = if (isCanceled || (viewHolder.bindingAdapterPosition == -1)) {
             c.clear(itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
             return super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         } else if ((dX > 0) && (rightAction != null)) rightAction

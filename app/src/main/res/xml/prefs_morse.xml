@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        app:key="@string/pref_morse_key"
+        app:title="Morse Code"
+        app:iconSpaceReserved="false" >
+
+        <SeekBarPreference
+            app:key="@string/pref_morse_speed_key"
+            app:min="1"
+            android:max="100"
+            app:defaultValue="20"
+            app:showSeekBarValue="true"
+            app:title="Transmission speed" />
+
+        <SwitchPreferenceCompat
+            app:key="@string/pref_morse_farnsworth_key"
+            app:defaultValue="true"
+            app:title="Use Farnsworth speed" />
+
+        <SwitchPreferenceCompat
+            app:key="@string/pref_morse_timing_key"
+            app:title="Use standard timing"
+            app:defaultValue="true"
+            app:allowDividerAbove="true"
+            android:disableDependentsState="true" />
+
+        <SeekBarPreference
+            app:key="@string/pref_morse_dah_key"
+            app:title="Dah length"
+            app:min="10"
+            android:max="5000"
+            app:defaultValue="180"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:dependency="@string/pref_morse_timing_key" />
+
+        <SeekBarPreference
+            app:key="@string/pref_morse_gap_key"
+            app:title="Gap length"
+            app:min="10"
+            android:max="5000"
+            app:defaultValue="180"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:dependency="@string/pref_morse_timing_key" />
+
+        <SeekBarPreference
+            app:key="@string/pref_morse_end_key"
+            app:title="Space length"
+            app:min="10"
+            android:max="10000"
+            app:defaultValue="420"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:dependency="@string/pref_morse_timing_key" />
+
+        <SeekBarPreference
+            app:key="@string/pref_morse_eom_key"
+            app:title="End of transmission timeout"
+            app:min="10"
+            android:max="15000"
+            app:defaultValue="1000"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true" />
+
+        <SwitchPreferenceCompat
+            app:key="@string/pref_morse_append_key"
+            app:singleLineTitle="false"
+            app:title="Should append new line after message" />
+
+        <ListPreference
+            app:key="@string/pref_morse_language_key"
+            app:title="Language encoding"
+            app:allowDividerAbove="true"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="default"
+            app:entries="@array/pref_morse_language_entries"
+            android:entryValues="@array/pref_morse_language_entry_values" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

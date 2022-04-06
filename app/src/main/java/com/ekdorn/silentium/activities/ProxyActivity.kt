@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ekdorn.silentium.BuildConfig.APPLICATION_ID
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.fragments.SettingsFragment
 import com.ekdorn.silentium.managers.CryptoManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.*
@@ -28,9 +29,11 @@ class ProxyActivity : AppCompatActivity() {
         installSplashScreen().setKeepOnScreenCondition { true }
         super.onCreate(savedInstanceState)
         action = intent.action.toString()
-        if (Firebase.auth.currentUser == null) {
+
+        if ((action != Intent.ACTION_APPLICATION_PREFERENCES) && ((intent.flags == 0) || (intent.hasExtra(SettingsFragment.keyboard)))) navigate(SettingsFragment.keyboard)
+        else if (Firebase.auth.currentUser == null) {
             if (!checkDeepLink()) authenticate()
-        } else navigate()
+        } else navigate(if (action == Intent.ACTION_APPLICATION_PREFERENCES) SettingsFragment.default else null)
     }
 
     private fun authenticate() {
@@ -69,15 +72,15 @@ class ProxyActivity : AppCompatActivity() {
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) = when {
         result.resultCode == RESULT_OK -> {
             if (!CryptoManager.keysSaved()) CryptoManager.saveKeys(this)
-            navigate()
+            navigate(if (action == Intent.ACTION_APPLICATION_PREFERENCES) SettingsFragment.default else null)
         }
         result.idpResponse != null -> Toast.makeText(this, "Log in error!!", Toast.LENGTH_SHORT).show()
         else -> finish()
     }
 
-    private fun navigate(intentFlags: Int = 0) {
-        val intent = Intent(this, SilentActivity::class.java).addFlags(intentFlags)
-        if (action == Intent.ACTION_APPLICATION_PREFERENCES) intent.putExtra(SilentActivity.NAVIGATE_TO_SETTINGS, true)
+    private fun navigate(extra: String?) {
+        val intent = Intent(this, SilentActivity::class.java)
+        if (extra != null) intent.putExtra(SilentActivity.NAVIGATE_TO_SETTINGS, extra)
         startActivity(intent)
         overridePendingTransition(0, 0)
         finish()

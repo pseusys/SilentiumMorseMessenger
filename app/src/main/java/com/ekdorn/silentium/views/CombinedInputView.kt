@@ -8,14 +8,16 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ViewCombinedInputBinding
+import com.ekdorn.silentium.managers.PreferenceManager
 
 
 class CombinedInputView(context: Context, attributes: AttributeSet?, style: Int) : ConstraintLayout(context, attributes, style) {
     constructor(context: Context, attributes: AttributeSet?): this(context, attributes, 0)
     constructor(context: Context): this(context, null)
 
-    private var silentDefault = false
+    private var silentDefault = PreferenceManager[context].get(R.string.pref_keyboard_default_key, false)
     private val binding = ViewCombinedInputBinding.inflate(LayoutInflater.from(context), this, true)
 
     var text: Editable = binding.messageInput.text
@@ -35,6 +37,7 @@ class CombinedInputView(context: Context, attributes: AttributeSet?, style: Int)
             }
         }
 
+        binding.messageInput.showSoftInputOnFocus = !silentDefault
         binding.messageInput.setOnFocusChangeListener { _, focus -> if (silentDefault) binding.keyboard.reset(focus) }
     }
 
@@ -48,6 +51,7 @@ class CombinedInputView(context: Context, attributes: AttributeSet?, style: Int)
     fun onBackPressed(): Boolean = if (silentDefault) {
         if (binding.keyboard.isVisible) {
             binding.keyboard.reset(false)
+            binding.messageInput.clearFocus()
             true
         } else false
     } else false

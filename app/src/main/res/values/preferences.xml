@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_account_key" translatable="false">pref_account</string>
+
+    <string name="pref_account_picture_key" translatable="false">pref_account_picture</string>
+    <string name="pref_account_picture_title">Silentium</string>
+
+    <string name="pref_account_name_key" translatable="false">pref_account_name</string>
+    <string name="pref_account_name_title">Silentium</string>
+
+
+    <string name="pref_additional_key" translatable="false">pref_additional</string>
+
+    <string name="pref_additional_feedback_key" translatable="false">pref_additional_feedback</string>
+    <string name="pref_additional_feedback_title">Silentium</string>
+
+
+    <string name="pref_keyboard_key" translatable="false">pref_keyboard</string>
+
+    <string name="pref_keyboard_default_key" translatable="false">pref_keyboard_default</string>
+    <string name="pref_keyboard_default_title">Silentium</string>
+
+    <string name="pref_keyboard_suggestions_key" translatable="false">pref_keyboard_suggestions</string>
+    <string name="pref_keyboard_suggestions_title">Silentium</string>
+
+
+    <string name="pref_morse_key" translatable="false">pref_morse</string>
+
+    <string name="pref_morse_speed_key" translatable="false">pref_morse_speed</string>
+    <string name="pref_morse_speed_title">Silentium</string>
+    <string name="pref_morse_speed_summary_dynamic">Current period of one unit is %1$d ms</string>
+
+    <string name="pref_morse_farnsworth_key" translatable="false">pref_morse_farnsworth</string>
+    <string name="pref_morse_farnsworth_title">Silentium</string>
+
+    <string name="pref_morse_timing_key" translatable="false">pref_morse_timing</string>
+    <string name="pref_morse_timing_title">Silentium</string>
+
+    <string name="pref_morse_dah_key" translatable="false">pref_morse_dah</string>
+    <string name="pref_morse_dah_title">Silentium</string>
+
+    <string name="pref_morse_gap_key" translatable="false">pref_morse_gap</string>
+    <string name="pref_morse_gap_title">Silentium</string>
+
+    <string name="pref_morse_end_key" translatable="false">pref_morse_end</string>
+    <string name="pref_morse_end_title">Silentium</string>
+
+    <string name="pref_morse_eom_key" translatable="false">pref_morse_eom</string>
+    <string name="pref_morse_eom_title">Silentium</string>
+
+    <string name="pref_morse_append_key" translatable="false">pref_morse_append</string>
+    <string name="pref_morse_append_title">Silentium</string>
+
+    <string name="pref_morse_language_key" translatable="false">pref_morse_language</string>
+    <string name="pref_morse_language_title">Silentium</string>
+    <string-array name="pref_morse_language_entries">
+        <item>International 🇺🇳</item>
+        <item>Russian 🇷🇺</item>
+    </string-array>
+    <string-array name="pref_morse_language_entry_values">
+        <item>default</item>
+        <item>ru</item>
+    </string-array>
+
+
+    <string name="pref_notifications_key" translatable="false">pref_notifications</string>
+
+    <string name="pref_notifications_notify_key" translatable="false">pref_notifications_notify</string>
+    <string name="pref_notifications_notify_title">Silentium</string>
+</resources>

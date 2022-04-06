@@ -16,7 +16,7 @@
         android:id="@+id/nav_input"
         android:name="com.ekdorn.silentium.fragments.InputFragment"
         android:label="@string/menu_input"
-        tools:layout="@layout/fragment_notes">
+        tools:layout="@layout/fragment_notes" >
 
         <action
             android:id="@+id/action_nav_input_to_nav_settings"
@@ -59,8 +59,14 @@
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.ekdorn.silentium.fragments.SettingsFragment"
-        android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="@string/menu_settings" >
+
+        <argument
+            android:name="access"
+            app:argType="string"
+            android:defaultValue="DEFAULT" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_messages"

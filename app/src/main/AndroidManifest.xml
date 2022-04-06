@@ -10,8 +10,8 @@
         android:icon="@mipmap/logo_launcher_complete"
         android:label="@string/app_name${LabelsSuffix}"
         android:roundIcon="@mipmap/logo_launcher_complete_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.SilentiumMorseMessenger" >
+        android:theme="@style/Theme.SilentiumMorseMessenger"
+        android:supportsRtl="true" >
 
         <activity
             android:name=".activities.ProxyActivity"
@@ -29,14 +29,11 @@
         <activity android:name=".activities.SilentActivity"
             android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar" />
 
-        <activity android:name=".activities.IMSSettingsActivity"
-            android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar" />
-
         <service android:name=".services.SilentIMS"
             android:label="@string/silent_ime_name${LabelsSuffix}"
             android:permission="android.permission.BIND_INPUT_METHOD"
             android:theme="@style/Theme.SilentiumMorseMessenger.NoActionBar"
-            android:exported="true">
+            android:exported="true" >
 
             <intent-filter>
                 <action android:name="android.view.InputMethod" />

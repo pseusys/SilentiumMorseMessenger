@@ -14,20 +14,19 @@ import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.core.toBiBits
 import com.ekdorn.silentium.managers.PreferenceManager
-import com.ekdorn.silentium.managers.PreferenceManager.get
 import org.hamcrest.Matcher
 
 
 fun tapView(id: Int, myte: Myte) {
     val prefs = PreferenceManager[InstrumentationRegistry.getInstrumentation().targetContext]
-    val dit = prefs.get<Long>(PreferenceManager.DAH_LENGTH_KEY) / 2
-    val gap = prefs.get<Long>(PreferenceManager.GAP_LENGTH_KEY) * 1.5
-    val dah = prefs.get<Long>(PreferenceManager.DAH_LENGTH_KEY) * 1.5
-    val end = prefs.get<Long>(PreferenceManager.END_LENGTH_KEY) * 1.5
-    val eom = prefs.get<Long>(PreferenceManager.EOM_LENGTH_KEY) * 1.5
+    val dit = prefs.get(R.string.pref_morse_dah_key, -1) / 2
+    val gap = prefs.get(R.string.pref_morse_gap_key, -1) * 1.5
+    val dah = prefs.get(R.string.pref_morse_dah_key, -1) * 1.5
+    val end = prefs.get(R.string.pref_morse_end_key, -1) * 1.5
+    val eom = prefs.get(R.string.pref_morse_eom_key, -1) * 1.5
     myte.toBiBits().forEach {
         when (it) {
-            BiBit.DIT -> onView(ViewMatchers.withId(id)).perform(touch(dit))
+            BiBit.DIT -> onView(ViewMatchers.withId(id)).perform(touch(dit.toLong()))
             BiBit.DAH -> onView(ViewMatchers.withId(id)).perform(touch(dah.toLong()))
             BiBit.GAP -> onView(ViewMatchers.withId(id)).perform(wait(gap.toLong()))
             BiBit.END -> onView(ViewMatchers.withId(id)).perform(wait(end.toLong()))

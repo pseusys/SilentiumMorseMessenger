@@ -3,7 +3,6 @@ package com.ekdorn.silentium.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.View
 import androidx.appcompat.widget.AppCompatImageButton
 import com.ekdorn.silentium.R
 import kotlinx.coroutines.Job
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
  * ones after the normalInterval.
  * Interval is scheduled after the onClick completes, so it has to run fast.
  */
-class RepeatButton(context: Context, attributes: AttributeSet?, style: Int) : AppCompatImageButton(context, attributes, style), View.OnTouchListener {
+class RepeatButton(context: Context, attributes: AttributeSet?, style: Int) : AppCompatImageButton(context, attributes, style) {
     constructor(context: Context, attributes: AttributeSet?): this(context, attributes, R.attr.imageButtonStyle)
     constructor(context: Context): this(context, null)
 
@@ -36,7 +35,6 @@ class RepeatButton(context: Context, attributes: AttributeSet?, style: Int) : Ap
             } finally { recycle() }
         }
         require(!(initialInterval < 0 || normalInterval < 0)) { "Negative interval!" }
-        setOnTouchListener(this)
     }
 
     private fun setTimer(interval: Long): Job = MainScope().launch {
@@ -45,19 +43,22 @@ class RepeatButton(context: Context, attributes: AttributeSet?, style: Int) : Ap
         timer = setTimer(normalInterval)
     }
 
-    override fun onTouch(view: View, motionEvent: MotionEvent) = when (motionEvent.action) {
+    override fun onTouchEvent(event: MotionEvent) = when (event.action) {
         MotionEvent.ACTION_DOWN -> {
             timer?.cancel()
             clickListener?.onClick(this)
             timer = setTimer(initialInterval)
-            true
+            super.onTouchEvent(event)
         }
         MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
             timer?.cancel()
-            true
+            performClick()
+            super.onTouchEvent(event)
         }
-        else -> false
+        else -> super.onTouchEvent(event)
     }
+
+    override fun performClick() = super.performClick()
 
     override fun setOnClickListener(l: OnClickListener?) { clickListener = l }
 }

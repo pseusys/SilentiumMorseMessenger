@@ -44,7 +44,7 @@ class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
         val recycler = binding.messagesView.initRecycler(adapter, LinearLayoutManager(requireContext()))
 
         recycler.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
-            if (bottom < oldBottom) recycler.smoothScrollToPosition(adapter.itemCount - 1)
+            if ((bottom < oldBottom) && (adapter.itemCount > 0)) recycler.smoothScrollToPosition(adapter.itemCount - 1)
         }
 
         messagesViewModel.messages.observe(viewLifecycleOwner) {

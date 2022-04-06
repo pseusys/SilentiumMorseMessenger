@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="@string/pref_keyboard_key"
+        app:title="Keyboard"
+        app:iconSpaceReserved="false" >
+
+        <SwitchPreferenceCompat
+            app:key="@string/pref_keyboard_default_key"
+            app:title="Use Silent Keyboard as default in Silentium"
+            app:singleLineTitle="false"
+            app:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            app:key="@string/pref_keyboard_suggestions_key"
+            app:title="Propose letter suggestions"
+            app:defaultValue="false" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

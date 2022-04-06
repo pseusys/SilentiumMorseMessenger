@@ -2,10 +2,6 @@
 <resources>
     <declare-styleable name="SilentInputView">
         <attr name="rotate" format="boolean" />
-        <attr name="prefs" format="enum">
-            <enum name="settings" value="0"/>
-            <enum name="keyboard" value="1"/>
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="DescriptiveRecyclerView">

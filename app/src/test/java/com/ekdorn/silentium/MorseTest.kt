@@ -31,6 +31,11 @@ class MorseTest {
         assertEquals(Morse.getLong(errorString), errorLong)
     }
 
+    @Test
+    fun getLength_isCorrect() {
+        // TODO: Not yet implemented!
+    }
+
 
     @Test
     fun locale_isCorrect() {
