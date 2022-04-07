@@ -1,12 +1,10 @@
 package com.ekdorn.silentium.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +15,6 @@ import com.ekdorn.silentium.fragments.DialogsFragmentDirections
 import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.ekdorn.silentium.visuals.VisualAction
-import com.google.android.material.chip.Chip
-import com.google.android.material.imageview.ShapeableImageView
 
 
 class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecyclerView.Adapter<DialogsAdapter.ViewHolder>() {
@@ -49,7 +45,7 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         viewHolder.binding.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
-        viewHolder.binding.lastMessage.text = dialogs[position].lastMessage.text.toReadableString()
+        viewHolder.binding.lastMessage.text = dialogs[position].lastMessage.text.toReadableString(viewHolder.itemView.context)
         val unread = dialogs[position].unreadCount
         if (unread > 0) {
             viewHolder.binding.unreadCount.visibility = View.VISIBLE

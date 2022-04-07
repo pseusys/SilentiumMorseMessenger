@@ -1,8 +1,10 @@
 package com.ekdorn.silentium
 
+import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Morse
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import kotlin.math.roundToInt
 
 
 class MorseTest {
@@ -15,30 +17,47 @@ class MorseTest {
     private val spaceString = " "
     private val errorString = "�"
 
+    private val locales = arrayOf("default", "ru")
+    private val flags = arrayOf("\uD83C\uDDFA\uD83C\uDDF3", "\uD83C\uDDF7\uD83C\uDDFA")
+
+    private val transmissions = arrayOf(1, 6, 18, 38, 100)
+
+    private val morse = Morse.morse()
+
+
+    // Reference: http://www.arrl.org/files/file/Technology/x9004008.pdf
+    @Test
+    fun getLength_isCorrect() = transmissions.flatMap { listOf(it to true, it to false) }.forEach {
+        val added = (60 * 18 - 37.2 * it.first) / (18 * it.first)
+        val unit = if (it.second && (it.first < 18)) 1.2 / 18 else 1.2 / it.first
+        assertEquals((unit * 1000).roundToInt(), Morse.getLength(it.first, it.second, BiBit.DIT))
+        val dash = 3 * unit
+        assertEquals((dash * 1000).roundToInt(), Morse.getLength(it.first, it.second, BiBit.DAH))
+        val gap = 3 * unit + if (it.second && (it.first < 18)) (3 * added) / 19 else 0.0
+        assertEquals((gap * 1000).roundToInt(), Morse.getLength(it.first, it.second, BiBit.GAP))
+        val end = 7 * unit + if (it.second && (it.first < 18)) (7 * added) / 19 else 0.0
+        assertEquals((end * 1000).roundToInt(), Morse.getLength(it.first, it.second, BiBit.END))
+    }
+
+    @Test
+    fun morse_isCorrect() {
+        locales.forEachIndexed { index, locale -> assertEquals(Morse.morse(locale).flag, flags[index]) }
+        assertEquals(Morse.morse().hashCode(), Morse.morse().hashCode())
+    }
+
 
     @Test
     fun getString_isCorrect() {
-        charLongs.forEachIndexed { index, long -> assertEquals(Morse.getString(long), charStrings[index]) }
-        assertEquals(Morse.getString(spaceLong), spaceString)
-        assertEquals(Morse.getString(errorousLong), errorString)
-        assertEquals(Morse.getString(errorLong), errorString)
+        charLongs.forEachIndexed { index, long -> assertEquals(charStrings[index], morse.getString(long)) }
+        assertEquals(spaceString, morse.getString(spaceLong),)
+        assertEquals(errorString, morse.getString(errorousLong))
+        assertEquals(errorString, morse.getString(errorLong))
     }
 
     @Test
     fun getLong_isCorrect() {
-        charStrings.forEachIndexed { index, string -> assertEquals(Morse.getLong(string), charLongs[index]) }
-        assertEquals(Morse.getLong(spaceString), spaceLong)
-        assertEquals(Morse.getLong(errorString), errorLong)
-    }
-
-    @Test
-    fun getLength_isCorrect() {
-        // TODO: Not yet implemented!
-    }
-
-
-    @Test
-    fun locale_isCorrect() {
-        // TODO: Not yet implemented!
+        charStrings.forEachIndexed { index, string -> assertEquals(charLongs[index], morse.getLong(string)) }
+        assertEquals(spaceLong, morse.getLong(spaceString))
+        assertEquals(errorLong, morse.getLong(errorString))
     }
 }

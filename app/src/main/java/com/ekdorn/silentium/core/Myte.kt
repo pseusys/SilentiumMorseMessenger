@@ -1,5 +1,7 @@
 package com.ekdorn.silentium.core
 
+import android.content.Context
+import com.ekdorn.silentium.core.Morse.morse
 import com.ekdorn.silentium.utils.split
 
 
@@ -8,6 +10,7 @@ import com.ekdorn.silentium.utils.split
  * Each byte contains BiBits in reversed order.
  */
 typealias Myte = ByteArray
+
 
 fun Myte.toLongs(): List<Long> {
     val biBits = toBiBits().split(BiBit.END)
@@ -29,9 +32,14 @@ fun List<Long>.longsToMyte(): Myte {
     }.flatten().biBitsToMyte()
 }
 
-fun Myte.toReadableString() = toLongs().fold("") { acc, l -> "${acc}${Morse.getString(l)}" }
 
-fun String.toMyteReadable() = map { Morse.getLong(it.toString()) }.longsToMyte()
+fun Myte.toReadableString(locale: String) = toLongs().fold("") { acc, l -> "${acc}${morse(locale).getString(l)}" }
+
+fun Myte.toReadableString(context: Context) = toLongs().fold("") { acc, l -> "${acc}${context.morse().getString(l)}" }
+
+fun String.toMyteReadable(locale: String) = map { morse(locale).getLong(it.toString()) }.longsToMyte()
+
+fun String.toMyteReadable(context: Context) = map { context.morse().getLong(it.toString()) }.longsToMyte()
 
 fun Myte.toBinaryString() = toBiBits().fold("0b") { acc, bb -> "${acc}${bb.atom.toString(2).padStart(2, '0')}" }
 

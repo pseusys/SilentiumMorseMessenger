@@ -16,8 +16,8 @@ object DatabaseManager {
     private fun prepopulate(context: Context, db: SupportSQLiteDatabase) {
         var paramPointer = 0
         val params = arrayOf(
-            "GLAD YOU MADE IT TO SILENTIUM!".toMyteReadable(),
-            "FOR NOW THIS IS STILL AN ALPHA VERSION...".toMyteReadable()
+            "GLAD YOU MADE IT TO SILENTIUM!".toMyteReadable("default"),
+            "FOR NOW THIS IS STILL AN ALPHA VERSION...".toMyteReadable("default")
         )
 
         val insertReader = context.resources.openRawResource(R.raw.create).bufferedReader()

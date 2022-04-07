@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import com.ekdorn.silentium.R
-import com.ekdorn.silentium.core.Morse
 import com.ekdorn.silentium.databinding.ActivitySilentRootBinding
 import com.ekdorn.silentium.fragments.InputFragmentDirections
 import com.ekdorn.silentium.fragments.MessagesFragment
@@ -59,7 +58,6 @@ class SilentActivity : AppCompatActivity() {
         }
 
         binding.navView.setupWithNavController(navController)
-        Morse.init(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {

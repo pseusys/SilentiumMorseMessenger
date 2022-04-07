@@ -11,6 +11,7 @@ import com.ekdorn.silentium.R
 import com.ekdorn.silentium.activities.ProxyActivity
 import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Morse
+import com.ekdorn.silentium.core.Morse.morse
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.databinding.ViewKeyboardBinding
 import com.ekdorn.silentium.fragments.SettingsFragment
@@ -24,6 +25,7 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
     private val binding = ViewKeyboardBinding.inflate(LayoutInflater.from(context), this, true)
     private val append = PreferenceManager[context].get(R.string.pref_morse_append_key, false)
 
+    private var morse = context.morse()
     var input: (() -> InputConnection)? = null
 
     init {
@@ -39,7 +41,7 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
 
             override fun onLong(long: Long) {
                 bibits.clear()
-                input?.invoke()?.commitText(Morse.getString(long), 1)
+                input?.invoke()?.commitText(morse.getString(long), 1)
             }
 
             override fun onMyte(myte: Myte) {
@@ -51,6 +53,13 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
 
         binding.backButton.setOnClickListener { input?.invoke()?.deleteSurroundingText(1, 0) }
         binding.settingsButton.setOnClickListener { context.startActivity(Intent(context, ProxyActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(SettingsFragment.keyboard, true)) }
+
+        binding.languageDisplay.text = morse.flag
+        binding.languageButton.setOnClickListener {
+            val locales = context.resources.getStringArray(R.array.pref_morse_language_entry_values)
+            morse = morse(if (locales.indexOf(morse.language) == locales.size - 1) locales[0] else locales[locales.indexOf(morse.language)] + 1)
+            binding.languageDisplay.text = morse.flag
+        }
     }
 
     fun freeze(switch: Boolean) {

@@ -17,7 +17,7 @@ class MyteTest {
 
 
     @Test
-    fun readableToMyte_isCorrect() = assertThat(readableString.toMyteReadable(), `is`(myte))
+    fun readableToMyte_isCorrect() = assertThat(readableString.toMyteReadable("default"), `is`(myte))
 
     @Test
     fun binaryToMyte_isCorrect() = assertThat(binaryString.toMyteBinary(), `is`(myte))
@@ -30,14 +30,14 @@ class MyteTest {
 
 
     @Test
-    fun myteToReadable_isCorrect() = assertEquals(myte.toReadableString(), readableString)
+    fun myteToReadable_isCorrect() = assertEquals(readableString, myte.toReadableString("default"))
 
     @Test
-    fun myteToBinary_isCorrect() = assertEquals(myte.toBinaryString(), binaryString)
+    fun myteToBinary_isCorrect() = assertEquals(binaryString, myte.toBinaryString())
 
     @Test
-    fun myteToHex_isCorrect() = assertEquals(myte.toHexString(), hexString)
+    fun myteToHex_isCorrect() = assertEquals(hexString, myte.toHexString())
 
     @Test
-    fun myteToMorse_isCorrect() = assertEquals(myte.toMorseString(), morseString)
+    fun myteToMorse_isCorrect() = assertEquals(morseString, myte.toMorseString())
 }

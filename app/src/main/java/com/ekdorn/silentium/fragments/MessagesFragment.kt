@@ -34,7 +34,7 @@ class MessagesFragment : Fragment(), HasDefaultViewModelProviderFactory {
         else binding.inputView.setOnClickListener {
             val text = binding.inputView.text.toString()
             if (text.isNotBlank()) {
-                messagesViewModel.addMessage(text.toMyteReadable(), UserManager[requireContext()].value!!)
+                messagesViewModel.addMessage(text.toMyteReadable(binding.root.context), UserManager[requireContext()].value!!)
                 binding.inputView.text.clear()
             }
         }

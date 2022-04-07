@@ -6,6 +6,16 @@
     android:layout_height="wrap_content"
     android:maxHeight="@dimen/keyboard_height" >
 
+    <TextView
+        android:id="@+id/language_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:text="🎌"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.ekdorn.silentium.views.SilentInputView
         android:id="@+id/input_button"
         android:layout_width="0dp"

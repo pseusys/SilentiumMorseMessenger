@@ -42,7 +42,7 @@ class NotesAdapter(private val deleteAction: VisualAction, private val sendActio
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         viewHolder.binding.dateTimeView.text = notes[position].date.toString()
-        viewHolder.binding.textView.text = notes[position].text.toReadableString()
+        viewHolder.binding.textView.text = notes[position].text.toReadableString(viewHolder.itemView.context)
     }
 
     override fun getItemCount() = notes.size

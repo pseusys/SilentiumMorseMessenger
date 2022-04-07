@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.ekdorn.silentium.core.BiBit
-import com.ekdorn.silentium.core.Morse
+import com.ekdorn.silentium.core.Morse.morse
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.databinding.ViewMorsePreviewBinding
 
@@ -33,7 +33,7 @@ class MorsePreView(context: Context, attributes: AttributeSet?, style: Int) : Co
         @SuppressLint("SetTextI18n")
         override fun onLong(long: Long) {
             binding.morseInput.text = ""
-            binding.processedInput.text = "${binding.processedInput.text}${Morse.getString(long)}"
+            binding.processedInput.text = "${binding.processedInput.text}${context.morse().getString(long)}"
         }
 
         override fun onMyte(myte: Myte) {

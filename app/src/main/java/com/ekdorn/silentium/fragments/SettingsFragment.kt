@@ -60,12 +60,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val languageSelect = findPreference<ListPreference>(resources.getString(R.string.pref_morse_language_key))!!
-        languageSelect.setOnPreferenceChangeListener { _, newValue ->
-            Morse.reload(newValue as String)
-            true
-        }
-
         transmissionSpeed = findPreference(resources.getString(R.string.pref_morse_speed_key))!!
         useFarnsworthSpeed = findPreference(resources.getString(R.string.pref_morse_farnsworth_key))!!
 
