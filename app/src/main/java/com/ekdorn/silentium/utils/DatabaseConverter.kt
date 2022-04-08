@@ -1,13 +1,20 @@
-package com.ekdorn.silentium.db
+package com.ekdorn.silentium.utils
 
 import android.net.Uri
 import androidx.room.TypeConverter
+import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.managers.CryptoManager
 import java.security.PublicKey
 import java.util.*
 
 
-class Converter {
+class DatabaseConverter {
+    @TypeConverter
+    fun toMyte(byteArray: ByteArray) = Myte(1, byteArray)
+
+    @TypeConverter
+    fun fromMyte(myte: Myte) = myte.toByteArray()
+
     @TypeConverter
     fun toDate(timestamp: Long?) = timestamp?.let { Date(it) }
 

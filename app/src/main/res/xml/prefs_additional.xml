@@ -11,6 +11,7 @@
         <Preference
             app:key="@string/pref_additional_feedback_key"
             app:title="Send feedback"
+            app:persistent="false"
             app:summary="Report technical issues or suggest new features"
             app:icon="@drawable/icon_logo" >
 

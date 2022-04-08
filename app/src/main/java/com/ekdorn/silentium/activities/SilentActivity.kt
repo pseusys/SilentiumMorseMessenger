@@ -8,11 +8,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ActivitySilentRootBinding
 import com.ekdorn.silentium.fragments.InputFragmentDirections
 import com.ekdorn.silentium.fragments.MessagesFragment
+import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.managers.UserManager
+import com.google.android.material.imageview.ShapeableImageView
 
 
 class SilentActivity : AppCompatActivity() {
@@ -52,6 +55,8 @@ class SilentActivity : AppCompatActivity() {
 
             val header = binding.navView.getHeaderView(0)
             UserManager[this].observe(this) {
+                val userPicture = header.findViewById<ShapeableImageView>(R.id.user_picture)
+                Glide.with(this).setDefaultRequestOptions(NetworkManager.options).load(it.avatar).into(userPicture)
                 header.findViewById<TextView>(R.id.user_name).text = it.name ?: "[No display name]"
                 header.findViewById<TextView>(R.id.user_contact).text = it.contact
             }

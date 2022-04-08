@@ -32,7 +32,7 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
             override fun areContentsTheSame(oip: Int, nip: Int): Boolean {
                 val o = dialogs[oip].lastMessage
                 val n = new[nip].lastMessage
-                val messagesSame = (o.text.contentEquals(n.text)) && (o.date == n.date) && (o.authorID == n.authorID) && (o.read == n.read)
+                val messagesSame = (o.payload.data == n.payload.data) && (o.date == n.date) && (o.authorID == n.authorID) && (o.read == n.read)
                 return messagesSame && (dialogs[oip].contact == new[nip].contact) && (dialogs[oip].unreadCount == new[nip].unreadCount)
             }
         })
@@ -45,7 +45,7 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         viewHolder.binding.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
-        viewHolder.binding.lastMessage.text = dialogs[position].lastMessage.text.toReadableString(viewHolder.itemView.context)
+        viewHolder.binding.lastMessage.text = dialogs[position].lastMessage.payload.data.toReadableString(viewHolder.itemView.context)
         val unread = dialogs[position].unreadCount
         if (unread > 0) {
             viewHolder.binding.unreadCount.visibility = View.VISIBLE

@@ -1,9 +1,6 @@
 package com.ekdorn.silentium
 
-import com.ekdorn.silentium.core.BiBit
-import com.ekdorn.silentium.core.biBitsToLong
-import com.ekdorn.silentium.core.biBitsToMyte
-import com.ekdorn.silentium.core.toBiBits
+import com.ekdorn.silentium.core.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -25,7 +22,7 @@ class BiBitTest {
         listOf(BiBit.DAH, BiBit.DAH, BiBit.DIT, BiBit.DIT, BiBit.DAH)
     )
 
-    private val myte = byteArrayOf(-72, -21, -1, -1, -6, -85, -5, -2, -1, -2, -21)
+    private val myte = Myte("285301770989293741189098424")
     private val bibits = bibitsList.flatten()
 
 

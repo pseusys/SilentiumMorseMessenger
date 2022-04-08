@@ -1,14 +1,12 @@
 package com.ekdorn.silentium.mvs
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.ekdorn.silentium.core.Myte
-import com.ekdorn.silentium.core.toMyteReadable
 import com.ekdorn.silentium.managers.DatabaseManager
 import com.ekdorn.silentium.models.Contact
-import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.models.Message
+import com.ekdorn.silentium.models.Payload
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -22,8 +20,8 @@ class MessagesViewModel(application: Application, private val contact: String) :
     private val dao = DatabaseManager[application].messageDAO()
     var messages: LiveData<List<Message>> = dao.getFromContact(contact)
 
-    fun addMessage(text: Myte, me: Contact) = daoScope.launch {
-        dao.add(Message(text, Date(currentTimeMillis()), true, me.id, contact))
+    fun addMessage(text: Myte, me: Contact, language: String) = daoScope.launch {
+        dao.add(Message(Payload(text, language as CharSequence), Date(currentTimeMillis()), true, me.id, contact))
     }
 
     fun removeMessage(index: Int) = daoScope.launch {

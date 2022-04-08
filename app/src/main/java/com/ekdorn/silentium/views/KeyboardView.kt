@@ -25,7 +25,9 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
     private val binding = ViewKeyboardBinding.inflate(LayoutInflater.from(context), this, true)
     private val append = PreferenceManager[context].get(R.string.pref_morse_append_key, false)
 
-    private var morse = context.morse()
+    val locales: Array<String> = context.resources.getStringArray(R.array.pref_morse_language_entry_values)
+
+    var morse = context.morse()
     var input: (() -> InputConnection)? = null
 
     init {
@@ -56,7 +58,6 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
 
         binding.languageDisplay.text = morse.flag
         binding.languageButton.setOnClickListener {
-            val locales = context.resources.getStringArray(R.array.pref_morse_language_entry_values)
             morse = morse(if (locales.indexOf(morse.language) == locales.size - 1) locales[0] else locales[locales.indexOf(morse.language)] + 1)
             binding.languageDisplay.text = morse.flag
         }

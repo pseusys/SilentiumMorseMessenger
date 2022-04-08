@@ -7,7 +7,6 @@ import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64.*
-import androidx.annotation.RequiresApi
 import java.nio.charset.StandardCharsets
 import java.security.*
 import java.security.spec.X509EncodedKeySpec
@@ -22,16 +21,14 @@ object CryptoManager {
     private const val ALIAS = "SILENT_KEY"
     private const val CRYPTO_BITS = 2048
 
-    private fun generateKeyPair(ctx: Context): PublicKey {
-        val spec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) generateKeyNew() else generateKeyOld(ctx)
-        val keyGenerator = KeyPairGenerator.getInstance(CRYPTO_METHOD, PROVIDER).apply { initialize(spec) }
+    private fun generateKeyPair(context: Context): PublicKey {
+        val keyGenerator = KeyPairGenerator.getInstance(CRYPTO_METHOD, PROVIDER).apply {
+            val spec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) KeyGenParameterSpec.Builder(ALIAS, KeyProperties.PURPOSE_DECRYPT).setKeySize(CRYPTO_BITS).build()
+            else KeyPairGeneratorSpec.Builder(context).setAlias(ALIAS).setKeySize(CRYPTO_BITS).build()
+            initialize(spec)
+        }
         return keyGenerator.generateKeyPair().public
     }
-
-    private fun generateKeyOld(ctx: Context) = KeyPairGeneratorSpec.Builder(ctx).setAlias(ALIAS).setKeySize(CRYPTO_BITS).build()
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun generateKeyNew() = KeyGenParameterSpec.Builder(ALIAS, KeyProperties.PURPOSE_DECRYPT).setKeySize(CRYPTO_BITS).build()
 
 
     private fun getKey(): KeyStore.PrivateKeyEntry {
@@ -75,8 +72,5 @@ object CryptoManager {
 
     fun keysSaved() = KeyStore.getInstance(PROVIDER).apply { load(null) }.isKeyEntry(ALIAS)
 
-    fun saveKeys(context: Context) {
-        val cert = generateKeyPair(context)
-        // TODO: publish public key to remote db.
-    }
+    fun saveKey(context: Context) = generateKeyPair(context)
 }

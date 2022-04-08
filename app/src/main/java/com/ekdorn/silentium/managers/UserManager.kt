@@ -2,6 +2,7 @@ package com.ekdorn.silentium.managers
 
 import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceDataStore
@@ -48,17 +49,21 @@ object UserManager {
         private val userNameKey = context.resources.getString(R.string.pref_account_name_key)
         private val userPictureKey = context.resources.getString(R.string.pref_account_picture_key)
 
-        override fun putString(key: String, value: String?) = scope.launch {
-            val request = UserProfileChangeRequest.Builder()
-            when (key) {
-                userNameKey -> request.displayName = value
-                userPictureKey -> request.photoUri = NetworkManager.imageToUri(Uri.parse(value))
-                else -> throw Error("User does not have '$key' parameter!")
+        override fun putString(key: String, value: String?) {
+            scope.launch {
+                val request = UserProfileChangeRequest.Builder()
+                when (key) {
+                    userNameKey -> request.displayName = value
+                    userPictureKey -> request.photoUri = NetworkManager.uploadProfileImage(Uri.parse(value))
+                    else -> throw Error("User does not have '$key' parameter!")
+                }
+                Firebase.auth.currentUser!!.updateProfile(request.build()).addOnCompleteListener {
+                    if (it.isSuccessful) post(context) else throw Error("Update request wasn't completed:\n${it.exception}")
+                }
+            }.invokeOnCompletion {
+                if (it != null) Toast.makeText(context, "Could not connect to server!!", Toast.LENGTH_SHORT).show()
             }
-            Firebase.auth.currentUser!!.updateProfile(request.build()).addOnCompleteListener {
-                if (it.isSuccessful) post(context) else throw Error("Update request wasn't completed:\n${it.exception}")
-            }
-        }.ensureActive()
+        }
 
         override fun getString(key: String, defValue: String?): String? {
             val user = Firebase.auth.currentUser!!

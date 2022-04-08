@@ -7,10 +7,11 @@ import androidx.preference.*
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.utils.observe
-import com.ekdorn.silentium.visuals.ImagePreference
+import com.ekdorn.silentium.preferences.ImagePreference
 import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Morse
 import com.ekdorn.silentium.managers.PreferenceManager
+import com.ekdorn.silentium.preferences.ConfirmationPreference
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -43,6 +44,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 userPhoto.preferenceDataStore = it
                 userName.preferenceDataStore = it
             }
+
+
         }
         addPreferencesFromResource(R.xml.prefs_morse)
         addPreferencesFromResource(R.xml.prefs_keyboard)
@@ -87,5 +90,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         dahSpeed.isVisible = hide
         gapSpeed.isVisible = hide
         endSpeed.isVisible = hide
+    }
+
+    override fun onDisplayPreferenceDialog(preference: Preference) {
+        if (preference is ConfirmationPreference) {
+            // TODO: custom fragment
+        } else super.onDisplayPreferenceDialog(preference)
     }
 }

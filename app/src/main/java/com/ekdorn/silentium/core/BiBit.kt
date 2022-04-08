@@ -31,13 +31,16 @@ fun Long.toBiBits(): List<BiBit> {
 
 fun List<BiBit>.biBitsToLong() = fold(0L) { acc, biBit -> (acc shl 2) + biBit.atom }
 
+private val lowMyte = Myte(1, byteArrayOf(0b11))
 fun Myte.toBiBits(): List<BiBit> {
     val biBits = mutableListOf<BiBit>()
-    forEach { for (i in 0 .. 3) biBits.add(BiBit.fromAtom(((it.toInt() shr i * 2) and 0b11).toByte())) }
+    var intermediate = this
+    do {
+        biBits.add(BiBit.fromAtom((intermediate and lowMyte).toByte()))
+        intermediate = intermediate shr 2
+    } while (intermediate > Myte.ZERO)
     while (biBits.lastOrNull() == BiBit.END) biBits.removeLast()
     return biBits
 }
 
-fun List<BiBit>.biBitsToMyte() = chunked(4).map { byte ->
-    byte.withIndex().sumOf { it.value.atom.toInt() shl (it.index * 2) }.toByte()
-}.toByteArray()
+fun List<BiBit>.biBitsToMyte(): Myte = foldRight(Myte.ZERO) { current, accumulator -> (accumulator shl 2) + Myte.valueOf(current.atom.toLong()) }

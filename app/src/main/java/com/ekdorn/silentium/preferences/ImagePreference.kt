@@ -1,4 +1,4 @@
-package com.ekdorn.silentium.visuals
+package com.ekdorn.silentium.preferences
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.ekdorn.silentium.R
+import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.utils.Observer
 
 
@@ -64,6 +65,6 @@ class ImagePreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             override fun onLoadCleared(placeholder: Drawable?) {}
         }
         val picture = if (pic == Uri.EMPTY) R.drawable.picture_image else pic
-        future = Glide.with(context).asBitmap().load(picture).circleCrop().placeholder(R.drawable.picture_image).error(R.drawable.picture_imageless).into(target)
+        future = Glide.with(context).setDefaultRequestOptions(NetworkManager.options).asBitmap().load(picture).into(target)
     }
 }

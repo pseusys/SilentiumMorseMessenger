@@ -30,7 +30,7 @@ class NotesAdapter(private val deleteAction: VisualAction, private val sendActio
             override fun areContentsTheSame(oip: Int, nip: Int): Boolean {
                 val o = notes[oip]
                 val n = new[nip]
-                return (o.text.contentEquals(n.text)) && (o.date == n.date)
+                return (o.text == n.text) && (o.date == n.date)
             }
         })
         notes = new

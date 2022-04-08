@@ -24,6 +24,7 @@
         <SwitchPreferenceCompat
             app:key="@string/pref_morse_timing_key"
             app:title="Use standard timing"
+            app:persistent="false"
             app:defaultValue="true"
             app:allowDividerAbove="true"
             android:disableDependentsState="true" />

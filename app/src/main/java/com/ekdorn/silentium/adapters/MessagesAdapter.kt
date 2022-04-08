@@ -61,7 +61,7 @@ class MessagesAdapter(context: Context, var me: Contact, private val deleteActio
             override fun areContentsTheSame(oip: Int, nip: Int): Boolean {
                 val o = messages[oip]
                 val n = new[nip]
-                return (o.text.contentEquals(n.text)) && (o.date == n.date) && (o.authorID == n.authorID) && (o.read == n.read)
+                return (o.payload.data == n.payload.data) && (o.date == n.date) && (o.authorID == n.authorID) && (o.read == n.read)
             }
         })
         messages = new
@@ -74,7 +74,7 @@ class MessagesAdapter(context: Context, var me: Contact, private val deleteActio
         super.onBindViewHolder(viewHolder, position)
         viewHolder.configureMessage(messages[position].authorID != me.id)
         viewHolder.binding.dateTimeView.text = messages[position].date.toString()
-        viewHolder.binding.textView.text = messages[position].text.toReadableString(viewHolder.itemView.context)
+        viewHolder.binding.textView.text = messages[position].payload.data.toReadableString(viewHolder.itemView.context)
         viewHolder.binding.textView.forceLayout()
     }
 

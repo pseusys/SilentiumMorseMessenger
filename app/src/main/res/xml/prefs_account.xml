@@ -8,7 +8,7 @@
         app:title="Account"
         app:iconSpaceReserved="false" >
 
-        <com.ekdorn.silentium.visuals.ImagePreference
+        <com.ekdorn.silentium.preferences.ImagePreference
             android:key="@string/pref_account_picture_key"
             android:title="Your profile picture" />
 
@@ -18,6 +18,16 @@
             android:title="Your display name"
             app:useSimpleSummaryProvider="true"
             app:icon="@drawable/icon_edit" />
+
+        <com.ekdorn.silentium.preferences.ConfirmationPreference
+            android:key="@string/pref_account_logout_key"
+            android:title="Log out"
+            />
+
+        <com.ekdorn.silentium.preferences.ConfirmationPreference
+            android:key="@string/pref_account_leave_key"
+            android:title="Leave"
+            />
 
     </PreferenceCategory>
 

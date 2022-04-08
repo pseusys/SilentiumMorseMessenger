@@ -1,15 +1,17 @@
 package com.ekdorn.silentium.core
 
 import android.content.Context
+import android.util.Log
 import com.ekdorn.silentium.core.Morse.morse
 import com.ekdorn.silentium.utils.split
+import java.math.BigInteger
 
 
 /**
  * **Myte** (stands for Multiple bYTE) - data type, represented by byte array, contains an infinite integer.
  * Each byte contains BiBits in reversed order.
  */
-typealias Myte = ByteArray
+typealias Myte = BigInteger
 
 
 fun Myte.toLongs(): List<Long> {

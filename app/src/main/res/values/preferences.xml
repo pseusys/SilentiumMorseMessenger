@@ -8,6 +8,12 @@
     <string name="pref_account_name_key" translatable="false">pref_account_name</string>
     <string name="pref_account_name_title">Silentium</string>
 
+    <string name="pref_account_logout_key" translatable="false">pref_account_logout_key</string>
+    <string name="pref_account_logout_title">Silentium</string>
+
+    <string name="pref_account_leave_key" translatable="false">pref_account_leave_key</string>
+    <string name="pref_account_leave_title">Silentium</string>
+
 
     <string name="pref_additional_key" translatable="false">pref_additional</string>
 
