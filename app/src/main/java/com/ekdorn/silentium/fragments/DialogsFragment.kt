@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.FragmentDialogsBinding
@@ -17,7 +16,7 @@ import com.ekdorn.silentium.visuals.DoubleItemCallback
 
 
 class DialogsFragment : Fragment() {
-    private val dialogsViewModel by viewModels<DialogsViewModel>({ requireActivity() })
+    private val dialogsViewModel by activityViewModels<DialogsViewModel>()
 
     private var _binding: FragmentDialogsBinding? = null
     private val binding get() = _binding!!

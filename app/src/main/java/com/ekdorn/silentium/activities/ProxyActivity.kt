@@ -12,6 +12,7 @@ import com.ekdorn.silentium.R
 import com.ekdorn.silentium.fragments.SettingsFragment
 import com.ekdorn.silentium.managers.CryptoManager
 import com.ekdorn.silentium.managers.NetworkManager
+import com.ekdorn.silentium.utils.observe
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -25,14 +26,14 @@ import kotlinx.coroutines.launch
 
 class ProxyActivity : AppCompatActivity() {
     private lateinit var action: String
-    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res -> onSignInResult(res) }
+    private val observer = observe(FirebaseAuthUIActivityResultContract::class)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().setKeepOnScreenCondition { true }
         super.onCreate(savedInstanceState)
         action = intent.action.toString()
 
-        if ((action != Intent.ACTION_APPLICATION_PREFERENCES) && ((intent.flags == 0) || (intent.hasExtra(SettingsFragment.keyboard)))) navigate(SettingsFragment.keyboard)
+        if ((action != Intent.ACTION_APPLICATION_PREFERENCES) && ((intent.flags == 0) || intent.hasExtra(SettingsFragment.keyboard))) navigate(SettingsFragment.keyboard)
         else if (Firebase.auth.currentUser == null) {
             if (!checkDeepLink()) authenticate()
         } else navigate(if (action == Intent.ACTION_APPLICATION_PREFERENCES) SettingsFragment.default else null)
@@ -58,7 +59,7 @@ class ProxyActivity : AppCompatActivity() {
                     .setAvailableProviders(providers)
                     .setLogo(R.drawable.logo_crop)
                     .setTheme(R.style.Theme_SilentiumMorseMessenger)
-                signInLauncher.launch(signInIntent.build())
+                observer.launch(FirebaseAuthUIActivityResultContract::class, signInIntent.build(), ::onSignInResult)
             }
         }
     }
@@ -71,22 +72,22 @@ class ProxyActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setEmailLink(link)
                 .setAvailableProviders(emptyList())
-            signInLauncher.launch(signInIntent.build())
+            observer.launch(FirebaseAuthUIActivityResultContract::class, signInIntent.build(), ::onSignInResult)
         }
         true
     } else false
 
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) = when {
-        result.resultCode == RESULT_OK -> {
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult?) = when {
+        result?.resultCode == RESULT_OK -> {
             publishUser()
             Unit
         }
-        result.idpResponse != null -> Toast.makeText(this, "Log in error!!", Toast.LENGTH_SHORT).show()
+        result?.idpResponse != null -> Toast.makeText(this, "Log in error!!", Toast.LENGTH_SHORT).show()
         else -> finish()
     }
 
     private fun publishUser() = lifecycleScope.launch {
-        if (!CryptoManager.keysSaved()) NetworkManager.publishUserKey(CryptoManager.saveKey(this@ProxyActivity))
+        NetworkManager.publishUserKey(CryptoManager.saveKey(this@ProxyActivity))
     }.invokeOnCompletion {
         if (it != null) {
             Toast.makeText(this, "Server connection error!!", Toast.LENGTH_SHORT).show()

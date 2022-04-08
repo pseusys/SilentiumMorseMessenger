@@ -1,21 +1,29 @@
 package com.ekdorn.silentium.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.preference.*
 import com.ekdorn.silentium.R
-import com.ekdorn.silentium.managers.UserManager
-import com.ekdorn.silentium.utils.observe
-import com.ekdorn.silentium.preferences.ImagePreference
+import com.ekdorn.silentium.activities.ProxyActivity
 import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Morse
+import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.managers.PreferenceManager
+import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.preferences.ConfirmationPreference
+import com.ekdorn.silentium.preferences.ConfirmationPreferenceDialogFragment
+import com.ekdorn.silentium.preferences.ImagePreference
+import com.ekdorn.silentium.utils.observe
+import kotlinx.coroutines.launch
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
     companion object {
+        private const val DIALOG_FRAGMENT_TAG = "ConfirmationPreferenceDialog"
+
         const val default = "DEFAULT"
         const val keyboard = "KEYBOARD"
     }
@@ -45,7 +53,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 userName.preferenceDataStore = it
             }
 
+            findPreference<ConfirmationPreference>(resources.getString(R.string.pref_account_logout_key))!!.setConfirmationListener {
+                if (it) lifecycleScope.launch {
+                    NetworkManager.logout(requireActivity())
+                    logout()
+                }
+            }
 
+            findPreference<ConfirmationPreference>(resources.getString(R.string.pref_account_leave_key))!!.setConfirmationListener {
+                if (it) lifecycleScope.launch {
+                    NetworkManager.leave(requireActivity())
+                    logout()
+                }
+            }
         }
         addPreferencesFromResource(R.xml.prefs_morse)
         addPreferencesFromResource(R.xml.prefs_keyboard)
@@ -78,6 +98,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private fun logout() = requireActivity().let {
+        it.startActivity(Intent(it, ProxyActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK))
+        it.finish()
+    }
+
     private fun updateSpeed(speed: Int = transmissionSpeed.value, farnsworth: Boolean = useFarnsworthSpeed.isChecked) {
         val unit = Morse.getLength(speed, farnsworth, BiBit.DIT)
         transmissionSpeed.summary = resources.getString(R.string.pref_morse_speed_summary_dynamic, unit)
@@ -92,9 +117,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         endSpeed.isVisible = hide
     }
 
+    @Suppress("deprecation")
     override fun onDisplayPreferenceDialog(preference: Preference) {
-        if (preference is ConfirmationPreference) {
-            // TODO: custom fragment
+        if (preference is ConfirmationPreference) ConfirmationPreferenceDialogFragment.newInstance(preference).let {
+            it.setTargetFragment(this, 0)
+            it.show(this.parentFragmentManager, DIALOG_FRAGMENT_TAG)
         } else super.onDisplayPreferenceDialog(preference)
     }
 }

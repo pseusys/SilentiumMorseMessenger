@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.mvs.ContactsViewModel
@@ -18,7 +17,7 @@ import com.ekdorn.silentium.managers.UserManager
 
 
 class ContactsFragment : Fragment() {
-    private val contactsViewModel by viewModels<ContactsViewModel>({ requireActivity() })
+    private val contactsViewModel by activityViewModels<ContactsViewModel>()
 
     private var _binding: FragmentContactsBinding? = null
     private val binding get() = _binding!!

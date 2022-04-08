@@ -1,6 +1,9 @@
 {
   "rules": {
     ".read":  "auth.uid != null",
-    ".write": "auth.uid != null && (newData.hasChild(auth.uid) || data.hasChild(auth.uid))"
+    ".write": "auth.uid != null && newData.hasChild(auth.uid)",
+    "$user_id": {
+      ".write": "auth.uid != null && $user_id == auth.uid"
+    }
   }
 }

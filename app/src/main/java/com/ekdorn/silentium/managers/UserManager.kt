@@ -28,12 +28,12 @@ object UserManager {
     }
 
     operator fun get(context: Context): LiveData<Contact> {
-        if (me.value == null) post(context)
+        if (Firebase.auth.currentUser == null) throw Exception("UserManager requires logged in user!!")
+        else if (me.value == null) post(context)
         return me
     }
 
     private fun constructContact(): Contact {
-        if (!CryptoManager.keysSaved()) throw Exception("CryptoManager hasn't been initialized!")
         val user = Firebase.auth.currentUser!!
         val key = CryptoManager.getPublicKey()
         val contact = if (!user.phoneNumber.isNullOrBlank()) user.phoneNumber!!

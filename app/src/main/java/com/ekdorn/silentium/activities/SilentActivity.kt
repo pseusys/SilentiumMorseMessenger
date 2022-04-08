@@ -6,8 +6,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ActivitySilentRootBinding
@@ -73,6 +73,6 @@ class SilentActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
         val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0) as? MessagesFragment
-        if ((currentFragment == null) || (!currentFragment.onBackPressed())) super.onBackPressed()
+        if ((currentFragment == null) || !currentFragment.onBackPressed()) super.onBackPressed()
     }
 }

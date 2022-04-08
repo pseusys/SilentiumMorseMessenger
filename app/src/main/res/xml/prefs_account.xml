@@ -22,11 +22,13 @@
         <com.ekdorn.silentium.preferences.ConfirmationPreference
             android:key="@string/pref_account_logout_key"
             android:title="Log out"
+            android:dialogTitle="Log out"
             />
 
         <com.ekdorn.silentium.preferences.ConfirmationPreference
             android:key="@string/pref_account_leave_key"
             android:title="Leave"
+            android:dialogMessage="Leave"
             />
 
     </PreferenceCategory>

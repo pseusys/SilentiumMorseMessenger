@@ -10,7 +10,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.activities.ProxyActivity
 import com.ekdorn.silentium.core.BiBit
-import com.ekdorn.silentium.core.Morse
 import com.ekdorn.silentium.core.Morse.morse
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.databinding.ViewKeyboardBinding
@@ -27,8 +26,12 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
 
     val locales: Array<String> = context.resources.getStringArray(R.array.pref_morse_language_entry_values)
 
+    var input: (() -> InputConnection?)? = null
     var morse = context.morse()
-    var input: (() -> InputConnection)? = null
+        set(value) {
+            field = value
+            binding.languageDisplay.text = field.flag
+        }
 
     init {
         binding.inputButton.addMorseListener(object : SilentInputView.MorseListener() {
@@ -54,12 +57,15 @@ class KeyboardView(context: Context, attributes: AttributeSet?, style: Int) : Co
         })
 
         binding.backButton.setOnClickListener { input?.invoke()?.deleteSurroundingText(1, 0) }
-        binding.settingsButton.setOnClickListener { context.startActivity(Intent(context, ProxyActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(SettingsFragment.keyboard, true)) }
+        binding.settingsButton.setOnClickListener {
+            val intent = Intent(context, ProxyActivity::class.java).putExtra(SettingsFragment.keyboard, true)
+            context.startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK))
+        }
 
         binding.languageDisplay.text = morse.flag
         binding.languageButton.setOnClickListener {
-            morse = morse(if (locales.indexOf(morse.language) == locales.size - 1) locales[0] else locales[locales.indexOf(morse.language)] + 1)
-            binding.languageDisplay.text = morse.flag
+            val ind = locales.indexOf(morse.language)
+            morse = morse(if (ind == locales.size - 1) locales[0] else locales[ind + 1])
         }
     }
 

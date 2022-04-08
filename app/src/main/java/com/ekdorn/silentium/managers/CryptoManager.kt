@@ -70,7 +70,5 @@ object CryptoManager {
     }
 
 
-    fun keysSaved() = KeyStore.getInstance(PROVIDER).apply { load(null) }.isKeyEntry(ALIAS)
-
     fun saveKey(context: Context) = generateKeyPair(context)
 }

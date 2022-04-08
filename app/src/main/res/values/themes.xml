@@ -23,6 +23,7 @@
 
     <style name="Theme.SilentiumMorseMessenger.Proxy" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo_crop</item>
+        <item name="windowSplashScreenBackground">@color/primary</item>
         <item name="postSplashScreenTheme">@style/Theme.SilentiumMorseMessenger</item>
     </style>
 

@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.ekdorn.silentium.adapters.NotesAdapter
+import androidx.fragment.app.activityViewModels
 import com.ekdorn.silentium.core.BiBit
 import com.ekdorn.silentium.core.Myte
 import com.ekdorn.silentium.databinding.FragmentInputBinding
@@ -16,7 +14,7 @@ import com.ekdorn.silentium.views.SilentInputView
 
 
 class InputFragment : Fragment() {
-    private val notesViewModel by viewModels<NotesViewModel>({ requireActivity() })
+    private val notesViewModel by activityViewModels<NotesViewModel>()
 
     private var _binding: FragmentInputBinding? = null
 

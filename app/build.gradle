@@ -42,6 +42,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}"
             manifestPlaceholders = [LabelsSuffix: "_prod"]
+            resValue "string", "app_name", "@string/app_name_prod"
         }
 
         debug {
@@ -51,6 +52,7 @@ android {
             buildConfigField "String", "AUTH_CODE", "\"${project.ext.has("AUTH_CODE") ? project.ext.get("AUTH_CODE") : ""}\""
             resValue "string", "build_version", "Build: ${defaultConfig.versionName}-debug"
             manifestPlaceholders = [LabelsSuffix: "_dev"]
+            resValue "string", "app_name", "@string/app_name_dev"
         }
 
         dry { initWith debug }
