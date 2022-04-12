@@ -8,10 +8,12 @@ import android.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.core.toReadableString
 import com.ekdorn.silentium.databinding.ItemDialogBinding
 import com.ekdorn.silentium.fragments.DialogsFragmentDirections
+import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.models.Dialog
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.ekdorn.silentium.visuals.VisualAction
@@ -44,6 +46,7 @@ class DialogsAdapter(private val deleteAction: VisualAction) : DescriptiveRecycl
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
+        if (dialogs[position].contact.avatar != null) Glide.with(viewHolder.itemView.context).setDefaultRequestOptions(NetworkManager.options).load(dialogs[position].contact.avatar).into(viewHolder.binding.dialogImage)
         viewHolder.binding.contactName.text = dialogs[position].contact.name ?: dialogs[position].contact.contact
         viewHolder.binding.lastMessage.text = dialogs[position].lastMessage.payload.data.toReadableString(viewHolder.itemView.context)
         val unread = dialogs[position].unreadCount

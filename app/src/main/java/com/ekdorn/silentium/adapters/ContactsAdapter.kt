@@ -7,9 +7,11 @@ import android.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.databinding.ItemContactBinding
 import com.ekdorn.silentium.fragments.ContactsFragmentDirections
+import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.models.Contact
 import com.ekdorn.silentium.views.DescriptiveRecyclerView
 import com.ekdorn.silentium.visuals.VisualAction
@@ -54,6 +56,7 @@ class ContactsAdapter(private var me: Contact, private val deleteAction: VisualA
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         super.onBindViewHolder(viewHolder, position)
         val contact = getItem(position)
+        if (contact.avatar != null) Glide.with(viewHolder.itemView.context).setDefaultRequestOptions(NetworkManager.options).load(contact.avatar).into(viewHolder.binding.contactImage)
         viewHolder.binding.contactName.text = contact.name ?: contact.contact
         viewHolder.binding.contactOnline.text = contact.wasOnline.toString()
     }

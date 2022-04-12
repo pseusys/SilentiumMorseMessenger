@@ -21,8 +21,8 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
     val internal: LiveData<List<Contact>> = dao.getAll()
     val external: LiveData<List<Contact>> = _external
 
-    fun addContact() = daoScope.launch {
-        dao.add(Contact(UUID.randomUUID().toString(), "Contact", UUID.randomUUID().toString(), null, null, null))
+    fun addContact(contact: Contact) = daoScope.launch {
+        dao.add(contact)
     }
 
     fun removeContact(index: Int) = daoScope.launch {

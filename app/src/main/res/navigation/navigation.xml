@@ -19,6 +19,10 @@
         tools:layout="@layout/fragment_notes" >
 
         <action
+            android:id="@+id/action_nav_input_to_nav_messages"
+            app:destination="@id/nav_messages" />
+
+        <action
             android:id="@+id/action_nav_input_to_nav_settings"
             app:destination="@id/nav_settings"
             app:popUpTo="@id/nav_input"

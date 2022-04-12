@@ -1,22 +1,33 @@
 package com.ekdorn.silentium.fragments
 
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekdorn.silentium.R
 import com.ekdorn.silentium.mvs.ContactsViewModel
 import com.ekdorn.silentium.visuals.VisualAction
 import com.ekdorn.silentium.visuals.DoubleItemCallback
 import com.ekdorn.silentium.adapters.ContactsAdapter
+import com.ekdorn.silentium.databinding.DialogContactBinding
 import com.ekdorn.silentium.databinding.FragmentContactsBinding
+import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.managers.UserManager
+import com.ekdorn.silentium.models.Contact
+import kotlinx.coroutines.launch
 
 
-class ContactsFragment : Fragment() {
+class ContactsFragment : Fragment(), ContactDialogFragment.ContactDialogListener {
     private val contactsViewModel by activityViewModels<ContactsViewModel>()
 
     private var _binding: FragmentContactsBinding? = null
@@ -26,7 +37,9 @@ class ContactsFragment : Fragment() {
         val userData = UserManager[requireContext()]
         _binding = FragmentContactsBinding.inflate(inflater, container, false)
 
-        binding.createContact.setOnClickListener { contactsViewModel.addContact() }
+        binding.createContact.setOnClickListener {
+            ContactDialogFragment().show(childFragmentManager, "DIALOG")
+        }
 
         val deleteAction = VisualAction(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { contactsViewModel.removeContact(it - 1) }
 
@@ -51,5 +64,58 @@ class ContactsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onContactLoaded(contact: Contact) {
+        contactsViewModel.addContact(contact)
+    }
+}
+
+
+class ContactDialogFragment : DialogFragment() {
+    private lateinit var listener: ContactDialogListener
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        var current: String? = null
+
+        val dialog = DialogContactBinding.inflate(requireActivity().layoutInflater)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialog.root)
+            .setTitle("Find a contact").setMessage("Start typing user's email or phone number")
+            .setPositiveButton("Create contact") { _, _ ->
+                lifecycleScope.launch {
+                    current?.let { listener.onContactLoaded(NetworkManager.updateContact(it)) }
+                }
+            }
+            .setNegativeButton("Cancel") {
+                d, _ -> d.cancel()
+            }
+        val built =  builder.create()
+
+        dialog.contactInput.doOnTextChanged { text, _, _, _ ->
+            lifecycleScope.launch {
+                val data = if (text != null) NetworkManager.findContacts(text.toString()) ?: mapOf() else mapOf()
+                if (data.size == 1) {
+                    built.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+                    current = data.entries.single().key
+                } else {
+                    built.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                    current = null
+                }
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, data.values.toList())
+                dialog.contactInput.setAdapter(adapter)
+            }
+        }
+        return built
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try { listener = context as ContactDialogListener }
+        catch (e: ClassCastException) { throw ClassCastException("$context must implement NoticeDialogListener") }
+    }
+
+    interface ContactDialogListener {
+        fun onContactLoaded(contact: Contact)
     }
 }

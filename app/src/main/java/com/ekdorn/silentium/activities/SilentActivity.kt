@@ -21,6 +21,7 @@ import com.google.android.material.imageview.ShapeableImageView
 class SilentActivity : AppCompatActivity() {
     companion object {
         const val NAVIGATE_TO_SETTINGS = "settings_call"
+        const val NAVIGATE_TO_MESSAGES = "dialogs_call"
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -49,6 +50,10 @@ class SilentActivity : AppCompatActivity() {
         if (intent.hasExtra(NAVIGATE_TO_SETTINGS)) {
             val payload = intent.getStringExtra(NAVIGATE_TO_SETTINGS)!!
             val action = InputFragmentDirections.actionNavInputToNavSettings(payload)
+            navController.navigate(action)
+        } else if (intent.hasExtra(NAVIGATE_TO_MESSAGES)) {
+            val id = intent.getStringExtra(NAVIGATE_TO_MESSAGES)!!
+            val action = InputFragmentDirections.actionNavInputToNavMessages(id)
             navController.navigate(action)
         } else {
             setupActionBarWithNavController(navController, appBarConfiguration)

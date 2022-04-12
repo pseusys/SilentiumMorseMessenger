@@ -17,7 +17,14 @@ NB! If launched on emulator, application requires image with bundled Google Play
 
 NB! Application instance should be added to Firebase Console for Google SignIn using.
 
-Command that should be used for building: `gradle buildRelease` (or `buildDebug` for debug)
+Additional file that has to be present for building `./firebase.properties`  
+It should have following structure:
+```properties
+web.key=[Cloud Messaging API (Legacy) Server Key]
+```  
+Cloud Messaging API (Legacy) Server Key can be found in firebase settings
+
+Command that should be used for building: `gradle buildRelease` (or `gradle buildDebug` for debug)
 
 ### Instrumental Testing
 Additional file that has to be present for instrumental testing `./test.properties`  

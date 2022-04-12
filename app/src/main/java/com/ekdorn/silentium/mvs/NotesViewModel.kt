@@ -1,8 +1,11 @@
 package com.ekdorn.silentium.mvs
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.*
 import com.ekdorn.silentium.core.Myte
+import com.ekdorn.silentium.core.toReadableString
 import com.ekdorn.silentium.managers.DatabaseManager
 import com.ekdorn.silentium.models.Note
 import kotlinx.coroutines.Dispatchers
@@ -26,5 +29,12 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         dao.delete(notes.value!![index])
     }
 
-    fun sendNote(index: Int) {}
+    fun sendNote(context: Context, index: Int) = daoScope.launch {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, notes.value!![index].text.toReadableString(context))
+            type = "text/plain"
+        }
+        context.startActivity(Intent.createChooser(intent, null))
+    }
 }

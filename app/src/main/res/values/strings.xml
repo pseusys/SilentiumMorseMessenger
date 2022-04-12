@@ -28,4 +28,6 @@
 
     <string name="silent_ime_name_prod" translatable="false">Silent Keyboard</string>
     <string name="silent_ime_name_dev" translatable="false">Silent Keyboard Dev</string>
+
+    <string name="notification_channel_id" translatable="false">silentium_default_notification_channel</string>
 </resources>

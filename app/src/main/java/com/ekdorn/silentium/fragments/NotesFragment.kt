@@ -28,7 +28,7 @@ class NotesFragment : Fragment() {
 
         val deleteAction = VisualAction(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { notesViewModel.removeNote(it) }
         val sendAction = VisualAction(R.drawable.icon_send, R.color.blue, R.color.white, IntRange.EMPTY) {
-            notesViewModel.sendNote(it)
+            notesViewModel.sendNote(requireContext(), it)
             adapter?.notifyItemChanged(it)
         }
 

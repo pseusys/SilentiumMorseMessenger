@@ -36,7 +36,10 @@ class ProxyActivity : AppCompatActivity() {
         if ((action != Intent.ACTION_APPLICATION_PREFERENCES) && ((intent.flags == 0) || intent.hasExtra(SettingsFragment.keyboard))) navigate(SettingsFragment.keyboard)
         else if (Firebase.auth.currentUser == null) {
             if (!checkDeepLink()) authenticate()
-        } else navigate(if (action == Intent.ACTION_APPLICATION_PREFERENCES) SettingsFragment.default else null)
+        } else lifecycleScope.launch {
+            NetworkManager.updateUser(true)
+            navigate(if (action == Intent.ACTION_APPLICATION_PREFERENCES) SettingsFragment.default else null)
+        }
     }
 
     private fun authenticate() {
@@ -87,7 +90,7 @@ class ProxyActivity : AppCompatActivity() {
     }
 
     private fun publishUser() = lifecycleScope.launch {
-        NetworkManager.publishUserKey(CryptoManager.saveKey(this@ProxyActivity))
+        NetworkManager.updateUser(true, name = Firebase.auth.currentUser!!.displayName, photo = Firebase.auth.currentUser!!.photoUrl?.toString(), contact = this@ProxyActivity, key = CryptoManager.saveKey(this@ProxyActivity))
     }.invokeOnCompletion {
         if (it != null) {
             Toast.makeText(this, "Server connection error!!", Toast.LENGTH_SHORT).show()

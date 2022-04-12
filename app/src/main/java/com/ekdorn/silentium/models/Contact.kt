@@ -14,4 +14,5 @@ data class Contact(
     @ColumnInfo(name = "was_online") val wasOnline: Date?,
     @ColumnInfo(name = "public_key") val key: PublicKey?,
     @ColumnInfo(name = "profile_pic") val avatar: Uri?,
+    @ColumnInfo(name = "token") val token: String?
 )

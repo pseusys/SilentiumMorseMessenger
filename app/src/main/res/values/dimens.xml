@@ -8,6 +8,7 @@
 
     <dimen name="keyboard_height">250dp</dimen>
     <dimen name="close_fab_size">28dp</dimen>
+    <dimen name="dialog_margin">20dp</dimen>
 
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
