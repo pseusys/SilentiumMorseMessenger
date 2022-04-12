@@ -14,8 +14,10 @@ jobs:
       - name: Create Configs And Properties
         run: |
           echo "$GOOGLE_SERVICES" > ./app/google-services.json
+          echo "$FIREBASE_PROPERTIES" > ./firebase.properties
         env:
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+          FIREBASE_PROPERTIES: ${{ secrets.$FIREBASE_PROPERTIES }}
 
       - name: Set up JDK 11 🔧
         uses: actions/setup-java@v3

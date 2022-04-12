@@ -24,10 +24,11 @@ import com.ekdorn.silentium.databinding.FragmentContactsBinding
 import com.ekdorn.silentium.managers.NetworkManager
 import com.ekdorn.silentium.managers.UserManager
 import com.ekdorn.silentium.models.Contact
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
 
-class ContactsFragment : Fragment(), ContactDialogFragment.ContactDialogListener {
+class ContactsFragment : Fragment() {
     private val contactsViewModel by activityViewModels<ContactsViewModel>()
 
     private var _binding: FragmentContactsBinding? = null
@@ -38,7 +39,11 @@ class ContactsFragment : Fragment(), ContactDialogFragment.ContactDialogListener
         _binding = FragmentContactsBinding.inflate(inflater, container, false)
 
         binding.createContact.setOnClickListener {
-            ContactDialogFragment().show(childFragmentManager, "DIALOG")
+            val dialog = ContactDialogFragment()
+            dialog.listener = object : ContactDialogFragment.ContactDialogListener {
+                override fun onContactLoaded(contact: Contact) = contactsViewModel.addContact(contact).ensureActive()
+            }
+            dialog.show(childFragmentManager, "DIALOG")
         }
 
         val deleteAction = VisualAction(R.drawable.icon_delete, R.color.red, R.color.white, IntRange.EMPTY) { contactsViewModel.removeContact(it - 1) }
@@ -65,15 +70,11 @@ class ContactsFragment : Fragment(), ContactDialogFragment.ContactDialogListener
         super.onDestroyView()
         _binding = null
     }
-
-    override fun onContactLoaded(contact: Contact) {
-        contactsViewModel.addContact(contact)
-    }
 }
 
 
 class ContactDialogFragment : DialogFragment() {
-    private lateinit var listener: ContactDialogListener
+    lateinit var listener: ContactDialogListener
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var current: String? = null
@@ -107,12 +108,6 @@ class ContactDialogFragment : DialogFragment() {
             }
         }
         return built
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try { listener = context as ContactDialogListener }
-        catch (e: ClassCastException) { throw ClassCastException("$context must implement NoticeDialogListener") }
     }
 
     interface ContactDialogListener {

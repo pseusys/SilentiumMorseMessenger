@@ -13,7 +13,7 @@ def readProperties(name, params, targets, config) {
         Properties properties = new Properties()
         properties.load(project.rootProject.file(name).newDataInputStream())
         for (i in 0 .. params.size() - 1) config.buildConfigField "String", targets[i], "\"${properties.getProperty(params[i], "")}\""
-    } else throw Error("No properties file ('./${name}') found!")
+    }
 }
 
 android {

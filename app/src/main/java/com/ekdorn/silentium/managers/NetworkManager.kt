@@ -91,7 +91,7 @@ object NetworkManager {
         Firebase.database.reference.orderByChild("contact").startAt(contact).endAt(contact.next()).addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    cont.resume(snapshot.getValue<Map<String, Map<String, String>>>()?.mapValues { it.value["contact"].toString() })
+                    cont.resume(snapshot.getValue<Map<String, Map<String, Any>>>()?.mapValues { it.value["contact"].toString() })
                 }
 
                 override fun onCancelled(error: DatabaseError) {
