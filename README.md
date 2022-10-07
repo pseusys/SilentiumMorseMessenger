@@ -1,5 +1,14 @@
 # Silentium Morse Messenger
 
+Silentium Morse Messenger is a messenger, focusing on usage of Morse code.
+
+Silentium can be used for sending messages (as well as storing text notes) without looking at keyboard.
+Messages, sent via Silentium can be received encoded with Morse code too (via sounds, vibrations and flashlight).  
+
+Additional Silentium features:
+1. Morse code vocabulary (interactiveness and learning exercises are yet to come!)
+2. Morse keyboard that can be used system-wide with any other application
+
 ### Building
 Required steps:
 
